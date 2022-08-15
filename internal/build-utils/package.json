@@ -1,0 +1,22 @@
+{
+  "name": "@p-helper/build-utils",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "unbuild",
+    "dev": "pnpm run stub",
+    "stub": "unbuild --stub"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@pnpm/find-workspace-packages": "^4.0.19",
+    "@pnpm/types": "^8.4.0",
+    "unbuild": "^0.7.4"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@p-helper/components",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \\\\\\\\\\\\\\\"Error: no test-component specified\\\\\\\\\\\\\\\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "sideEffects": false,
+  "license": "ISC"
+}

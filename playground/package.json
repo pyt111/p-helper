@@ -1,0 +1,22 @@
+{
+  "name": "@p-helper/playground",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.0.1",
+    "unplugin-vue-components": "^0.22.4",
+    "vite": "^3.0.5",
+    "vite-plugin-components": "^0.13.3"
+  },
+  "dependencies": {
+    "p-helper": "workspace:*"
+  }
+}
