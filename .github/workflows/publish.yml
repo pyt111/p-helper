@@ -44,10 +44,10 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
 
       - name: Get GIT_OWNER
-        run: echo "GIT_OWNER=${{github.repository_owner}}" >> $GITHUB_ENV
+        run: echo "GIT_OWNER=${{github.repository_owner}}"
 
       - name: Get GIT_REPOSITORY
-        run: echo "GIT_REPOSITORY=${{github.repository_owner}}" >> $GITHUB_ENV
+        run: echo "GIT_REPOSITORY=${{github.repository_owner}}"
 
 #      - name: Build&publish
 #        run: sh ./scripts/publish.sh
