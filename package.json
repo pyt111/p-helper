@@ -1,5 +1,6 @@
 {
   "private": true,
+  "packageManager": "pnpm@7.3.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "update:version": "tsx scripts/update-version.ts",
