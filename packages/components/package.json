@@ -6,7 +6,7 @@
   "module": "index.ts",
   "types": "index.d.ts",
   "scripts": {
-    "test": "echo \\\\\\\\\\\\\\\"Error: no test-component specified\\\\\\\\\\\\\\\" && exit 1"
+    "test": "echo \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Error: no ari specified\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" && exit 1"
   },
   "keywords": [],
   "author": "",

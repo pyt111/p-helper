@@ -2,8 +2,6 @@ import { withInstall } from '@p-helper/utils';
 
 import Test from './src/TestComponent.vue';
 
-const TestComponent = withInstall(Test);
-export {
-    TestComponent
-}
+export const TestComponent = withInstall(Test);
+
 export default TestComponent;

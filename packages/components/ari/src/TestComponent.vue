@@ -9,5 +9,3 @@ export default defineComponent({
   name: 'TestComponent'
 })
 </script>
-
-<style scoped></style>
