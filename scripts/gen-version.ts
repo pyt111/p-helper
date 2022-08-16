@@ -6,6 +6,7 @@ import pkg from '../packages/p-helper/package.json' // need to be checked
 
 function getVersion() {
   const tagVer = process.env.TAG_VERSION
+  console.log('tagVer----1111 >--->', tagVer);
   if (tagVer) {
     return tagVer.startsWith('v') ? tagVer.slice(1) : tagVer
   } else {
