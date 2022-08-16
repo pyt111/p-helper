@@ -27,7 +27,7 @@ jobs:
           node-version: '16'
           registry-url: https://registry.npmjs.com/
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v2
 
       # Runs a single command using the runners shell
       - name: Get version
