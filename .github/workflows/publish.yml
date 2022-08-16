@@ -49,6 +49,12 @@ jobs:
       - name: Get GIT_REPOSITORY
         run: echo "GIT_REPOSITORY=${{github.repository_owner}}"
 
+      - name: Info $GITHUB_ENV
+        run: echo $GITHUB_ENV
+
+      - name: Info $GITHUB
+        run: echo $github
+
 #      - name: Build&publish
 #        run: sh ./scripts/publish.sh
 #        env:
