@@ -23,7 +23,6 @@ async function main() {
   const pkgs = Object.fromEntries(
     (await getWorkspacePackages()).map((pkg) => [pkg.manifest.name!, pkg])
   )
-  console.log('pkgs >--->', pkgs);
   const pHelper = pkgs['p-helper']
   // const eslintConfig = pkgs['@element-plus/eslint-config']
   // const metadata = pkgs['@element-plus/metadata']

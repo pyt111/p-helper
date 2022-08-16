@@ -19,7 +19,7 @@
     "@p-helper/build-constants": "workspace:*",
     "@p-helper/components": "workspace:*",
     "@p-helper/constants": "workspace:*",
-    "@p-helper/utils": "workspace:^1.0.0",
+    "@p-helper/utils": "workspace:*",
     "vue": "^3.2.37"
   },
   "devDependencies": {

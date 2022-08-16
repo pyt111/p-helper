@@ -10,7 +10,7 @@ importers:
       '@p-helper/build-utils': workspace:*
       '@p-helper/components': workspace:*
       '@p-helper/constants': workspace:*
-      '@p-helper/utils': workspace:^1.0.0
+      '@p-helper/utils': workspace:*
       '@pnpm/find-workspace-packages': ^4.0.19
       '@pnpm/logger': ^4.0.0
       '@pnpm/types': ^8.4.0
@@ -7722,7 +7722,7 @@ packages:
     dependencies:
       acorn: 8.8.0
       chokidar: 3.5.3
-      vite: 3.0.7_sass@1.54.4
+      vite: 3.0.7
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.4.4
     dev: true
