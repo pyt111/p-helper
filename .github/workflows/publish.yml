@@ -44,7 +44,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
 
       - name: Get GIT_OWNER
-        run: echo "GIT_OWNER=${{github.repository_owner}}"
+        run: echo "GIT_OWNER=${{github.repository_owner}}" >> $GITHUB_ENV
 
       - name: Get GIT_REPOSITORY
         run: echo "GIT_REPOSITORY=${{github.repository_owner}}"
