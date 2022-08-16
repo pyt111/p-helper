@@ -41,15 +41,22 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+        run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
 
-      - name: Build&publish
-        run: sh ./scripts/publish.sh
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.P_HELPER_PUBLISH}}
-          TAG_VERSION: 0.0.${{ steps.date.outputs.date }}
-          GIT_HEAD: ${{env.GIT_HEAD}}
-          REGISTRY: https://registry.npmjs.com/
-          FORCE_COLOR: 2
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_OPTIONS: --max-old-space-size=4096
+      - name: Get GIT_OWNER
+        run: echo "GIT_OWNER=${{github.repository_owner}}" >> $GITHUB_ENV
+
+      - name: Get GIT_REPOSITORY
+        run: echo "GIT_REPOSITORY=${{github.repository_owner}}" >> $GITHUB_ENV
+
+#      - name: Build&publish
+#        run: sh ./scripts/publish.sh
+#        env:
+#          NODE_AUTH_TOKEN: ${{secrets.P_HELPER_PUBLISH}}
+#          TAG_VERSION: 0.0.${{ steps.date.outputs.date }}
+#          GIT_HEAD: ${{env.GIT_HEAD}}
+#          REGISTRY: https://registry.npmjs.com/
+#          FORCE_COLOR: 2
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          NODE_OPTIONS: --max-old-space-size=4096
+#          OWNER: ${{GIT_OWNER}}
