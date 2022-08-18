@@ -17,6 +17,7 @@
     "vite-plugin-components": "^0.13.3"
   },
   "dependencies": {
-    "p-helper": "workspace:*"
+    "p-helper": "workspace:*",
+    "unplugin-vue-define-options": "^0.10.0"
   }
 }

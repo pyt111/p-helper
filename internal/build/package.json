@@ -17,8 +17,15 @@
     "@esbuild-kit/cjs-loader": "^2.3.3",
     "@rollup/plugin-commonjs": "^22.0.1",
     "gulp": "^4.0.2",
-    "rollup": "^2.77.2",
-    "rollup-plugin-esbuild": "^4.9.1",
+    "rollup": "^2.78.0",
+    "rollup-plugin-esbuild": "^4.9.3",
     "unbuild": "^0.7.4"
+  },
+  "dependencies": {
+    "@pnpm/find-workspace-packages": "^4.0.19",
+    "@pnpm/logger": "^4.0.0",
+    "esbuild": "^0.15.5",
+    "unplugin-vue-define-options": "^0.10.0",
+    "vue": "^3.2.37"
   }
 }
