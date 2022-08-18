@@ -1,8 +1,9 @@
 <template>
   <!--  <div> test {{ num }} </div>-->
-  <!--  <TestComponent />-->
+  <TestComponent />
 
   <ProvideComponent />
+  <PWaterfall />
   <button @click="onChange">切换</button>
   <div>
     {{ state.currentTab }}
@@ -11,32 +12,32 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, provide, reactive } from 'vue';
-  import ProvideComponent from './components/provide-test';
+import { defineComponent, provide, reactive } from 'vue';
+import ProvideComponent from './components/provide-test';
 
-  export default defineComponent({
-    name: 'AppRoot',
-    components: {
-      ProvideComponent,
-    },
-    setup() {
-      const state = reactive({
-        recordCount: 0,
-        currentTab: '',
-      });
+export default defineComponent({
+  name: 'AppRoot',
+  components: {
+    ProvideComponent,
+  },
+  setup() {
+    const state = reactive({
+      recordCount: 0,
+      currentTab: '',
+    });
 
-      // 这里注入
-      provide('table', state);
+    // 这里注入
+    provide('table', state);
 
-      const onChange = () => {
-        state.recordCount += 1;
-        state.currentTab = `我是tab---${state.recordCount}`;
-      };
+    const onChange = () => {
+      state.recordCount += 1;
+      state.currentTab = `我是tab---${state.recordCount}`;
+    };
 
-      return {
-        state,
-        onChange,
-      };
-    },
-  });
+    return {
+      state,
+      onChange,
+    };
+  },
+});
 </script>

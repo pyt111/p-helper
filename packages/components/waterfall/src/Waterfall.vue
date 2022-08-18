@@ -1,15 +1,10 @@
 <template>
-  <div class="waterfall-wrapper" />
+  <div class="waterfall-wrapper">waterfall</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
+<script lang="ts" setup>
+defineOptions({
   name: 'Waterfall',
-  setup() {
-    return {};
-  },
 });
 </script>
 

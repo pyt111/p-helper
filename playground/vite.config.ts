@@ -12,9 +12,10 @@ export default defineConfig(() => {
       vueJsx(),
       DefineOptions(),
       Components({
-        // include: `${__dirname}/**`,
+        include: `${__dirname}/**`,
         dirs: ['../packages/components'],
-        dts: 'src/components.d.ts',
+        // dts: 'src/components.d.ts',
+        dts: false,
       }),
     ],
     server: {

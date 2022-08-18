@@ -1,6 +1,4 @@
-import { TestComponent } from '@p-helper/components'
-import type { Plugin } from 'vue'
+import { PWaterfall, TestComponent } from '@p-helper/components';
+import type { Plugin } from 'vue';
 
-export default [
-  TestComponent,
-] as Plugin[]
+export default [TestComponent, PWaterfall] as Plugin[];

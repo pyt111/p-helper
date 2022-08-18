@@ -1,4 +1,4 @@
-import { makeInstaller } from './make-installer'
-import Components from './component'
+import { makeInstaller } from './make-installer';
+import Components from './component';
 
-export default makeInstaller([...Components])
+export default makeInstaller([...Components]);
