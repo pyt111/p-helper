@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Waterfall',
+  name: 'PWaterfall',
 });
 </script>
 

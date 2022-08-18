@@ -8,6 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     TestComponent: typeof import('./../../packages/components/ari/src/TestComponent.vue')['default']
-    Waterfall: typeof import('../../packages/components/waterfall/src/Waterfall.vue')['default']
+    Waterfall: typeof import('../../packages/components/waterfall/src/PWaterfall.vue')['default']
   }
 }

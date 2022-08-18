@@ -1,6 +1,6 @@
 import { withInstall } from '@p-helper/utils';
 
-import Waterfall from './src/Waterfall.vue';
+import Waterfall from './src/PWaterfall.vue';
 
 export const PWaterfall = withInstall(Waterfall);
 
