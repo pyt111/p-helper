@@ -25,6 +25,14 @@
     "./lib/*": "./lib/*.js",
     "./*": "./*"
   },
+  "style": "dist/index.css",
+  "sideEffects": [
+    "dist/*",
+    "theme-chalk/**/*.css",
+    "theme-chalk/src/**/*.scss",
+    "es/components/*/style/*",
+    "lib/components/*/style/*"
+  ],
   "dependencies": {
     "vue": "^3.2.37"
   },

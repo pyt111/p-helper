@@ -1,0 +1,62 @@
+@use "sass:map";
+
+$colors: () !default;
+$colors: map.deep-merge(
+    (
+      'white': #ffffff,
+      'black': #000000,
+      'primary': (
+        'base': #409eff,
+      ),
+      'success': (
+        'base': #67c23a,
+      ),
+      'warning': (
+        'base': #e6a23c,
+      ),
+      'danger': (
+        'base': #f56c6c,
+      ),
+      'error': (
+        'base': #f56c6c,
+      ),
+      'info': (
+        'base': #909399,
+      ),
+    ),
+    $colors
+);
+
+$color-white: map.get($colors, 'white') !default;
+$color-black: map.get($colors, 'black') !default;
+$color-primary: map.get($colors, 'primary', 'base') !default;
+$color-success: map.get($colors, 'success', 'base') !default;
+$color-warning: map.get($colors, 'warning', 'base') !default;
+$color-danger: map.get($colors, 'danger', 'base') !default;
+$color-error: map.get($colors, 'error', 'base') !default;
+$color-info: map.get($colors, 'info', 'base') !default;
+
+
+$font-size: () !default;
+$font-size: map.merge(
+    (
+      'extra-large': 20px,
+      'large': 18px,
+      'medium': 16px,
+      'base': 14px,
+      'small': 13px,
+      'extra-small': 12px,
+    ),
+    $font-size
+);
+
+// Typography
+$font-family: () !default;
+$font-family: map.merge(
+    (
+          // default family
+      '':
+      "'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif"
+    ),
+    $font-family
+);

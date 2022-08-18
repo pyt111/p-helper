@@ -7,6 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    TestComponent: typeof import('../../packages/components/ari/src/TestComponent.vue')['default']
+    TestComponent: typeof import('./../../packages/components/ari/src/TestComponent.vue')['default']
   }
 }
