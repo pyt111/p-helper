@@ -3,7 +3,7 @@
   <TestComponent />
 
   <ProvideComponent />
-  <PWaterfall />
+  <Waterfall />
   <button @click="onChange">切换</button>
   <div>
     {{ state.currentTab }}

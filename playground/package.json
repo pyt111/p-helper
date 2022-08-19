@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "p-helper": "workspace:*",
-    "unplugin-vue-define-options": "^0.10.0"
+    "pinia": "^2.0.18",
+    "unplugin-vue-define-options": "^0.10.0",
+    "vue-router": "^4.1.3"
   }
 }

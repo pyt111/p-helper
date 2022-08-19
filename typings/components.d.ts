@@ -6,6 +6,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     // ElAffix: typeof import('../packages/p-helper')['ElAffix'],
     TestComponent: typeof import('../packages/p-helper')['TestComponent'],
+    PWaterfall: typeof import('../packages/p-helper')['PWaterfall'],
   }
 
   interface ComponentCustomProperties {
