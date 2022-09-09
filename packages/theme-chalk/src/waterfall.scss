@@ -5,7 +5,6 @@
 @use 'mixins/config' as *;
 @use 'mixins/var' as *;
 @use 'mixins/function' as *;
-@import '@p-helper/theme-chalk/src/mixins/mixins';
 
 @include b(waterfall) {
   @include set-component-css-var('card', $card);

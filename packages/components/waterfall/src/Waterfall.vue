@@ -118,10 +118,10 @@
   const onscroll = async () => {
     const taskSize = tasks.value.size();
     if (taskSize) return;
-    if (!isFunction(instance.attrs.onLoad)) return;
+    if (!isFunction(instance?.attrs.onLoad)) return;
 
     const page = pagination.value.page;
-    const loadFn = instance.attrs.onLoad.bind(null, {
+    const loadFn = instance?.attrs.onLoad.bind(null, {
       page: waterfalls.value[page] ? page + 1 : page, // 如果已经存在当前页面的数据 则请求下一页
     });
     const pl: Promise<any> = loadFn();
@@ -138,7 +138,7 @@
     try {
       const res = await pl;
       noMore.value = !res.length;
-    } catch (err) {
+    } catch (err: any) {
       throw new Error(err);
     } finally {
       loading.value = false;
