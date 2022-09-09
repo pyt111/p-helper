@@ -1,43 +1,18 @@
 <template>
-  <!--  <div> test {{ num }} </div>-->
-  <TestComponent />
-
-  <ProvideComponent />
-  <Waterfall />
-  <button @click="onChange">切换</button>
-  <div>
-    {{ state.currentTab }}
-  </div>
-  <div>recordCount: {{ state.recordCount }}</div>
+  <router-view v-slot="{ Component, route }">
+    <transition appear mode="out-in" name="fade-transform">
+      <component :is="Component" :key="route.fullPath" />
+    </transition>
+  </router-view>
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, reactive } from 'vue';
-import ProvideComponent from './components/provide-test';
+  import { defineComponent } from 'vue';
 
-export default defineComponent({
-  name: 'AppRoot',
-  components: {
-    ProvideComponent,
-  },
-  setup() {
-    const state = reactive({
-      recordCount: 0,
-      currentTab: '',
-    });
-
-    // 这里注入
-    provide('table', state);
-
-    const onChange = () => {
-      state.recordCount += 1;
-      state.currentTab = `我是tab---${state.recordCount}`;
-    };
-
-    return {
-      state,
-      onChange,
-    };
-  },
-});
+  export default defineComponent({
+    name: 'AppRoot',
+    setup() {
+      return {};
+    },
+  });
 </script>

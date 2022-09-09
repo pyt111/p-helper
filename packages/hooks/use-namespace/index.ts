@@ -8,7 +8,7 @@ const _bem = (
   block: string,
   blockSuffix: string,
   element: string,
-  modifier: string,
+  modifier: string
 ) => {
   let cls = `${namespace}-${block}`;
   if (blockSuffix) {
@@ -25,16 +25,24 @@ const _bem = (
 
 export function useNamespace(block: string) {
   const namespace = computed(() => defaultNamespace);
-  const b = (blockSuffix = '') => _bem(unref(namespace), block, blockSuffix, '', '');
-  const e = (element?: string) => (element ? _bem(unref(namespace), block, '', element, '') : '');
+  const b = (blockSuffix = '') =>
+    _bem(unref(namespace), block, blockSuffix, '', '');
+  const e = (element?: string) =>
+    element ? _bem(unref(namespace), block, '', element, '') : '';
   const m = (modifier?: string) =>
     modifier ? _bem(unref(namespace), block, '', '', modifier) : '';
   const be = (blockSuffix?: string, element?: string) =>
-    blockSuffix && element ? _bem(unref(namespace), block, blockSuffix, element, '') : '';
+    blockSuffix && element
+      ? _bem(unref(namespace), block, blockSuffix, element, '')
+      : '';
   const em = (element?: string, modifier?: string) =>
-    element && modifier ? _bem(unref(namespace), block, '', element, modifier) : '';
+    element && modifier
+      ? _bem(unref(namespace), block, '', element, modifier)
+      : '';
   const bm = (blockSuffix?: string, modifier?: string) =>
-    blockSuffix && modifier ? _bem(unref(namespace), block, blockSuffix, '', modifier) : '';
+    blockSuffix && modifier
+      ? _bem(unref(namespace), block, blockSuffix, '', modifier)
+      : '';
   const bem = (blockSuffix?: string, element?: string, modifier?: string) =>
     blockSuffix && element && modifier
       ? _bem(unref(namespace), block, blockSuffix, element, modifier)
@@ -70,7 +78,8 @@ export function useNamespace(block: string) {
   };
 
   const cssVarName = (name: string) => `--${namespace.value}-${name}`;
-  const cssVarBlockName = (name: string) => `--${namespace.value}-${block}-${name}`;
+  const cssVarBlockName = (name: string) =>
+    `--${namespace.value}-${block}-${name}`;
 
   return {
     namespace,

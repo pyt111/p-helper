@@ -23,17 +23,17 @@ function buildThemeChalk() {
       cleanCSS({}, (details) => {
         consola.success(
           `${chalk.cyan(details.name)}: ${chalk.yellow(
-            details.stats.originalSize / 1000,
-          )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`,
+            details.stats.originalSize / 1000
+          )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`
         );
-      }),
+      })
     )
     .pipe(
       rename((path) => {
         if (!noPPrefixFile.test(path.basename)) {
           path.basename = `p-${path.basename}`;
         }
-      }),
+      })
     )
     .pipe(dest(distFolder));
 }
@@ -43,12 +43,14 @@ export function copyThemeChalkBundle() {
 }
 
 export function copyThemeChalkSource() {
-  return src(path.resolve(__dirname, 'src/**')).pipe(dest(path.resolve(distBundle, 'src')));
+  return src(path.resolve(__dirname, 'src/**')).pipe(
+    dest(path.resolve(distBundle, 'src'))
+  );
 }
 
 export const build: TaskFunction = parallel(
   copyThemeChalkSource,
-  series(buildThemeChalk, copyThemeChalkBundle),
+  series(buildThemeChalk, copyThemeChalkBundle)
 );
 
 export default build;

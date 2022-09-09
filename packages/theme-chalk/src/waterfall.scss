@@ -1,0 +1,99 @@
+@use 'sass:math';
+@use 'mixins/mixins' as *;
+@use 'common/transition' as *;
+@use 'common/var' as *;
+@use 'mixins/config' as *;
+@use 'mixins/var' as *;
+@use 'mixins/function' as *;
+@import '@p-helper/theme-chalk/src/mixins/mixins';
+
+@include b(waterfall) {
+  @include set-component-css-var('card', $card);
+}
+
+@include b(waterfall) {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  @include m(box) {
+    height: 100%;
+    overflow: auto;
+    position: relative;
+  }
+
+  @include b(waterfall-message) {
+    @include m(box) {
+      --messageTop: 0;
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      text-align: center;
+      padding: 20px;
+      width: 80%;
+      transition: getCssVar('transition-duration');
+      border-radius: getCssVar('card', 'border-radius');
+      background-color: getCssVar('card', 'bg-color');
+      color: getCssVar('text-color', 'primary');
+      box-shadow: getCssVar('box-shadow', 'light');
+      opacity: 0;
+
+      @include when(show) {
+        transform: translateY(-20px);
+        opacity: 1;
+        z-index: 0;
+      }
+    }
+  }
+
+  @include m(js) {
+    --gap: 5px;
+    --col: 2;
+  }
+  $gapWidth: calc(var(--gap) * (var(--col) - 1));
+  $pageWidth: calc(100% - $gapWidth);
+  $itemWidth: calc(100% / var(--col));
+
+  @include b(waterfall-item) {
+    @include e(body) {
+      height: 100%;
+      width: 100%;
+      border-radius: getCssVar('card', 'border-radius');
+      border: 1px solid getCssVar('card', 'border-color');
+      background-color: getCssVar('card', 'bg-color');
+      color: getCssVar('text-color', 'primary');
+      transition: getCssVar('transition-duration');
+
+      @include when(always-shadow) {
+        box-shadow: getCssVar('box-shadow', 'light');
+      }
+    }
+
+    &:nth-child(4n - 3) {
+      left: 0;
+    }
+
+    position: absolute;
+    padding: var(--gap);
+    width: var(--itemWidth, $itemWidth);
+
+    &.opacity__0 {
+      opacity: 0;
+    }
+
+    @include when(ready) {
+      transition: getCssVar('transition-duration');
+    }
+  }
+
+  &--page {
+    color: red;
+  }
+
+  @include m(css) {
+    width: 1440px; // 默认宽度
+    margin: 20px auto; // 居中
+    columns: 4; // 默认列数
+    column-gap: 30px; // 列间距
+  }
+}
