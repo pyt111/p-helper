@@ -1,11 +1,14 @@
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import DefaultTheme from 'vitepress/theme';
+import PHelper from 'p-helper';
 
 import { define } from '../utils/types';
 import './style.css';
 import type { Theme } from 'vitepress';
 import { globals } from '~/index';
+
+console.log('PHelper >--->', PHelper);
 
 export default define<Theme>({
   ...DefaultTheme,
@@ -16,6 +19,7 @@ export default define<Theme>({
   // },
   enhanceApp: ({ app }) => {
     app.use(ElementPlus as any);
+    app.use(PHelper as any);
     globals.forEach(([name, Comp]) => {
       app.component(name, Comp as any);
     });
