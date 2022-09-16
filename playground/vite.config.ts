@@ -10,6 +10,7 @@ function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir);
 }
 
+// @ts-ignore
 export default defineConfig(() => {
   return {
     base: '/',

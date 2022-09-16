@@ -27,7 +27,7 @@
   import { getRandomPhotos2 } from '@/api';
 
   export default defineComponent({
-    name: 'Waterfall',
+    name: 'AWaterfall',
     setup() {
       const waterfallData = ref<WaterfallItem[]>([]);
       const state = reactive({

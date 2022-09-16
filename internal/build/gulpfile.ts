@@ -45,6 +45,7 @@ export const build: TaskFunction = series(
     runTask('buildModules'),
     runTask('buildFullBundle'),
     runTask('generateTypesDefinitions'),
+    runTask('buildHelper'),
     series(
       withTaskName('buildThemeChalk', () =>
         run('pnpm run -C packages/theme-chalk build')
