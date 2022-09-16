@@ -12,7 +12,7 @@ waterfall/basic
 
 ### Waterfall Attributes
 
-| 属性名          | 描述    | 类型        | 默认      | 可选值               |
-|:-------------|:------|:----------|:--------|:------------------|
-| `autoHeight` | 自适应高度 | `boolean` | `false` | No                |
-| `alignMode`  | 对齐    | `string`  | center  | left/right/center |
+| Attribute    | Description | Type      | Accepted Values   | Default |
+|:-------------|:------------|:----------|:------------------|:--------|
+| `autoHeight` | 自适应高度       | `boolean` | No                | `false` |
+| `alignMode`  | 对齐          | `string`  | left/right/center | center  |

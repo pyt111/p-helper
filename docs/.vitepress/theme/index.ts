@@ -8,8 +8,6 @@ import './style.css';
 import type { Theme } from 'vitepress';
 import { globals } from '~/index';
 
-console.log('PHelper >--->', PHelper);
-
 export default define<Theme>({
   ...DefaultTheme,
   // Layout() {

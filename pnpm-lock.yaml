@@ -92,7 +92,7 @@ importers:
       markdown-it: ^13.0.1
       markdown-it-container: ^3.0.0
       normalize.css: ^8.0.1
-      p-helper: ^0.0.20220916030827
+      p-helper: ^0.0.20220916041130
       prismjs: ^1.29.0
       unocss: ^0.45.21
       unplugin-icons: ^0.14.9
@@ -101,7 +101,7 @@ importers:
       '@element-plus/icons-vue': 2.0.9
       markdown-it: 13.0.1
       normalize.css: 8.0.1
-      p-helper: 0.0.20220916030827
+      p-helper: 0.0.20220916041130
       unplugin-icons: 0.14.9
     devDependencies:
       '@iconify-json/ri': 1.1.3
@@ -224,7 +224,6 @@ importers:
     specifiers:
       '@vitejs/plugin-vue': ^3.0.1
       axios: ^0.27.2
-      p-helper: workspace:*
       pinia: ^2.0.18
       typescript: ^4.7.4
       unplugin-vue-components: ^0.22.4
@@ -235,7 +234,6 @@ importers:
       vue-router: ^4.1.3
     dependencies:
       axios: 0.27.2
-      p-helper: link:../packages/p-helper
       pinia: 2.0.19_j6bzmzd4ujpabbp5objtwxyjp4
       unplugin-vue-define-options: 0.10.0_vite@3.0.8+vue@3.2.37
       vue: 3.2.37
@@ -7802,8 +7800,8 @@ packages:
     resolution: {integrity: sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==}
     engines: {node: '>=4'}
 
-  /p-helper/0.0.20220916030827:
-    resolution: {integrity: sha512-d6vyOatbdbr0bWoxxMVaaW4E/b/NipyfKGov7OHh5CT4xH0CnRk8NBuOX2qrIJlFJvgrl8W+k4Xd8NF7mhqEsw==}
+  /p-helper/0.0.20220916041130:
+    resolution: {integrity: sha512-AMuJtanGLEVL6LWxJt280veY7hJ2AWi/RAMabv6HOwS8r8h83GPALeUxGURQl/IGsbY8GoM00K+IG5lqtZNVvA==}
     dependencies:
       vue: 3.2.39
     dev: false
