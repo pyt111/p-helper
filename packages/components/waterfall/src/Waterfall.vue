@@ -8,7 +8,7 @@
       v-infinite-scroll="onscroll"
       :infinite-scroll-distance="300"
       :infinite-scroll-disabled="scrollDisabled"
-      :infinite-scroll-immediate="props.immediateLoad"
+      :infinite-scroll-immediate="immediateLoadBool"
       :infinite-scroll-delay="props.scrollDelay"
       :class="ns.m('box')"
     >
@@ -27,7 +27,11 @@
               :key="item.id || i"
             >
               <div
-                :class="[ns.b('item'), ready ? ns.is('ready') : 'opacity__0']"
+                :class="[
+                  ns.b('item'),
+                  ready ? ns.is('ready') : 'opacity__0',
+                  page < pagination.page || noMore ? 't-r' : '',
+                ]"
                 :style="style"
               >
                 <div
@@ -45,12 +49,17 @@
       </template>
     </div>
 
-    <div
-      :class="[ns.bm('message', 'box'), ns.is(isShowMessageBox ? 'show' : '')]"
-    >
-      <p v-if="!noMore" :class="[ns.e('loading')]">Loading...</p>
-      <p v-if="noMore">没有更多</p>
-    </div>
+    <slot name="loadMessage">
+      <div
+        :class="[
+          ns.bm('message', 'box'),
+          ns.is(isShowMessageBox ? 'show' : ''),
+        ]"
+      >
+        <p v-if="!noMore" :class="[ns.e('loading')]">Loading...</p>
+        <p v-if="noMore">没有更多</p>
+      </div>
+    </slot>
   </div>
 </template>
 
@@ -61,10 +70,12 @@
     onBeforeUnmount,
     onMounted,
     ref,
+    unref,
   } from 'vue';
-  import { isFunction, isPromise } from '@vue/shared';
+  import { isFunction } from '@vue/shared';
   import { useNamespace } from '@p-helper/hooks';
   import { sleep } from '@p-helper/utils';
+  import { useVModel } from '@vueuse/core';
   import { waterfallProps } from './waterfall';
   import { useWaterfall } from './useWaterfall';
 
@@ -72,24 +83,40 @@
     name: 'PWaterfall',
   });
   const props = defineProps(waterfallProps);
+  const emit = defineEmits([
+    'update:modelValue',
+    'update:immediateLoad',
+    'loadScroll',
+  ]);
+  const data = useVModel(props, 'modelValue', emit);
+  const immediateLoadBool = useVModel(props, 'immediateLoad', emit, {
+    passive: true,
+  });
   const wWrapperRef = ref();
   const ns = useNamespace('waterfall');
   const instance = getCurrentInstance();
 
-  const options = computed(() => ({
+  const options = computed<typeof waterfallProps>(() => ({
     ...props,
   }));
 
   const loading = ref(false);
   const noMore = ref(false);
   const isShowMessageBox = ref(false);
-
-  const scrollDisabled = computed(() => loading.value);
+  const getLoadPage = computed(() => {
+    const page = pagination.value.page;
+    return {
+      page: waterfalls.value[page] ? page + 1 : page, // 如果已经存在当前页面的数据 则请求下一页
+      pageSize: pagination.value,
+    };
+  });
 
   const { waterfalls, pagination, stopOb, tasks } = useWaterfall(
     wWrapperRef,
-    options
+    options as any
   );
+
+  const scrollDisabled = computed(() => loading.value);
 
   const styleConfig = computed(() => {
     const config = {
@@ -108,6 +135,16 @@
     return config;
   });
 
+  const checkLoadApi = () => {
+    const isFn = isFunction(props.loadApi);
+    if (!isFn) {
+      immediateLoadBool.value = false;
+    }
+    return isFn;
+  };
+
+  checkLoadApi();
+
   const closeMessage = () => {
     sleep(1000).then(() => {
       isShowMessageBox.value = false;
@@ -116,27 +153,33 @@
 
   // 滑动请求下一页
   const onscroll = async () => {
+    // await nextTick();
     const taskSize = tasks.value.size();
-    if (taskSize) return;
-    if (!isFunction(instance?.attrs.onLoad)) return;
+    if (taskSize) {
+      return;
+    }
 
-    const page = pagination.value.page;
-    const loadFn = instance?.attrs.onLoad.bind(null, {
-      page: waterfalls.value[page] ? page + 1 : page, // 如果已经存在当前页面的数据 则请求下一页
-    });
-    const pl: Promise<any> = loadFn();
+    const { page, pageSize } = unref(getLoadPage);
+    const params = { page, pageSize };
+    emit('loadScroll', params);
 
-    if (!isPromise(pl)) return;
+    // 没有LoadApi 上面滚动到底发射事件出去 通过自定义外部数据
+    if (!checkLoadApi()) {
+      return;
+    }
 
     isShowMessageBox.value = true;
     if (noMore.value) {
       closeMessage();
       return;
     }
-    loading.value = true;
 
     try {
-      const res = await pl;
+      loading.value = true;
+      const res = await props.loadApi(params);
+      if (res?.length) {
+        data.value.push(...res);
+      }
       noMore.value = !res.length;
     } catch (err: any) {
       throw new Error(err);
@@ -145,10 +188,6 @@
       closeMessage();
     }
   };
-
-  onMounted(() => {
-    // if (!props.api)
-  });
 
   onBeforeUnmount(() => {
     stopOb();

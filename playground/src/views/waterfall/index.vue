@@ -5,8 +5,7 @@
       :page-size="pageSize"
       :item-width="300"
       class="waterfall-wrapper-content"
-      immediate-load
-      @load="onload"
+      :load-api="onload"
     >
       <template #default="{ item, page, index }">
         <div class="card-content">
@@ -22,26 +21,39 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, toRefs } from 'vue';
-  import type { WaterfallItem } from '@p-helper/components';
+  import { defineComponent, ref } from 'vue';
   import { getRandomPhotos2 } from '@/api';
 
   export default defineComponent({
-    name: 'AWaterfall',
+    name: 'Waterfall',
     setup() {
-      const waterfallData = ref<WaterfallItem[]>([]);
-      const state = reactive({
-        pageSize: 4,
-      });
+      const waterfallData = ref<any[]>([]);
+      const pageSize = ref(2);
+      const immediateLoad = ref(true);
+
       function randomNum(max, min) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-      const queryData = async (page) => {
+      const queryData = (page) => {
         if (waterfallData.value.length >= 27) {
           return Promise.resolve([]);
         }
-        return getRandomPhotos2({ _page: page, _limit: state.pageSize }).then(
+        // const data = Array.from({ length: pageSize.value }, () => {
+        //   return {
+        //     page,
+        //     config: {
+        //       height: randomNum(260, 600),
+        //     },
+        //   };
+        // });
+
+        // console.log('data >--->', data);
+        // return new Promise((resolve, reject) => {
+        //   resolve(data);
+        // });
+
+        return getRandomPhotos2({ _page: page, _limit: pageSize.value }).then(
           (res) => {
             const data = (res.data || []).map((item) => ({
               ...item,
@@ -49,7 +61,7 @@
                 height: randomNum(260, 600),
               },
             }));
-            waterfallData.value.push(...data);
+            // waterfallData.value.push(...data);
             return data;
           }
         );
@@ -59,10 +71,20 @@
         return queryData(page);
       };
 
+      const loadScroll = ({ page }) => {
+        queryData(page).then((res) => {
+          waterfallData.value.push(...res);
+        });
+      };
+
+      // loadScroll({ page: 1 });
+
       return {
-        ...toRefs(state),
+        pageSize,
         waterfallData,
+        immediateLoad,
         onload,
+        loadScroll,
       };
     },
   });

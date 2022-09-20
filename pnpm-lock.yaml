@@ -92,7 +92,7 @@ importers:
       markdown-it: ^13.0.1
       markdown-it-container: ^3.0.0
       normalize.css: ^8.0.1
-      p-helper: ^0.0.20220916041130
+      p-helper: ^0.0.20220916065731
       prismjs: ^1.29.0
       unocss: ^0.45.21
       unplugin-icons: ^0.14.9
@@ -101,7 +101,7 @@ importers:
       '@element-plus/icons-vue': 2.0.9
       markdown-it: 13.0.1
       normalize.css: 8.0.1
-      p-helper: 0.0.20220916041130
+      p-helper: 0.0.20220916065731
       unplugin-icons: 0.14.9
     devDependencies:
       '@iconify-json/ri': 1.1.3
@@ -7800,8 +7800,8 @@ packages:
     resolution: {integrity: sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==}
     engines: {node: '>=4'}
 
-  /p-helper/0.0.20220916041130:
-    resolution: {integrity: sha512-AMuJtanGLEVL6LWxJt280veY7hJ2AWi/RAMabv6HOwS8r8h83GPALeUxGURQl/IGsbY8GoM00K+IG5lqtZNVvA==}
+  /p-helper/0.0.20220916065731:
+    resolution: {integrity: sha512-D8ChAsIKB2rjq9J8VYWGjEZLf3KrXkJLLt2P7aRhaJXj1yeN4k+8gi84CUhNzh5AF0udqSJAew5FUntApZj1Xg==}
     dependencies:
       vue: 3.2.39
     dev: false

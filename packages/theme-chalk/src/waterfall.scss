@@ -81,7 +81,11 @@
     }
 
     @include when(ready) {
-      transition: getCssVar('transition-duration');
+      transition: opacity getCssVar('transition-duration');
+    }
+
+    &.t-r {
+      transition: transform getCssVar('transition-duration');
     }
   }
 

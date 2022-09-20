@@ -6,8 +6,10 @@ type WAlign = 'left' | 'right' | 'center';
 type WShadow = 'always' | 'hover' | 'never';
 
 export const waterfallProps = {
-  api: {
-    type: Function as PropType<(arg?: Record<string, any>) => Promise<any>>,
+  loadApi: {
+    type: Function as PropType<
+      (arg?: Record<string, any>) => Promise<any> | null
+    >,
     default: null,
   },
   mode: {
@@ -78,7 +80,7 @@ export const waterfallProps = {
   },
   immediateLoad: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   scrollDelay: {
     type: Number,

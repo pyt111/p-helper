@@ -1,6 +1,7 @@
 import { computed, nextTick, ref, unref, watch } from 'vue';
+import { isPromise } from '@vue/shared';
 import { isRef } from 'vue-demi';
-import { TasksQueue, sleep } from '@p-helper/utils';
+import { TasksQueue } from '@p-helper/utils';
 import { cloneDeep, debounce, noop } from 'lodash-es';
 import { useResizeObserver } from '@vueuse/core';
 import type {
@@ -42,8 +43,8 @@ export function useWaterfall(
     autoHeight,
     alignMode,
     updateIntervalTime,
-    transitionIntervalTime,
-    transitionProgressive,
+    // transitionIntervalTime,
+    // transitionProgressive,
   } = options.value;
 
   const col = ref(colNum || 0);
@@ -72,14 +73,14 @@ export function useWaterfall(
     Array.from({ length: col.value }, () => 0)
   );
 
-  let stop = noop;
-  // 没有指定元素宽度 就不需要监听了  暂时这样
-  if (width) {
-    const cfg = useResizeObserver(elementEl, () => {
+  const cfg = useResizeObserver(elementEl, () => {
+    if (width) {
       updateCol();
-    });
-    stop = cfg.stop;
-  }
+    } else {
+      debounceUpdateWaterfall();
+    }
+  });
+  const stop = cfg.stop;
 
   /**
    * 初始化
@@ -136,11 +137,6 @@ export function useWaterfall(
             currentPageData.allReady = true;
             waterfalls.value[page].heights = heights;
             updatePagination();
-
-            if (tasks.value.size()) {
-              runTasks();
-              tasks.value.dequeue();
-            }
           });
         });
       }
@@ -152,7 +148,14 @@ export function useWaterfall(
    */
   const runTasks = async () => {
     if (tasks.value.items[0]) {
-      return tasks.value.items[0]();
+      const p = tasks.value.items[0]();
+      if (isPromise(p)) {
+        await p;
+        // 执行完后 弹出队列
+        tasks.value.dequeue();
+        runTasks();
+      }
+      return p;
     }
   };
 
@@ -169,7 +172,7 @@ export function useWaterfall(
       if (mode === 'js') {
         tasks.value.enqueue(syncTask(pagination.value.totalPage));
         // 为了异步数据插入后能正确执行任务
-        if (tasks.value.size() === 1) {
+        if (tasks.value.size()) {
           runTasks().then(noop);
         }
       }
@@ -231,8 +234,6 @@ export function useWaterfall(
         Object.assign(style, {
           width: typeof itemWidth === 'number' ? `${itemWidth}px` : itemWidth,
           height: h ? `${itemHeight}px` : '',
-          // left: `${left}px`,
-          // top: `${top}px`,
           transform: `translate(${left}px, ${top}px)`,
         });
         heights[minIdx] += itemHeight;
@@ -260,21 +261,20 @@ export function useWaterfall(
     });
   };
 
-  const getInnerColumnHeights = (page) => {
-    return waterfalls.value[page - 1 || 1]?.heights || getHeightList.value;
-  };
+  const getInnerColumnHeights = (page) =>
+    waterfalls.value[page - 1 || 1]?.heights || getHeightList.value;
 
   /**
    * 元素过渡时间
    * @param idx
    */
-  const setTransition = async (idx) => {
-    return sleep(
-      transitionProgressive
-        ? idx * transitionIntervalTime
-        : transitionIntervalTime
-    );
-  };
+  // const setTransition = async (idx = 0) => {
+  //   return sleep(
+  //     transitionProgressive
+  //       ? idx * transitionIntervalTime
+  //       : transitionIntervalTime
+  //   );
+  // };
 
   /**
    * 计算每一列高度
@@ -295,7 +295,8 @@ export function useWaterfall(
             imgEl.style.height = `${imgHeight}px`;
           });
 
-          setTransition(idx).then(() => (item.ready = true));
+          item.ready = true;
+          // setTransition(2).then(() => (item.ready = true));
         }
         pl.push(Promise.resolve());
       } else {
@@ -365,7 +366,6 @@ export function useWaterfall(
     }
 
     runTasks().then(noop);
-    tasks.value.dequeue();
   };
 
   const debounceUpdateWaterfall = debounce(resizeToUpdate, updateIntervalTime);

@@ -13,6 +13,10 @@ export class TasksQueue<T = any> {
     return this.items.length;
   }
 
+  get(index = 0) {
+    return this.items[index];
+  }
+
   clear() {
     this.items = [];
   }
