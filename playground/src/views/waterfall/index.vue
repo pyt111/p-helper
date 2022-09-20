@@ -69,8 +69,8 @@
         return queryData(page, pageSize);
       };
 
-      const loadScroll = ({ page }) => {
-        queryData(page).then((res) => {
+      const loadScroll = ({ page, pageSize }) => {
+        queryData(page, pageSize).then((res) => {
           waterfallData.value.push(...res);
         });
       };
