@@ -103,10 +103,10 @@
   const noMore = ref(false);
   const isShowMessageBox = ref(false);
   const getLoadPage = computed(() => {
-    const page = pagination.value.page;
+    const pageVal = pagination.value.page;
     return {
-      page: waterfalls.value[page] ? page + 1 : page, // 如果已经存在当前页面的数据 则请求下一页
-      pageSize: pagination.value.pageSize,
+      ...pagination.value,
+      page: waterfalls.value[pageVal] ? pageVal + 1 : pageVal, // 如果已经存在当前页面的数据 则请求下一页
     };
   });
 
@@ -158,9 +158,7 @@
       return;
     }
 
-    const { page, pageSize } = unref(getLoadPage);
-    const params = { page, pageSize };
-    console.log('pageSize >--->', page, pageSize);
+    const params = unref(getLoadPage);
     emit('loadScroll', params);
 
     // 没有LoadApi 上面滚动到底发射事件出去 通过自定义外部数据

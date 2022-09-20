@@ -29,7 +29,6 @@
     setup() {
       const waterfallData = ref<any[]>([]);
       const immediateLoad = ref(true);
-
       function randomNum(max, min) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }

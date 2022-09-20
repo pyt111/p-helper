@@ -8,7 +8,7 @@ type WShadow = 'always' | 'hover' | 'never';
 export const waterfallProps = {
   loadApi: {
     type: Function as PropType<
-      (arg?: WaterfallPagination) => Promise<any[]> | any[] | null
+      (arg?: WaterfallPagination) => Promise<any[]> | any[]
     >,
     default: null,
   },
