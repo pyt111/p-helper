@@ -1,4 +1,4 @@
-import type { WaterfallItem } from '../types';
+import type { WaterfallItem, WaterfallPagination } from '../types';
 import type { ExtractPropTypes, PropType } from 'vue';
 
 type WAlign = 'left' | 'right' | 'center';
@@ -8,7 +8,7 @@ type WShadow = 'always' | 'hover' | 'never';
 export const waterfallProps = {
   loadApi: {
     type: Function as PropType<
-      (arg?: Record<string, any>) => Promise<any> | null
+      (arg?: WaterfallPagination) => Promise<any[]> | any[] | null
     >,
     default: null,
   },

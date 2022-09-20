@@ -2,7 +2,7 @@
   <div class="waterfall-wrapper">
     <Waterfall
       v-model="waterfallData"
-      :page-size="pageSize"
+      :page-size="5"
       :item-width="300"
       class="waterfall-wrapper-content"
       :load-api="onload"
@@ -28,14 +28,13 @@
     name: 'Waterfall',
     setup() {
       const waterfallData = ref<any[]>([]);
-      const pageSize = ref(2);
       const immediateLoad = ref(true);
 
       function randomNum(max, min) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-      const queryData = (page) => {
+      const queryData = (page, pageSize) => {
         if (waterfallData.value.length >= 27) {
           return Promise.resolve([]);
         }
@@ -53,7 +52,7 @@
         //   resolve(data);
         // });
 
-        return getRandomPhotos2({ _page: page, _limit: pageSize.value }).then(
+        return getRandomPhotos2({ _page: page, _limit: pageSize }).then(
           (res) => {
             const data = (res.data || []).map((item) => ({
               ...item,
@@ -67,8 +66,8 @@
         );
       };
 
-      const onload = ({ page }) => {
-        return queryData(page);
+      const onload = ({ page, pageSize }) => {
+        return queryData(page, pageSize);
       };
 
       const loadScroll = ({ page }) => {
@@ -80,7 +79,6 @@
       // loadScroll({ page: 1 });
 
       return {
-        pageSize,
         waterfallData,
         immediateLoad,
         onload,
