@@ -115,7 +115,7 @@
     options as any
   );
 
-  const scrollDisabled = computed(() => loading.value);
+  const scrollDisabled = computed(() => loading.value || noMore.value);
 
   const styleConfig = computed(() => {
     const config = {
@@ -158,6 +158,7 @@
       return;
     }
 
+    // const { page, pageSize } = unref(getLoadPage);
     const params = unref(getLoadPage);
     emit('loadScroll', params);
 

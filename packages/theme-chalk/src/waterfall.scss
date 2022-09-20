@@ -36,11 +36,12 @@
       color: getCssVar('text-color', 'primary');
       box-shadow: getCssVar('box-shadow', 'light');
       opacity: 0;
+      z-index: -1;
 
       @include when(show) {
         transform: translateY(-20px);
         opacity: 1;
-        z-index: 0;
+        z-index: 1;
       }
     }
   }
