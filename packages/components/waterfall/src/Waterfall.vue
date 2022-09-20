@@ -68,7 +68,6 @@
     computed,
     getCurrentInstance,
     onBeforeUnmount,
-    onMounted,
     ref,
     unref,
   } from 'vue';
@@ -96,7 +95,7 @@
   const ns = useNamespace('waterfall');
   const instance = getCurrentInstance();
 
-  const options = computed<typeof waterfallProps>(() => ({
+  const options = computed(() => ({
     ...props,
   }));
 
