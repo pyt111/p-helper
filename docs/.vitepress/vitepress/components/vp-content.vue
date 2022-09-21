@@ -25,7 +25,7 @@
 </script>
 
 <template>
-  <main :class="{ 'page-content': true }">
+  <main :class="{ 'page-content': true }" class="v-content">
     <VPDocContent>
       <template #content-top><slot name="content-top" /></template>
       <template #content-bottom><slot name="content-bottom" /></template>

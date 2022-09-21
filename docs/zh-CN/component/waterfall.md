@@ -39,7 +39,7 @@ waterfall/basic
 | `transitionDuration`     | 元素展示【过渡动画】时间 ms                                        | `number`                                                  | No                                     | 500     |
 | `transitionProgressive`  | 元素展示是否递进过渡 根据当前元素所在下标计算 index * transitionIntervalTime | `boolean`                                                 | No                                     | false   |
 
-## Drawer Events
+## Waterfall Events
 
 | Name   | Description                                      | Parameter |
 | ------ |--------------------------------------------------| --------- |
