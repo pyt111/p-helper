@@ -8,7 +8,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "瀑布流",
+    "waterfall",
+    "动态计算高度",
+    "Dynamic calculation height",
+    "ui"
+  ],
   "author": "",
   "license": "ISC",
   "exports": {
@@ -37,6 +43,7 @@
     "vue": "^3.2.0"
   },
   "dependencies": {
+    "@p-helper/types": "workspace:0.0.0-dev.1.1",
     "vue": "^3.2.37"
   },
   "web-types": "web-types.json",

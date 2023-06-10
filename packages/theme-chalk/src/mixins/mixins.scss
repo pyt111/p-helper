@@ -4,6 +4,8 @@
 // forward  引入mixins 后不需要在使用的地方单独引用forward的scss 不用是因为有编辑器警告 不影响使用
 //@forward 'function';
 @forward '_var';
+$B: '';
+$E: '';
 
 // BEM
 @mixin b($block) {
@@ -26,6 +28,7 @@
       $unit +
       ','};
   }
+  @debug '$currentSelector'- $currentSelector;
 
   @if hitAllSpecialNestRule($selector) {
     @at-root {

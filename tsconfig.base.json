@@ -9,11 +9,12 @@
     "noImplicitAny": false,
     "allowJs": false,
     "strict": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "removeComments": false,
+    "declaration": true,
     "rootDir": ".",
     "types": [],
     "paths": {

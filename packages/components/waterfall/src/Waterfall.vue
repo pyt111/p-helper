@@ -64,18 +64,12 @@
 </template>
 
 <script lang="ts" setup>
-  import {
-    computed,
-    getCurrentInstance,
-    onBeforeUnmount,
-    ref,
-    unref,
-  } from 'vue';
+  import { computed, onBeforeUnmount, ref, unref } from 'vue';
   import { isFunction } from '@vue/shared';
   import { useNamespace } from '@p-helper/hooks';
   import { sleep } from '@p-helper/utils';
   import { useVModel } from '@vueuse/core';
-  import { waterfallProps } from './waterfall';
+  import { waterfallProps } from './waterfallProps';
   import { useWaterfall } from './useWaterfall';
 
   defineOptions({
@@ -93,7 +87,6 @@
   });
   const wWrapperRef = ref();
   const ns = useNamespace('waterfall');
-  const instance = getCurrentInstance();
 
   const options = computed(() => ({
     ...props,

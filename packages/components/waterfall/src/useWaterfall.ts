@@ -10,7 +10,7 @@ import type {
   WaterfallOptions,
   WaterfallPagination,
 } from '../types';
-import type { WaterfallProps } from './waterfall';
+import type { WaterfallProps } from './waterfallProps';
 import type { ComputedRef } from 'vue-demi';
 import type { Ref } from 'vue';
 

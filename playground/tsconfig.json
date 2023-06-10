@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.playground.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }

@@ -65,7 +65,6 @@ module.exports = defineConfig({
         'no-undef': 'off',
       },
     },
-
     {
       files: ['**/*.md/*.js', '**/*.md/*.ts'],
       rules: {
@@ -132,6 +131,7 @@ module.exports = defineConfig({
     // ts
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
     '@typescript-eslint/consistent-type-imports': [

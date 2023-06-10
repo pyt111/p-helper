@@ -1,5 +1,6 @@
+import path from 'path';
 import { rollup } from 'rollup';
-
+import dts from 'rollup-plugin-dts';
 import vue from '@vitejs/plugin-vue';
 import DefineOptions from 'unplugin-vue-define-options/rollup';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -7,10 +8,17 @@ import glob from 'fast-glob';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import esbuild from 'rollup-plugin-esbuild';
-import { excludeFiles, phRoot, pkgRoot } from '@p-helper/build-utils';
+import {
+  buildOutput,
+  excludeFiles,
+  phRoot,
+  pkgRoot,
+} from '@p-helper/build-utils';
+import postcss from 'rollup-plugin-postcss';
 import { buildConfigEntries, target } from '../build-info';
 import { generateExternal, writeBundles } from '../utils';
 import type { OutputOptions, Plugin } from 'rollup';
+const outDir = path.resolve(buildOutput, 'types');
 
 export const buildModules = async () => {
   const input = excludeFiles(
@@ -29,6 +37,7 @@ export const buildModules = async () => {
         isProduction: false,
       }) as Plugin,
       vueJsx() as Plugin,
+      postcss(),
       nodeResolve({
         extensions: ['.mjs', '.js', '.json', '.ts'],
       }),

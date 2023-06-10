@@ -25,6 +25,8 @@ const outDir = path.resolve(buildOutput, 'types');
 export const generateTypesDefinitions = async () => {
   const compilerOptions: CompilerOptions = {
     emitDeclarationOnly: true,
+    noUnusedParameters: false,
+    noUnusedLocals: false,
     outDir,
     baseUrl: projRoot,
     preserveSymlinks: true,
@@ -57,7 +59,7 @@ export const generateTypesDefinitions = async () => {
 
     const emitOutput = sourceFile.getEmitOutput();
     const emitFiles = emitOutput.getOutputFiles();
-    if (emitFiles.length === 0) {
+    if (emitFiles.length === 0 && sourceFile.getExtension() !== '.d.ts') {
       throw new Error(`Emit no file: ${chalk.bold(relativePath)}`);
     }
 
@@ -149,9 +151,10 @@ async function addSourceFiles(project: Project) {
 
 function typeCheck(project: Project) {
   const diagnostics = project.getPreEmitDiagnostics();
+  // console.log('diagnostics >--->', diagnostics);
   if (diagnostics.length > 0) {
     consola.error(project.formatDiagnosticsWithColorAndContext(diagnostics));
-    const err = new Error('Failed to generate dts.');
+    const err = new Error('[未能生成dts。]');
     consola.error(err);
     throw err;
   }

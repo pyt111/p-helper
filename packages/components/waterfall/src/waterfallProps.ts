@@ -61,7 +61,7 @@ export const waterfallProps = {
     default: () => [] as WaterfallItem[],
   },
   itemWidth: {
-    type: Number,
+    type: [Number, String],
   },
   gap: {
     type: Number,

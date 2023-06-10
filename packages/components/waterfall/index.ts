@@ -6,6 +6,6 @@ export const PWaterfall = withInstall(Waterfall);
 
 export default PWaterfall;
 
-export * from './src/waterfall';
+export * from './src/waterfallProps';
 export * from './src/useWaterfall';
 export * from './types';
