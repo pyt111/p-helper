@@ -31,6 +31,9 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
 
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
       # Runs a single command using the runners shell
       - name: Get version
         run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
