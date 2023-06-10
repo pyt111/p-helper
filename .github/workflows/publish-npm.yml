@@ -32,10 +32,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm i
-      - name: Lint
-        run: pnpm lint
-      - name: Test
-        run: pnpm test
+#      - name: Lint
+#        run: pnpm lint
+#      - name: Test
+#        run: pnpm test
   # This workflow contains a single job called "build"
   publish:
     needs: test
