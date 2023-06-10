@@ -291,6 +291,12 @@ importers:
       '@p-helper/types':
         specifier: workspace:0.0.0-dev.1.1
         version: link:../types
+      dayjs:
+        specifier: ^1.11.8
+        version: 1.11.8
+      element-plus:
+        specifier: ^2.3.6
+        version: 2.3.6(vue@3.2.37)
       vue:
         specifier: ^3.2.37
         version: 3.2.37
