@@ -8,14 +8,10 @@ on:
   push:
     branches: ['dev-publish-com']
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
+  publish:
     strategy:
       matrix:
         node-version: [18.x]
-  publish:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -48,6 +44,12 @@ jobs:
 
       - name: Get GIT_REPOSITORY
         run: echo "GIT_REPOSITORY=${{github.repository_owner}}"
+
+      - name: ttt
+        run: pnpm -v
+
+      - name: nnn
+        run: node -v
 
       - name: Build&publish
         run: sh ./scripts/publish.sh
