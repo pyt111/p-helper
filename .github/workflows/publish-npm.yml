@@ -2,8 +2,11 @@
 name: 更新npm
 
 on:
-  release:
-    types: [created]
+#  release:
+#    types: [created]
+
+  push:
+    branches: ['dev-publish-com']
 jobs:
   test:
     runs-on: ubuntu-latest
