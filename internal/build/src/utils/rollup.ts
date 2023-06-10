@@ -7,12 +7,12 @@ export const generateExternal = async (options: { full: boolean }) => {
   return (id: string) => {
     const packages: string[] = peerDependencies;
     if (!options.full) {
-      packages.push('@vue', ...dependencies);
+      packages.push('@vue*', '*element-plus*', ...dependencies);
     }
 
-    return [...new Set(packages)].some(
-      (pkg) => id === pkg || id.startsWith(`${pkg}/`)
-    );
+    return [...new Set(packages)].some((pkg) => {
+      return id === pkg || id.startsWith(`${pkg}/`);
+    });
   };
 };
 
