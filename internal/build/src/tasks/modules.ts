@@ -39,7 +39,7 @@ export const buildModules = async () => {
       vueJsx() as Plugin,
       postcss(),
       nodeResolve({
-        extensions: ['.mjs', '.js', '.json', '.ts'],
+        extensions: ['.mjs', '.js', '.json', '.ts', '.tsx'],
       }),
       commonjs(),
       esbuild({

@@ -9,13 +9,13 @@ export default {
     // support xxx.xxx.xxx
     fetchSetting: {
       // The field name of the current page passed to the background
-      pageField: 'pageNum',
+      pageField: 'page',
       // The number field name of each page displayed in the background
       sizeField: 'pageSize',
       // 取表格分页数据的字段名称
-      listField: 'rows',
+      listField: 'data',
       // Total number of tables returned by the interface field name
-      totalField: 'total',
+      totalField: 'count',
     },
     // Number of pages that can be selected
     pageSizeOptions: ['10', '50', '80', '100'],

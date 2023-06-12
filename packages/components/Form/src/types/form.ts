@@ -193,6 +193,9 @@ export type FormSchemaExpand = Readonly<
         component: 'RangePicker';
       }
     | {
+        component: 'DatePicker';
+      }
+    | {
         component: 'Render';
       }
     | {

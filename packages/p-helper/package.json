@@ -1,6 +1,6 @@
 {
   "name": "p-helper",
-  "version": "0.0.0-dev.1.1",
+  "version": "0.1.13-0",
   "description": "",
   "main": "lib/index.js",
   "module": "es/index.mjs",
@@ -8,13 +8,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "瀑布流",
-    "waterfall",
-    "动态计算高度",
-    "Dynamic calculation height",
-    "ui"
-  ],
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "exports": {
@@ -43,9 +37,7 @@
     "vue": "^3.2.0"
   },
   "dependencies": {
-    "@p-helper/types": "workspace:0.0.0-dev.1.1",
     "dayjs": "^1.11.8",
-    "element-plus": "^2.3.6",
     "vue": "^3.2.37"
   },
   "web-types": "web-types.json",

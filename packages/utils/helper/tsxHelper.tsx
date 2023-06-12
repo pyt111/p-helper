@@ -1,5 +1,5 @@
-import { Slots } from 'vue';
 import { isFunction } from '@p-helper/utils/is';
+import type { Slots } from 'vue';
 
 /**
  * @description:  Get slot to prevent empty error

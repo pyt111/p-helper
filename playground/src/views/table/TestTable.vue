@@ -10,7 +10,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { defineComponent } from 'vue';
+  import { defineComponent, getCurrentInstance } from 'vue';
+  import { useGlobalConfig } from 'element-plus';
   import {
     BasicForm,
     BasicModal,
@@ -30,16 +31,22 @@
     ],
   });
 
+  console.log('getCurrentInstance >--->', getCurrentInstance());
+  console.log('useGlobalConfig >--->', useGlobalConfig());
   const [registerModal, { openModal }] = useModal();
   const [registerForm] = useForm({
     schemas: [
       {
         field: 'asd',
         label: 'ssss',
-        component: 'Input',
+        component: 'DatePicker',
       },
     ],
   });
 </script>
 
-<style scoped></style>
+<style scoped>
+  .test-table-wrapper {
+    height: 100%;
+  }
+</style>

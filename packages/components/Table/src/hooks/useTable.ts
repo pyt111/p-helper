@@ -2,6 +2,7 @@ import { onUnmounted, ref, toRaw, unref } from 'vue';
 import { debouncedWatch } from '@vueuse/core';
 import { getDynamicProps } from '@p-helper/utils';
 import { error } from '@p-helper/utils/log';
+import type { DynamicProps } from '@p-helper/types/utils';
 import type { WatchStopHandle } from 'vue';
 import type { FormActionType } from '@p-helper/components/Form';
 import type {
@@ -12,14 +13,14 @@ import type {
 // import type { DynamicProps } from '#/utils';
 import type { PaginationProps } from '../types/pagination';
 
-type Props = Partial<DynamicProps<BasicTableProps>>;
+export type TableProps = Partial<DynamicProps<BasicTableProps>>;
 
 type UseTableMethod = TableActionType & {
   getForm: () => FormActionType;
 };
 
 export function useTable(
-  tableProps?: Props
+  tableProps?: TableProps
 ): [
   (instance: TableActionType, formInstance: UseTableMethod) => void,
   UseTableMethod

@@ -2,6 +2,7 @@
 import { nextTick, onUnmounted, ref, unref, watch } from 'vue';
 import { error } from '@p-helper/utils/log';
 import { getDynamicProps } from '@p-helper/utils';
+import type { DynamicProps } from '@p-helper/types/utils';
 import type {
   FormActionType,
   FormProps,

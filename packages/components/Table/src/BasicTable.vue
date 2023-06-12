@@ -59,9 +59,8 @@
               v-bind="col"
             >
               <template #default="{ row, column, $index }">
-                <VNodeRenderer
-                  :key="col.prop"
-                  :node="
+                <component
+                  :is="
                     col.customRender({
                       row,
                       index: $index,
@@ -69,13 +68,14 @@
                       elColumn: column,
                     })
                   "
+                  :key="col.prop"
                 />
               </template>
             </el-table-column>
           </template>
           <template v-else>
             <template v-if="col.multiColumnVNode">
-              <VNodeRenderer :node="col.multiColumnVNode" v-bind="col" />
+              <component :is="col.multiColumnVNode" v-bind="col" />
             </template>
             <el-table-column
               :key="col.prop"
@@ -93,11 +93,11 @@
           </el-table-column>
         </template>
       </el-table>
-      <VNodeRenderer
+      <component
+        :is="renderPagination()"
         v-if="!getBindValues.noPage"
         ref="paginationElRef"
         class="pagination-wrapper"
-        :node="renderPagination"
       />
     </ElCard>
 
@@ -120,7 +120,6 @@
   // import { usePagination } from '@p-helper/hooks/pagination';
   import { ElCard, ElTable, ElTableColumn } from 'element-plus';
   import { pick } from 'lodash-es';
-  import VNodeRenderer from '@p-helper/components/VNodeRenderer';
   import { BasicForm, useForm } from '@p-helper/components/Form';
   import { isBoolean } from '@p-helper/utils/is';
   import { updateTableCellStatusKey } from './useTableCellVNode';
@@ -136,7 +135,6 @@
   export default defineComponent({
     name: 'BasicTable',
     components: {
-      VNodeRenderer,
       BasicForm,
       ElTable,
       ElTableColumn,
