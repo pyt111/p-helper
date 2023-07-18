@@ -2,11 +2,11 @@
 name: 更新npm
 
 on:
-#  release:
-#    types: [created]
+  release:
+    types: [created]
 
-  push:
-    branches: ['dev-publish-com']
+#  push:
+#    branches: ['dev-publish-com']
 jobs:
   publish:
     runs-on: ubuntu-20.04
