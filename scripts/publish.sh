@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -e
-
+pwd
 pnpm i --frozen-lockfile
 pnpm update:version
 
