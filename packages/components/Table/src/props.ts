@@ -4,19 +4,19 @@ import {
   DEFAULT_SORT_FN,
   FETCH_SETTING,
 } from '@p-helper/components/Table/src/const';
-import type { Fn } from '@vueuse/core';
-import type { PropType } from 'vue';
+import type { FormActionType, FormProps } from '@p-helper/components/Form';
 import type {
   BasicColumn,
   FetchSetting,
   SorterResult,
+  TableActionType,
 } from '@p-helper/components/Table/src/types/table';
+import type { PropType, Ref } from 'vue';
 import type {
   EditRecordRow,
   Params,
 } from '@p-helper/components/Table/src/components/editable';
 import type { ActionItem } from '@p-helper/components/Table/src/types/tableAction';
-import type { FormProps } from '@p-helper/components/Form';
 import type { PaginationProps } from './types/pagination';
 
 export interface CurrencyParams {
@@ -31,6 +31,16 @@ export interface CurrencyParams {
 export type TableApi = (data?: Record<string, any>) => Promise<any>;
 
 export const basicProps = {
+  columnDefaultAlign: {
+    type: String as PropType<BasicColumn['align']>,
+    default: '',
+  },
+  editRow: {
+    type: [Boolean, Function] as PropType<
+      boolean | ((record: CurrencyParams) => boolean)
+    >,
+    default: false,
+  },
   cardTitle: propTypes.string,
   // 使用搜索表单
   useSearchForm: propTypes.bool,
@@ -166,4 +176,26 @@ export const basicProps = {
   parentContainerClassName: {
     type: String,
   },
+};
+
+export interface TableEditParams {
+  row: any;
+  column: any;
+  index: any;
+  record: any;
+  prop: any;
+}
+export const basicTableEmits = {
+  selectionChange: (rows: Recordable) => [],
+  register: (instance: TableActionType, formInstance: FormActionType) => [
+    instance,
+    formInstance,
+  ],
+  'edit-end': (obj: TableEditParams) => [obj],
+  'edit-cancel': (obj: TableEditParams) => [obj],
+  'edit-change': (obj: TableEditParams) => [obj],
+  'edit-row-end': (obj: TableEditParams) => [obj],
+  change: (obj: TableEditParams) => [obj],
+  'fetch-success': (items, total) => [items, total],
+  'fetch-error': (error) => [error],
 };

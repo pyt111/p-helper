@@ -1,5 +1,9 @@
 <template>
-  <el-col v-if="showActionButtonGroup" v-bind="actionColOpt">
+  <el-col
+    v-if="showActionButtonGroup"
+    v-bind="actionColOpt"
+    class="form-action"
+  >
     <div style="width: 100%">
       <el-form-item>
         <slot name="submitBefore" />
@@ -93,7 +97,7 @@
           : {};
         const actionColOpt: Partial<ColEx> = {
           style: { justifyContent: 'flex-start' },
-          span: showAdvancedButton ? 6 : 4,
+          span: showAdvancedButton ? 6 : 2,
           ...advancedSpanObj,
           ...actionColOptions,
         };

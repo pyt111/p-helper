@@ -1,5 +1,6 @@
 import { isClient } from '@vueuse/core';
-import { isNumber, isObject, isString } from '../types';
+import { isNumber } from '@p-helper/utils';
+import { isObject, isString } from '../types';
 import { camelize } from '../strings';
 import { entriesOf, keysOf } from '../objects';
 import { debugWarn } from '../error';

@@ -13,6 +13,8 @@ import { isFunction } from '@p-helper/utils/is';
 import { isEqual } from 'lodash-es';
 import { tryOnUnmounted } from '@vueuse/core';
 import { error } from '@p-helper/utils/log';
+import { isProdMode } from '@p-helper/utils/env';
+
 import type {
   ModalMethods,
   ModalProps,
@@ -33,21 +35,22 @@ export function useModal(opt?: {
 }): UseModalReturnType {
   const modal = ref<Nullable<ModalMethods>>(null);
   const loaded = ref<Nullable<boolean>>(false);
-  const uid = ref<string>('');
+  const uid = ref<string | number>('');
 
-  function register(modalMethod: ModalMethods, uuid: string) {
+  function register(modalMethod: ModalMethods, uuid: number | string) {
     if (!getCurrentInstance()) {
       throw new Error(
         'useModal() can only be used inside setup() or functional components!'
       );
     }
-    uid.value = uuid;
-    onUnmounted(() => {
-      modal.value = null;
-      loaded.value = false;
-      dataTransfer[unref(uid)] = null;
-    });
-    if (unref(loaded) && modalMethod === unref(modal)) return;
+    uid.value = uuid || '';
+    isProdMode() &&
+      onUnmounted(() => {
+        modal.value = null;
+        loaded.value = false;
+        dataTransfer[unref(uid)] = null;
+      });
+    if (unref(loaded) && isProdMode() && modalMethod === unref(modal)) return;
 
     modal.value = modalMethod;
     loaded.value = true;
@@ -115,7 +118,7 @@ export function useModal(opt?: {
 export const useModalInner = (callbackFn?: Fn): UseModalInnerReturnType => {
   const modalInstanceRef = ref<Nullable<ModalMethods>>(null);
   const currentInstance = getCurrentInstance();
-  const uidRef = ref<string>('');
+  const uidRef = ref<number | string>('');
 
   const getInstance = () => {
     const instance = unref(modalInstanceRef);
@@ -125,10 +128,11 @@ export const useModalInner = (callbackFn?: Fn): UseModalInnerReturnType => {
     return instance;
   };
 
-  const register = (modalInstance: ModalMethods, uuid: string) => {
-    tryOnUnmounted(() => {
-      modalInstanceRef.value = null;
-    });
+  const register = (modalInstance: ModalMethods, uuid: number) => {
+    isProdMode() &&
+      tryOnUnmounted(() => {
+        modalInstanceRef.value = null;
+      });
     uidRef.value = uuid;
     modalInstanceRef.value = modalInstance;
     currentInstance?.emit('register', modalInstance, uuid);

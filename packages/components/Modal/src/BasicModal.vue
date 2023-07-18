@@ -26,7 +26,7 @@
     </template>
   </el-dialog>
 </template>
-<script lang="ts" setup name="BasicModal">
+<script lang="ts" setup>
   import {
     computed,
     getCurrentInstance,
@@ -40,20 +40,22 @@
   import { useDesign } from '@p-helper/hooks/web/useDesign';
   import { isFunction } from '@p-helper/utils/is';
   import { deepMerge } from '@p-helper/utils';
+  import { defineOptions } from 'unplugin-vue-define-options/macros';
   import ModalHeader from './components/ModalHeader.vue';
   import ModalFooter from './components/ModalFooter.vue';
-  import { basicProps, modalBodyPropsKeys, modalPropsKeys } from './props';
+  import {
+    basicModalEmits,
+    basicProps,
+    modalBodyPropsKeys,
+    modalPropsKeys,
+  } from './props';
   import type { ModalMethods, ModalProps } from './typing';
 
+  defineOptions({
+    name: 'BasicModal',
+  });
   const props = defineProps(basicProps);
-  const emit = defineEmits([
-    'visible-change',
-    'height-change',
-    'cancel',
-    'ok',
-    'register',
-    'update:modelValue',
-  ]);
+  const emit = defineEmits(basicModalEmits);
   const attrs = useAttrs();
   const { prefixCls } = useDesign('basic-modal');
 
@@ -150,7 +152,7 @@
   watch(
     () => unref(visibleRef),
     (v) => {
-      emit('visible-change', v);
+      emit('visibleChange', v);
       emit('update:modelValue', v);
       instance && modalMethods.emitVisible?.(v, instance.uid);
     },

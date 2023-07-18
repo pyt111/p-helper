@@ -1,12 +1,13 @@
 import type {
   EditRecordRow,
+  EditRowRecordRow,
   Params,
 } from '@p-helper/components/Table/src/components/editable';
 import type { TableProps } from 'element-plus/es/components/table/src/table/defaults';
 import type { CurrencyParams, basicProps } from '../props';
 import type { PaginationProps } from './pagination';
 import type { ComponentType } from './componentType';
-import type { ExtractPropTypes, VNode, VNodeChild } from 'vue';
+import type { ComputedRef, ExtractPropTypes, VNode, VNodeChild } from 'vue';
 
 export declare type SortOrder = 'ascend' | 'descend';
 
@@ -68,12 +69,14 @@ export interface TableActionType {
   getPaginationRef: () => PaginationProps | boolean;
   getTableData: () => any[];
   getColumns: (opt?: GetColumnsParams) => BasicColumn[];
+  getEditRowRecord: () => EditRowRecordRow;
+  getRowDataByRowIndex: (rowIndex: number | number[]) => Recordable;
   getPagination: () => PaginationProps | boolean;
   redoHeight: () => void;
   // refreshOfflineTableData: () => void; // 前端分页
   renderPagination: () => void; // 生成分页函数
   setProps: (props: Partial<BasicTableProps>) => void;
-  getSelectionData: () => Recordable[];
+  getSelectionData: <T = Recordable>() => T[];
   emit?: EmitType;
 }
 export declare type AlignType = 'left' | 'center' | 'right';
@@ -106,6 +109,8 @@ export type BasicColumn = {
   editRow?: boolean; // 是否开启行编辑
   editable?: boolean; // 是否处于编辑状态
   editAlwaysShow?: boolean; // 是否长亮编辑按钮
+  editDecisionButtonShow?: boolean | ((obj: CurrencyParams) => boolean); // 是否显示编辑状态下的提交与取消按钮
+  editIsUpdateOnChange?: boolean; // 是否在编辑状态下实时更新数据
   editSlots?: Record<
     string,
     VNode | VNode[] | ((args: Record<string, any>) => VNode | VNode[])
@@ -119,7 +124,9 @@ export type BasicColumn = {
   record?: EditRecordRow;
   editComponent?: ComponentType; // 编辑组件
   editFilterShow?: boolean | ((obj: CurrencyParams) => boolean); // 过滤当前列 哪些不编辑 返回true是编辑 false不可编辑
-  customRender?: (obj: Params) => VNode | VNode[] | (() => VNode | VNode[]);
+  customRender?: (
+    obj: Params
+  ) => (VNode | VNode[] | (() => VNode | VNode[])) | JSX.Element | undefined | string | null;
   // 自定义修改后显示的内容
   editRender?: (opt: CurrencyParams) => VNodeChild | JSX.Element;
 };
@@ -128,6 +135,10 @@ export type BasicColumn = {
 export interface BasicTableProps extends BasePropsType, TableProps<any> {
   columns: BasicColumn[];
   childrenColumnName?: string;
+  // 请求之前处理参数
+  beforeFetch?: Fn;
+  // 自定义处理接口返回参数
+  afterFetch?: Fn;
 
   /**
    * 过滤器或排序器更改时执行的回调

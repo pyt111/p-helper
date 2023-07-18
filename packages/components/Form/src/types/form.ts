@@ -1,6 +1,10 @@
+import type ElTree from 'element-plus/es/components/tree';
+import type ElSelect from 'element-plus/es/components/select';
+import type { TreeComponentProps } from 'element-plus/es/components/tree/src/tree.type';
 import type {
   CheckboxProps,
   DividerProps,
+  FormProps as ElFormProps,
   FormItemRule,
   ISelectProps,
   InputNumberProps,
@@ -66,15 +70,13 @@ export type RegisterFormFn = (formInstance: FormActionType) => void;
 
 export type UseFormReturnType = [RegisterFormFn, FormActionType];
 
-export type FormProps = {
+export type FormProps = ElFormProps & {
   layout?: 'vertical' | 'inline' | 'horizontal';
   // Form value
   model?: Recordable;
   isCol?: boolean;
   inline?: boolean;
   componentStyle?: CSSProperties;
-  // The width of all items in the entire form
-  labelWidth?: number | string;
   // alignment
   labelPosition?: 'left' | 'right' | 'top';
   // Row configuration for the entire form
@@ -165,9 +167,14 @@ export type FormSchemaExpand = Readonly<
   } & (
     | {
         component: 'Input';
-        componentProps?: (ComponentProps | Partial<InputProps>) & {
-          onChange?: ((...args: any[]) => any) | undefined;
-        };
+        componentProps?: (ComponentProps | Partial<InputProps>) &
+          Partial<{
+            onChange: ((...args: any[]) => any) | undefined;
+            maxlength: string | number;
+            minlength: string | number;
+            max: string | number;
+            min: string | number;
+          }>;
       }
     | {
         component: 'Select';
@@ -187,6 +194,15 @@ export type FormSchemaExpand = Readonly<
           onClear?: ((...args: any[]) => any) | undefined;
           onVisibleChange?: ((...args: any[]) => any) | undefined;
           onRemoveTag?: ((...args: any[]) => any) | undefined;
+        };
+      }
+    | {
+        component: 'TreeSelect';
+        componentProps?: (
+          | ComponentProps
+          | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
+        ) & {
+          data: any;
         };
       }
     | {

@@ -25,11 +25,3 @@
     emits: ['dblclick'],
   });
 </script>
-<style lang="scss" scoped>
-  .sub-title {
-    font-size: 14px;
-    line-height: 24px;
-    color: var(--el-text-color-secondary);
-    user-select: none;
-  }
-</style>

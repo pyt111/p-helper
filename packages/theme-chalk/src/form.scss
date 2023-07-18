@@ -1,0 +1,7 @@
+.basic-form {
+  &:not(.is-col-layout) {
+    .el-form-item {
+      margin-right: 20px;
+    }
+  }
+}

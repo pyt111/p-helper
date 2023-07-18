@@ -1,10 +1,15 @@
 <template>
   <div>
-    <slot name="insertFooter"></slot>
-    <el-button v-if="showCancelBtn" v-bind="cancelButtonProps" @click="handleCancel">
+    <slot name="insertFooter" />
+    <el-button
+      v-if="showCancelBtn"
+      plain
+      v-bind="cancelButtonProps"
+      @click="handleCancel"
+    >
       {{ cancelText }}
     </el-button>
-    <slot name="centerFooter"></slot>
+    <slot name="centerFooter" />
     <el-button
       v-if="showOkBtn"
       :loading="confirmLoading"
@@ -14,7 +19,7 @@
     >
       {{ okText }}
     </el-button>
-    <slot name="appendFooter"></slot>
+    <slot name="appendFooter" />
   </div>
 </template>
 <script lang="ts">

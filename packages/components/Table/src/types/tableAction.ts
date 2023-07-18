@@ -1,13 +1,16 @@
-import type { Component, ExtractPropTypes } from 'vue';
+import type {
+  Params,
+  TableActionParams,
+} from '@p-helper/components/Table/src/components/editable';
+import type { CSSProperties, Component, ExtractPropTypes } from 'vue';
 import type { ElTooltipProps } from 'element-plus/es/components/tooltip';
 import type { ButtonProps } from 'element-plus/es/components/button';
-import type { Params } from '@p-helper/components/Table/src/components/editable';
 
 export interface ActionItem extends ExtractPropTypes<ButtonProps> {
-  onClick?: (obj: Params) => void;
+  onClick?: (obj: TableActionParams) => void;
   label?: string;
   divided?: boolean;
-  color?: 'success' | 'error' | 'warning' | 'danger';
+  colorClassName?: 'success' | 'error' | 'warning' | 'danger';
   icon?: string;
   elIcon?: string | Component;
   popConfirm?: PopConfirm;
@@ -17,6 +20,9 @@ export interface ActionItem extends ExtractPropTypes<ButtonProps> {
   auth?: string | string[];
   // 业务控制是否显示
   ifShow?: boolean | ((action: ActionItem, emitParams: Params) => boolean);
+  dynamicIfShow?:
+    | boolean
+    | ((action: ActionItem, emitParams: Params) => boolean);
   tooltip?: string | ElTooltipProps;
 }
 

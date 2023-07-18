@@ -16,7 +16,7 @@
           {{ getValues || getValues === 0 ? getValues : '\u00A0' }}
         </template>
       </div>
-      <template v-if="editButtonShow">
+      <template v-if="editButtonShow && column.edit">
         <el-icon
           :class="[
             `${prefixCls}__normal-icon`,
@@ -42,7 +42,12 @@
           @options-change="handleOptionsChange"
         />
         <div
-          v-if="!getRowEditable && !isAlwaysBright"
+          v-if="
+            !getRowEditable &&
+            !isAlwaysBright &&
+            !isEditRow &&
+            editDecisionButtonShow
+          "
           :class="`${prefixCls}__action`"
         >
           <el-icon
@@ -61,7 +66,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, ref, unref, watchEffect } from 'vue';
+  import { computed, nextTick, ref, shallowRef, unref, watchEffect } from 'vue';
   import { omit, pick, set } from 'lodash-es';
   import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
   import { useDesign } from '@p-helper/hooks/web/useDesign';
@@ -73,10 +78,11 @@
   import { useTableContext } from '../../hooks/useTableContext';
   import { createPlaceholderMessage } from './helper';
   import { CellComponent } from './CellComponent';
+  import type { EditRowKey } from '../../hooks/useColumns';
+  import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
   import type { CurrencyParams } from '@p-helper/components/Table/src/props';
   import type { EditRecordRow } from '@p-helper/components/Table/src/components/editable';
   import type { CSSProperties } from 'vue';
-  import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
 
   const vClickOutside = ClickOutside;
 
@@ -87,6 +93,9 @@
     },
     index: {
       type: Number,
+    },
+    rowKey: {
+      type: [Number, String],
     },
     record: {
       type: Object as PropType<EditRecordRow>,
@@ -102,6 +111,7 @@
 
   const table = useTableContext();
   const elRef = ref();
+  const componentRef = ref();
   const isEdit = ref(false);
   const isLoading = ref(false);
   const ruleMessage = ref('');
@@ -141,6 +151,16 @@
     return true;
   });
 
+  const editDecisionButtonShow = computed(() => {
+    const { editDecisionButtonShow } = props.column;
+    if (isFunction(editDecisionButtonShow)) {
+      return editDecisionButtonShow(unref(getEmitParams));
+    } else if (isBoolean(editDecisionButtonShow)) {
+      return editDecisionButtonShow;
+    }
+    return true;
+  });
+
   const isAlwaysBright = computed(() => {
     const { alwaysBright } = props.column;
     if (isFunction(alwaysBright)) {
@@ -150,6 +170,8 @@
     }
     return false;
   });
+
+  const isEditRow = ref(false);
 
   watchEffect(() => {
     const { editable } = props.column;
@@ -182,6 +204,7 @@
 
     return {
       size: 'small',
+      componentRef,
       placeholder: createPlaceholderMessage(unref(getComponent)),
       'onUpdate:modelValue': (value) => {
         currentValueRef.value = value;
@@ -245,7 +268,7 @@
     ruleMessage.value = '';
     isEdit.value = true;
     nextTick(() => {
-      const el = unref(elRef);
+      const el = unref(componentRef);
       el?.focus?.();
     });
   }
@@ -259,10 +282,13 @@
 
   async function handleChange(...args) {
     const isCheckValue = unref(getIsCheckComp);
-    const { alwaysBright } = props.column;
+    const { alwaysBright, editIsUpdateOnChange } = props.column;
 
     // 常亮编辑 并且同步数据
-    if (alwaysBright) {
+    if (
+      alwaysBright ||
+      editIsUpdateOnChange // 是否实时更新
+    ) {
       try {
         await handleSubmit();
         onChangeEmit(unref(getEmitParams), ...args);
@@ -305,14 +331,28 @@
     }
   }
 
-  async function handleSubmit(needEmit = true) {
+  // 找到当前操作的行
+  const isCheckedRow = (key: (string | number)[], isIndex = false) => {
+    const rowKey = props.rowKey;
+    const findIndex = key.findIndex((k) => k === rowKey);
+    return findIndex >= 0;
+  };
+
+  async function handleSubmit(
+    needEmit = true,
+    key?: EditRowKey,
+    isIndex?: boolean
+  ) {
     const { column, value: row, record } = props;
     if (!record) return false;
 
     const { prop } = column;
     const value = unref(currentValueRef);
     if (!prop) return;
-
+    if (isArray(key) && isEditRow.value) {
+      const isFind = isCheckedRow(key, isIndex);
+      if (!isFind) return;
+    }
     if (!record.editable) {
       const { getBindValues } = table;
 
@@ -373,7 +413,9 @@
     handleSubmit();
   }
 
-  function handleCancel() {
+  function handleCancel(key?: (string | number)[], isIndex?: boolean) {
+    if (isArray(key) && !isCheckedRow(key, isIndex)) return;
+    isEditRow.value = false;
     isEdit.value = false;
     currentValueRef.value = defaultValueRef.value;
     table.emit?.('edit-cancel', {
@@ -383,7 +425,7 @@
   }
 
   function onClickOutside() {
-    if (props.column?.editable || unref(getRowEditable)) {
+    if (props.column?.editable || unref(getRowEditable) || isEditRow.value) {
       return;
     }
     const component = unref(getComponent);
@@ -393,7 +435,23 @@
     }
   }
 
-  function initCbs(cbs: 'submitCbs' | 'validCbs' | 'cancelCbs', handle: Fn) {
+  function onEditRow(keys?: EditRowKey[], isIndex = false) {
+    const { cacheEditRows } = props.record;
+    isEditRow.value = unref(cacheEditRows)[props.rowKey!];
+    isEdit.value = isEditRow.value;
+    // const { cacheEditRows } = props.record;
+    // // console.log('isIndex >--->', keys, isIndex, unref(cacheEditRows));
+    // const isExist = keys.find((key) => {
+    //   return unref(cacheEditRows)[key];
+    // });
+    // isEditRow.value = !!isExist;
+    // isEdit.value = isEditRow.value;
+  }
+
+  function initCbs(
+    cbs: 'submitCbs' | 'validCbs' | 'cancelCbs' | 'editRowCbs',
+    handle: Fn
+  ) {
     if (props.record) {
       /* eslint-disable  */
       isArray(props.record[cbs])
@@ -406,71 +464,41 @@
     initCbs('submitCbs', handleSubmit);
     // initCbs('validCbs', handleSubmiRule);
     initCbs('cancelCbs', handleCancel);
+    initCbs('editRowCbs', onEditRow);
 
     if (props.column?.prop) {
       if (!props.record.editValueRefs) props.record.editValueRefs = {};
       props.record.editValueRefs[props.column.prop as any] = currentValueRef;
     }
     /* eslint-disable  */
-    props.record.onCancelEdit = () => {
-      isArray(props.record?.cancelCbs) && props.record?.cancelCbs.forEach((fn) => fn());
+    props.record.onCancelEdit = (key, isIndex) => {
+      isArray(props.record?.cancelCbs) && props.record?.cancelCbs.forEach((fn) => fn(key, isIndex));
     };
     /* eslint-disable */
-    props.record.onSubmitEdit = async () => {
+    props.record.onSubmitEdit = async (key, isIndex) => {
       if (isArray(props.record?.submitCbs)) {
-        if (!props.record?.onValid?.()) return;
+        if (props.record?.onValid && !await props.record?.onValid?.()) return;
         const submitFns = props.record?.submitCbs || [];
-        submitFns.forEach((fn) => fn(false, false));
-        table.emit?.('edit-row-end');
+        submitFns.forEach((fn) => fn(false, key, isIndex));
+        table.emit?.('edit-row-end', unref(getEmitParams));
         return true;
       }
     };
+
+    // 编辑行
+    props.record.onEditRow = (key: EditRowKey, isIndex?: boolean) => {
+      nextTick(() => {
+        isArray(props.record?.editRowCbs) && props.record?.editRowCbs.forEach((fn) => fn(key, isIndex));
+      })
+    }
+
+    props.record.onEditRowSave = (key: EditRowKey, isIndex?: boolean) => {
+      props.record.onSubmitEdit(key, isIndex)
+    }
+
+    props.record.onEditRowCancel = (key: EditRowKey, isIndex?: boolean) => {
+      props.record.onCancelEdit(key, isIndex)
+    }
   }
+
 </script>
-
-<style lang="scss">
-  .editable-cell {
-    position: relative;
-
-    &__wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    &__icon {
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.2);
-
-        svg {
-          color: #222;
-        }
-      }
-    }
-
-    &__normal {
-      &-icon {
-        position: absolute;
-        top: 4px;
-        right: 0;
-        display: none;
-        width: 20px;
-        cursor: pointer;
-
-        &.always-show-icon {
-          display: inline-block;
-        }
-      }
-    }
-
-    &:hover {
-      .editable-cell {
-        &__normal-icon {
-          display: inline-block;
-        }
-      }
-    }
-  }
-</style>

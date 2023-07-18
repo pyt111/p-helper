@@ -374,12 +374,3 @@
     },
   });
 </script>
-<style scoped lang="scss">
-  .basic-form {
-    &:not(.is-col-layout) {
-      :deep(.el-form-item) {
-        margin-right: 20px;
-      }
-    }
-  }
-</style>

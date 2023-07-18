@@ -9,7 +9,7 @@ import {
 } from 'vue';
 import { useTimeoutFn } from '@p-helper/hooks/core/useTimeout';
 import { buildUUID } from '@p-helper/utils/uuid';
-import { isBoolean, isFunction } from '@p-helper/utils/is';
+import { isArray, isBoolean, isFunction } from '@p-helper/utils/is';
 import { cloneDeep, get, merge } from 'lodash-es';
 import { FETCH_SETTING, PAGE_SIZE, ROW_KEY } from '../const';
 import type { PaginationProps } from '../types/pagination';
@@ -181,33 +181,44 @@ export function useDataSource(
     const rowKeyName = unref(getRowKey);
     if (!rowKeyName) return;
     const rowKeys = !Array.isArray(rowKey) ? [rowKey] : rowKey;
-    for (const key of rowKeys) {
-      let index: number | undefined = dataSourceRef.value.findIndex((row) => {
-        let targetKeyName: string;
-        if (typeof rowKeyName === 'function') {
-          targetKeyName = rowKeyName(row);
-        } else {
-          targetKeyName = rowKeyName as string;
-        }
-        return row[targetKeyName] === key;
-      });
-      if (index >= 0) {
-        dataSourceRef.value.splice(index, 1);
+
+    function deleteRow(data, key) {
+      const row: { index: number; data: [] } = findRow(data, key);
+      if (row === null || row.index === -1) {
+        return;
       }
-      index = unref(propsRef).dataSource?.findIndex((row) => {
-        let targetKeyName: string;
-        if (typeof rowKeyName === 'function') {
-          targetKeyName = rowKeyName(row);
-        } else {
-          targetKeyName = rowKeyName as string;
+      row.data.splice(row.index, 1);
+
+      function findRow(data, key) {
+        if (data === null || data === undefined) {
+          return null;
         }
-        return row[targetKeyName] === key;
-      });
-      if (typeof index !== 'undefined' && index !== -1)
-        unref(propsRef).dataSource?.splice(index, 1);
+        for (let i = 0; i < data.length; i++) {
+          const row = data[i];
+          let targetKeyName: string = rowKeyName as string;
+          if (isFunction(rowKeyName)) {
+            // @ts-ignore
+            targetKeyName = rowKeyName(row);
+          }
+          if (row[targetKeyName] === key || row[ROW_KEY] === key) {
+            return { index: i, data };
+          }
+          if (row.children?.length > 0) {
+            const result = findRow(row.children, key);
+            if (result != null) {
+              return result;
+            }
+          }
+        }
+        return null;
+      }
+    }
+    for (const key of rowKeys) {
+      deleteRow(dataSourceRef.value, key);
+      deleteRow(unref(propsRef).dataSource, key);
     }
     setPagination({
-      total: unref(propsRef).dataSource?.length,
+      pageCount: unref(propsRef).dataSource?.length,
     });
   }
 
@@ -216,6 +227,15 @@ export function useDataSource(
     index?: number
   ): Recordable | void {
     // if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
+    let targetName;
+    let rowKeyName = unref(getRowKey);
+
+    if (isFunction(rowKeyName)) {
+      rowKeyName = rowKeyName(record);
+    }
+    if (!record[rowKeyName]) {
+      setTableKey([record]);
+    }
     index = index ?? dataSourceRef.value?.length;
     unref(dataSourceRef).splice(index, 0, record);
     return unref(dataSourceRef);
@@ -372,6 +392,17 @@ export function useDataSource(
     return getDataSourceRef.value as T[];
   }
 
+  /**
+   * 根据行下标获取数据
+   * @param rowIndex
+   */
+  function getRowDataByRowIndex<T = Recordable>(
+    rowIndex: number[] | number
+  ): Recordable[] {
+    const indexes = isArray(rowIndex) ? rowIndex : [rowIndex];
+    return getDataSource().filter((item, index) => indexes.includes(index));
+  }
+
   function getRawDataSource<T = Recordable>() {
     return rawDataSourceRef.value as T;
   }
@@ -388,6 +419,7 @@ export function useDataSource(
 
   return {
     getDataSourceRef,
+    getRowDataByRowIndex,
     getDataSource,
     getRawDataSource,
     getRowKey,

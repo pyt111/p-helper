@@ -50,5 +50,5 @@ export interface PaginationProps extends Partial<ElPaginationProps> {
   /**
    * 位置
    */
-  align?: 'left' | 'center' | 'right';
+  align?: 'flex-start' | 'center' | 'flex-end';
 }

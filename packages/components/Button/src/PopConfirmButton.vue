@@ -8,7 +8,7 @@
 
   const props = {
     /**
-     * Whether to enable the drop-down menu
+     * 是否启用下拉菜单
      * @default: true
      */
     enable: {
@@ -28,22 +28,23 @@
       const getBindValues = computed(() => {
         return Object.assign(
           {
-            okText: '确认',
-            cancelText: '取消',
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
           },
           { ...props, ...unref(attrs) }
         );
       });
 
       return () => {
-        const bindValues = omit(unref(getBindValues), 'icon');
+        const bindValues = omit(unref(getBindValues), 'enable');
         const btnBind = omit(bindValues, 'title') as Recordable;
-        if (btnBind.disabled) btnBind.color = '';
+        if (btnBind.disabled) btnBind.colorClassName = '';
         const Button = h(BasicButton, btnBind, extendSlots(slots));
 
         if (!props.enable) {
           return Button;
         }
+        console.log('getBindValues >--->', bindValues);
         return h(ElPopconfirm, bindValues, { reference: () => Button });
       };
     },

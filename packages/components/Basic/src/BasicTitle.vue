@@ -40,35 +40,5 @@
   ]);
 </script>
 <style lang="scss">
-  .basic-title {
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding-left: 7px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 24px;
-    //color: var(--el-text-color-primary);
-    user-select: none;
 
-    &-normal {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    &-show-span::before {
-      position: absolute;
-      top: 4px;
-      left: 0;
-      width: 3px;
-      height: 16px;
-      margin-right: 4px;
-      //background-color: @primary-color;
-      content: '';
-    }
-
-    &-help {
-      margin-left: 10px;
-    }
-  }
 </style>

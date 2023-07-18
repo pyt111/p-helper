@@ -44,7 +44,7 @@ export function usePagination(
     return {
       pageSize: PAGE_SIZE,
       defaultPageSize: PAGE_SIZE,
-      align: 'center',
+      align: 'flex-end',
       // showSizeChanger: true,
       layout: paginationLayout.value,
       // @ts-ignore
@@ -59,7 +59,11 @@ export function usePagination(
   function renderPagination() {
     const config = (getPaginationInfo.value || {}) as Partial<PaginationProps>;
     return h(ElPagination, {
-      style: 'text-align: center;padding: 20px 20px 0',
+      style: [
+        'text-align: center',
+        'padding: 20px 20px 0',
+        `justify-content: ${config.align}`,
+      ],
 
       ...config,
       'onUpdate:current-page': (value) => {

@@ -2,6 +2,8 @@ import { onUnmounted, ref, toRaw, unref } from 'vue';
 import { debouncedWatch } from '@vueuse/core';
 import { getDynamicProps } from '@p-helper/utils';
 import { error } from '@p-helper/utils/log';
+import { isProdMode } from '@p-helper/utils/env';
+import type { EditRowRecordRow } from '../components/editable';
 import type { DynamicProps } from '@p-helper/types/utils';
 import type { WatchStopHandle } from 'vue';
 import type { FormActionType } from '@p-helper/components/Form';
@@ -15,29 +17,31 @@ import type { PaginationProps } from '../types/pagination';
 
 export type TableProps = Partial<DynamicProps<BasicTableProps>>;
 
-type UseTableMethod = TableActionType & {
-  getForm: () => FormActionType;
+export type UseTableMethod = TableActionType & {
+  getForm?: () => FormActionType;
 };
 
 export function useTable(
   tableProps?: TableProps
 ): [
-  (instance: TableActionType, formInstance: UseTableMethod) => void,
+  (instance: TableActionType, formInstance: FormActionType) => void,
   UseTableMethod
 ] {
   const tableRef = ref<Nullable<TableActionType>>(null);
-  const formRef = ref<Nullable<UseTableMethod>>(null);
+  const formRef = ref<Nullable<FormActionType>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
 
   let stopWatch: WatchStopHandle;
 
-  function register(instance: TableActionType, formInstance: UseTableMethod) {
-    onUnmounted(() => {
-      tableRef.value = null;
-      loadedRef.value = null;
-    });
+  function register(instance: TableActionType, formInstance: FormActionType) {
+    isProdMode() &&
+      onUnmounted(() => {
+        tableRef.value = null;
+        loadedRef.value = null;
+      });
 
-    if (unref(loadedRef) && instance === unref(tableRef)) return;
+    if (unref(loadedRef) && isProdMode() && instance === unref(tableRef))
+      return;
 
     tableRef.value = instance;
     formRef.value = formInstance;
@@ -136,11 +140,19 @@ export function useTable(
       return toRaw(getTableInstance().getShowPagination());
     },
     getForm: () => {
-      return unref(formRef) as unknown as FormActionType;
+      return unref(formRef) as FormActionType;
     },
     // 不想在外部监听Selection事件的，直接通过这个方法取
-    getSelectionData: (): Recordable[] => {
-      return getTableInstance().getSelectionData();
+    getSelectionData: <T = Recordable>(): T[] => {
+      return getTableInstance?.().getSelectionData?.();
+    },
+    // 不想在外部监听Selection事件的，直接通过这个方法取
+    getEditRowRecord: (...args): EditRowRecordRow => {
+      return getTableInstance().getEditRowRecord(...args);
+    },
+    // 不想在外部监听Selection事件的，直接通过这个方法取
+    getRowDataByRowIndex: (...args) => {
+      return getTableInstance().getRowDataByRowIndex(...args);
     },
   };
   return [register, methods];

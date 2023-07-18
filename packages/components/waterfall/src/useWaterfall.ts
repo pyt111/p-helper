@@ -1,6 +1,5 @@
-import { computed, nextTick, ref, unref, watch } from 'vue';
+import { computed, isRef, nextTick, ref, unref, watch } from 'vue';
 import { isPromise } from '@vue/shared';
-import { isRef } from 'vue-demi';
 import { TasksQueue } from '@p-helper/utils';
 import { cloneDeep, debounce, noop } from 'lodash-es';
 import { useResizeObserver } from '@vueuse/core';
@@ -11,8 +10,7 @@ import type {
   WaterfallPagination,
 } from '../types';
 import type { WaterfallProps } from './waterfallProps';
-import type { ComputedRef } from 'vue-demi';
-import type { Ref } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
 
 export function useWaterfall(
   el: Ref | HTMLAreaElement,

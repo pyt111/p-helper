@@ -23,17 +23,17 @@
   import { buttonProps } from './props';
 
   defineOptions({
-    name: 'AButton',
+    name: 'PButton',
     inheritAttrs: false,
   });
   const props = defineProps(buttonProps);
   // get component class
   const attrs = useAttrs({ excludeDefaultKeys: false });
   const getButtonClass = computed(() => {
-    const { color, disabled } = props;
+    const { colorClassName, disabled } = props;
     return [
       {
-        [`yee-btn-${color}`]: !!color,
+        [`yee-btn-${colorClassName}`]: !!colorClassName,
         [`is-disabled`]: disabled,
       },
     ];
@@ -41,8 +41,8 @@
 
   // get inherit binding value
   const getBindValue = computed(() => ({
+    icon: props.elIcon,
     ...unref(attrs),
     ...props,
-    icon: props.elIcon,
   }));
 </script>

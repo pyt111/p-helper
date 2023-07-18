@@ -35,7 +35,7 @@
         <template v-for="col in getViewColumns" :key="col.prop">
           <template v-if="col.custom">
             <el-table-column
-              align="center"
+              :align="columnDefaultAlign"
               :formatter="col.formatter || formatter"
               :show-overflow-tooltip="true"
               v-bind="col"
@@ -53,7 +53,7 @@
           </template>
           <template v-else-if="col.customRender">
             <el-table-column
-              align="center"
+              :align="columnDefaultAlign"
               :formatter="col.formatter || formatter"
               :show-overflow-tooltip="true"
               v-bind="col"
@@ -79,7 +79,7 @@
             </template>
             <el-table-column
               :key="col.prop"
-              align="center"
+              :align="columnDefaultAlign"
               :formatter="col.formatter || formatter"
               :show-overflow-tooltip="true"
               v-bind="col"
@@ -119,7 +119,7 @@
   } from 'vue';
   // import { usePagination } from '@p-helper/hooks/pagination';
   import { ElCard, ElTable, ElTableColumn } from 'element-plus';
-  import { pick } from 'lodash-es';
+  import { cloneDeep, pick } from 'lodash-es';
   import { BasicForm, useForm } from '@p-helper/components/Form';
   import { isBoolean } from '@p-helper/utils/is';
   import { updateTableCellStatusKey } from './useTableCellVNode';
@@ -129,7 +129,7 @@
   import { useColumns } from './hooks/useColumns';
   import { createTableContext } from './hooks/useTableContext';
   import { useTableForm } from './hooks/useTableForm';
-  import { basicProps } from './props';
+  import { basicProps, basicTableEmits } from './props';
   import type { BasicTableProps, TableActionType } from './types/table';
 
   export default defineComponent({
@@ -142,16 +142,7 @@
     },
     props: basicProps,
 
-    emits: [
-      'selectionChange',
-      'edit-cancel',
-      'edit-change',
-      'edit-end',
-      'register',
-      'change',
-      'fetch-success',
-      'fetch-error',
-    ],
+    emits: basicTableEmits,
 
     setup(props, { emit, attrs, slots }) {
       const wrapRef = ref(null);
@@ -182,8 +173,6 @@
         };
       });
 
-      const { getViewColumns, getColumns } = useColumns(getProps);
-
       const { getLoading, setLoading } = useLoading(getProps);
 
       const {
@@ -210,6 +199,7 @@
         getRowKey,
         reload,
         updateTableData,
+        getRowDataByRowIndex,
       } = useDataSource(
         getProps,
         {
@@ -220,6 +210,15 @@
           getFieldsValue: formActions.getFieldsValue,
         },
         emit
+      );
+      const { getViewColumns, getColumns, getEditRowRecord } = useColumns(
+        getProps,
+        {
+          getRowKey,
+          getDataSource,
+          getRowDataByRowIndex,
+          findTableDataRecord,
+        }
       );
 
       const paginationAlign = computed(
@@ -243,7 +242,7 @@
               : false,
           },
           height: unref(getProps).height || '100%',
-          // rowKey: unref(getRowKey),
+          currentRowKey: unref(getRowKey),
           data: dataSource,
         };
 
@@ -280,6 +279,8 @@
       const tableAction: TableActionType = {
         reload,
         getColumns,
+        getEditRowRecord,
+        getRowDataByRowIndex,
         // refreshOfflineTableData,
         renderPagination,
         getDataSource,
@@ -304,7 +305,7 @@
           return unref(getPaginationInfo);
         },
         setProps,
-        getSelectionData: () => state.selectionData,
+        getSelectionData: () => cloneDeep(state.selectionData),
         emit,
       };
 
@@ -388,43 +389,3 @@
     },
   });
 </script>
-
-<style lang="scss">
-  .basic-table {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    .basic-form {
-      display: flex;
-      justify-content: space-between;
-
-      .el-row {
-        width: 100%;
-      }
-    }
-
-    .table-card {
-      flex: 1;
-      height: 0;
-      display: flex;
-      flex-direction: column;
-      border: none;
-
-      .el-card__body {
-        height: 0;
-        flex: 1;
-      }
-    }
-
-    .card-bottom {
-      margin-top: 10px;
-    }
-    .pagination-wrapper {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: v-bind(paginationAlign);
-    }
-  }
-</style>

@@ -43,36 +43,3 @@
     ];
   });
 </script>
-<style lang="scss">
-  .basic-arrow {
-    display: inline-block;
-    cursor: pointer;
-    transform: rotate(0deg);
-    transition: all 0.3s ease 0.1s;
-    transform-origin: center center;
-
-    &--active {
-      transform: rotate(90deg);
-    }
-
-    &.inset {
-      line-height: 0;
-    }
-
-    &.up {
-      transform: rotate(-90deg);
-    }
-
-    &.down {
-      transform: rotate(90deg);
-    }
-
-    &.up.basic-arrow--active {
-      transform: rotate(90deg);
-    }
-
-    &.down.basic-arrow--active {
-      transform: rotate(-90deg);
-    }
-  }
-</style>

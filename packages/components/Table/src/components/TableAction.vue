@@ -5,14 +5,16 @@
       :key="`${index}-${action.label}`"
     >
       <el-tooltip v-if="action.tooltip" v-bind="getTooltip(action.tooltip)">
-        <PopConfirmButton v-bind="action">
-          <Icon
-            v-if="action.icon"
-            :class="{ 'mr-1': !!action.label }"
-            :icon="action.icon"
-          />
-          <template v-if="action.label">{{ action.label }}</template>
-        </PopConfirmButton>
+        <div>
+          <PopConfirmButton v-bind="action">
+            <Icon
+              v-if="action.icon"
+              :class="{ 'mr-1': !!action.label }"
+              :icon="action.icon"
+            />
+            <template v-if="action.label">{{ action.label }}</template>
+          </PopConfirmButton>
+        </div>
       </el-tooltip>
       <PopConfirmButton v-else v-bind="action">
         <Icon
@@ -60,8 +62,8 @@
   </div>
 </template>
 
-<script lang="ts" setup name="TableAction">
-  import { computed, toRaw, unref } from 'vue';
+<script lang="ts" setup>
+  import { computed, ref, toRaw, unref } from 'vue';
   import Icon from '@p-helper/components/Icon';
   import { PopConfirmButton } from '@p-helper/components/Button';
   import { isBoolean, isFunction, isString } from '@p-helper/utils/is';
@@ -70,11 +72,20 @@
   import { useDesign } from '@p-helper/hooks/web/useDesign';
   import { ACTION_COLUMN_FLAG } from '@p-helper/components/Table/src/const';
   import { Dropdown } from '@p-helper/components/Dropdown';
+  import { omit } from 'lodash-es';
   import { MoreFilled } from '@element-plus/icons-vue';
-  import type { EditRecordRow } from '@p-helper/components/Table/src/components/editable';
+  import type {
+    EditRecordRow,
+    EditRowRecordRow,
+    TableActionParams,
+  } from '@p-helper/components/Table/src/components/editable';
   import type { TableActionType } from '@p-helper/components/Table/src/types/table';
   import type { ActionItem } from '../types/tableAction';
   import type { ElTooltipProps } from 'element-plus';
+
+  defineOptions({
+    name: 'TableAction',
+  });
 
   const props = defineProps({
     actions: {
@@ -99,7 +110,7 @@
       default: -1,
     },
     record: {
-      type: Object as PropType<EditRecordRow>,
+      type: Object as PropType<EditRowRecordRow>,
       default: () => ({}),
     },
     divider: propTypes.bool.def(false),
@@ -117,10 +128,10 @@
     const actionColumn = columns.find(
       (item) => item.flag === ACTION_COLUMN_FLAG
     );
-    return actionColumn?.align ?? 'center';
+    return actionColumn?.align;
   });
 
-  const getemitParams = computed(() => {
+  const getemitParams = computed<TableActionParams>(() => {
     return {
       row: props.row,
       index: props.index,
@@ -130,13 +141,13 @@
 
   const getActions = computed(() => {
     const emitParams = unref(getemitParams);
-
     return (toRaw(props.actions) || [])
       .filter((action) => {
         return isIfShow(action);
       })
       .map((action) => {
         const { popConfirm, onClick } = action;
+        const propsActions = omit(action, 'ifShow');
 
         return {
           getPopupContainer: () =>
@@ -144,12 +155,13 @@
           link: true,
           bg: false,
           size: 'small',
-          ...action,
+          ...propsActions,
           ...(popConfirm || {}),
           onClick: onClick?.bind(null, emitParams),
           onConfirm: popConfirm?.confirm.bind(null, emitParams),
           onCancel: popConfirm?.cancel?.bind(null, emitParams),
           enable: !!popConfirm,
+          updateIndex: props.record?.updateIndex?.value,
         } as ActionItem;
       });
   });
@@ -166,6 +178,7 @@
     if (isFunction(ifShow)) {
       isIfShow = ifShow(action, emitParams);
     }
+
     return isIfShow;
   }
 
@@ -200,41 +213,3 @@
     });
   });
 </script>
-
-<style scoped lang="scss">
-  $prefix-cls: #fff;
-  .basic-table-action {
-    color: $prefix-cls;
-    display: flex;
-    align-items: center;
-
-    .action-divider {
-      display: table;
-    }
-
-    &.left {
-      justify-content: flex-start;
-    }
-
-    &.center {
-      justify-content: center;
-    }
-
-    &.right {
-      justify-content: flex-end;
-    }
-
-    .button-more {
-      padding: 0;
-    }
-
-    button {
-      display: flex;
-      align-items: center;
-
-      span {
-        margin-left: 0 !important;
-      }
-    }
-  }
-</style>

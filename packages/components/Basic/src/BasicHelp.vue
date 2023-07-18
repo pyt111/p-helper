@@ -97,17 +97,3 @@
     },
   });
 </script>
-<style lang="scss">
-  .basic-help {
-    display: inline-block;
-    margin-left: 6px;
-    font-size: 14px;
-    cursor: pointer;
-
-    &__wrap {
-      p {
-        margin-bottom: 0;
-      }
-    }
-  }
-</style>

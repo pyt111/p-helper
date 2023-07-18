@@ -1,6 +1,7 @@
+import { UPDATE_MODEL_EVENT } from '@p-helper/constants/event';
+import type { ModalMethods, ModalWrapperProps } from './typing';
 import type { ButtonProps } from 'element-plus';
 import type { CSSProperties, PropType } from 'vue';
-import type { ModalWrapperProps } from './typing';
 
 export const modalProps = {
   modelValue: { type: Boolean },
@@ -168,3 +169,11 @@ export const basicProps = Object.assign({}, modalProps, modalBodyProps, {
   minHeight: { type: Number },
   scrollTop: { type: Boolean, default: true },
 });
+
+export const basicModalEmits = {
+  visibleChange: (val: boolean) => Boolean,
+  register: (modalMethod: ModalMethods, uuid: number) => [modalMethod, uuid],
+  [UPDATE_MODEL_EVENT]: (val: boolean) => [val],
+  cancel: (e: Event) => [e],
+  ok: (e: Event) => [e],
+};

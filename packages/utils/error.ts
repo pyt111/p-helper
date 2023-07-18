@@ -1,4 +1,4 @@
-import { isString } from '@vueuse/core';
+import { isString } from '@p-helper/utils';
 
 class ElementPlusError extends Error {
   constructor(m: string) {

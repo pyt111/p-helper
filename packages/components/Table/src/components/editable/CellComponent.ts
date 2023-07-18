@@ -1,8 +1,7 @@
 import { h } from 'vue';
 import { componentMap } from '../../../componentMap';
-import type { FunctionalComponent, defineComponent } from 'vue';
+import type { FunctionalComponent, Ref, defineComponent } from 'vue';
 import type { ComponentType } from '../../types/componentType';
-
 import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
 
 export interface ComponentProps {
@@ -11,11 +10,12 @@ export interface ComponentProps {
   popoverVisible: boolean;
   ruleMessage: string;
   getPopupContainer?: Fn;
+  componentRef?: Ref<any>;
 }
 
 // @ts-ignore
 export const CellComponent: FunctionalComponent = (
-  { component = 'Input' }: ComponentProps,
+  { component = 'Input', componentRef }: ComponentProps,
   { attrs }
 ) => {
   const Comp = componentMap.get(component) as typeof defineComponent;
@@ -23,5 +23,13 @@ export const CellComponent: FunctionalComponent = (
   const { editSlots } = attrs;
 
   // @ts-ignore
-  return h(Comp, attrs, editSlots as BasicColumn['editSlots']);
+  return h(
+    // @ts-ignore
+    Comp,
+    {
+      ...attrs,
+      ref: componentRef,
+    },
+    editSlots as BasicColumn['editSlots']
+  );
 };

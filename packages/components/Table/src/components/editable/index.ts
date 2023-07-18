@@ -1,8 +1,24 @@
 import { h } from 'vue';
+import { isFunction } from '@vue/shared';
 import EditableCell from './EditableCell.vue';
-import type { Ref } from 'vue';
-import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
+import type { UnwrapNestedRefs } from '@vue/reactivity';
+import type { EditRowKey } from '../../hooks/useColumns';
+import type {
+  BasicColumn,
+  BasicTableProps,
+} from '@p-helper/components/Table/src/types/table';
+import type { ComputedRef, Ref, ShallowRef } from 'vue';
 
+export type EditRowRecordRow<T = Recordable> = {
+  onEditRow: (key: EditRowKey, isIndex?: boolean) => void;
+  onEditRowSave: (key: EditRowKey, isIndex?: boolean) => void;
+  onEditRowCancel: (key: EditRowKey, isiIndex?: boolean) => void;
+  rowKeyName: string | number;
+  updateTableActionUi: () => void;
+  updateIndex: Ref<number>;
+  cacheEditRows: ShallowRef;
+  getIsRowEditCacheRowKeys: () => string[];
+} & T;
 export type EditRecordRow<T = Recordable> = Partial<
   {
     onEdit: (editable: boolean, submit?: boolean) => Promise<boolean>;
@@ -14,7 +30,9 @@ export type EditRecordRow<T = Recordable> = Partial<
     cancelCbs: Fn[];
     validCbs: Fn[];
     editValueRefs: Recordable<Ref>;
-  } & T
+    rowKey: string | number;
+  } & EditRowRecordRow &
+    T
 >;
 
 export interface Params {
@@ -23,8 +41,17 @@ export interface Params {
   record: EditRecordRow;
   elColumn?: Record<string, any>;
 }
+export interface TableActionParams {
+  row: any;
+  index: number;
+  record: EditRowRecordRow;
+  elColumn?: Record<string, any>;
+}
 
-export function renderEditCell(column: BasicColumn) {
+export function renderEditCell(
+  column: BasicColumn,
+  propsRef: ComputedRef<BasicTableProps>
+) {
   return ({ row, index, record }: Params) => {
     record.onEdit = async (edit: boolean, submit = false) => {
       if (!submit) {
@@ -52,6 +79,8 @@ export function renderEditCell(column: BasicColumn) {
       index,
       record,
       column,
+      rowKey: row[record.rowKeyName!] ?? row.key,
+      tableProps: propsRef.value,
     });
   };
 }

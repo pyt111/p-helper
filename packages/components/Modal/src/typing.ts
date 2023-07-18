@@ -10,7 +10,10 @@ export interface ModalMethods {
   confirmCallback?: Fn;
 }
 
-export type RegisterFn = (modalMethods: ModalMethods, uuid?: string) => void;
+export type RegisterFn = (
+  modalMethods: ModalMethods,
+  uuid: string | number
+) => void;
 
 export interface ReturnMethods extends ModalMethods {
   openModal: <T = any>(
@@ -168,13 +171,13 @@ export interface ModalProps {
    * The ok button props, follow jsx rules
    * @type object
    */
-  okButtonProps?: ButtonProps;
+  okButtonProps?: Partial<ButtonProps>;
 
   /**
    * The cancel button props, follow jsx rules
    * @type object
    */
-  cancelButtonProps?: ButtonProps;
+  cancelButtonProps?: Partial<ButtonProps>;
 
   /**
    * The modal dialog's title

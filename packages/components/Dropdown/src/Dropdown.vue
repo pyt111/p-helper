@@ -1,7 +1,7 @@
 <template>
   <el-dropdown ref="dropdownRef" :trigger="trigger" v-bind="$attrs">
     <span>
-      <slot></slot>
+      <slot />
     </span>
     <template #dropdown>
       <el-dropdown-menu>
@@ -10,7 +10,10 @@
             <el-popconfirm v-if="popconfirm && item.popConfirm" v-bind="item">
               <template #reference>
                 <div class="trigger-item">
-                  <Icon v-if="item.popConfirm.icon" :icon="item.popConfirm.icon" />
+                  <Icon
+                    v-if="item.popConfirm.icon"
+                    :icon="item.popConfirm.icon"
+                  />
                   <Icon v-if="item.icon" :icon="item.icon" />
                   <span>{{ item.text }}</span>
                 </div>
@@ -28,10 +31,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType, ref } from 'vue';
-  import type { DropMenu } from './typing';
+  import { ref } from 'vue';
   import { Icon } from '@p-helper/components/Icon';
   import { omit } from 'lodash-es';
+  import type { PropType } from 'vue';
+  import type { DropMenu } from './typing';
 
   const props = defineProps({
     popconfirm: Boolean,
@@ -66,7 +70,5 @@
 </script>
 
 <style scoped lang="scss">
-  .trigger-item {
-    width: 100%;
-  }
+
 </style>

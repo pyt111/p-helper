@@ -2,6 +2,7 @@
 import { nextTick, onUnmounted, ref, unref, watch } from 'vue';
 import { error } from '@p-helper/utils/log';
 import { getDynamicProps } from '@p-helper/utils';
+import { isProdMode } from '@p-helper/utils/env';
 import type { DynamicProps } from '@p-helper/types/utils';
 import type {
   FormActionType,
@@ -10,7 +11,6 @@ import type {
   NamePath,
   UseFormReturnType,
 } from '../types/form';
-
 export declare type ValidateFields = (
   nameList?: NamePath[]
 ) => Promise<Recordable>;
@@ -31,11 +31,12 @@ export function useForm(props?: Props): UseFormReturnType {
   }
 
   function register(instance: FormActionType) {
-    onUnmounted(() => {
-      formRef.value = null;
-      loadedRef.value = null;
-    });
-    if (unref(loadedRef) && instance === unref(formRef)) return;
+    isProdMode() &&
+      onUnmounted(() => {
+        formRef.value = null;
+        loadedRef.value = null;
+      });
+    if (unref(loadedRef) && isProdMode() && instance === unref(formRef)) return;
 
     formRef.value = instance;
     loadedRef.value = true;

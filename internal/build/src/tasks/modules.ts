@@ -1,6 +1,6 @@
 import path from 'path';
 import { rollup } from 'rollup';
-import dts from 'rollup-plugin-dts';
+import { terser } from 'rollup-plugin-terser';
 import vue from '@vitejs/plugin-vue';
 import DefineOptions from 'unplugin-vue-define-options/rollup';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -34,7 +34,7 @@ export const buildModules = async () => {
     plugins: [
       DefineOptions(),
       vue({
-        isProduction: false,
+        isProduction: true,
       }) as Plugin,
       vueJsx() as Plugin,
       postcss(),
@@ -42,12 +42,18 @@ export const buildModules = async () => {
         extensions: ['.mjs', '.js', '.json', '.ts', '.tsx'],
       }),
       commonjs(),
+      terser({
+        compress: {
+          drop_console: true,
+        },
+      }),
       esbuild({
         sourceMap: true,
         target,
         loaders: {
           '.vue': 'ts',
         },
+        exclude: ['node_modules'],
       }),
     ],
     external: await generateExternal({ full: false }),
