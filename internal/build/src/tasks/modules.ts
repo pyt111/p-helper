@@ -38,10 +38,7 @@ export const buildModules = async () => {
       }) as Plugin,
       vueJsx() as Plugin,
       // 使用postcss处理scss样式
-      postcss({
-        // 抽出.vue文件中的style 到单独的文件
-        extract: true,
-      }),
+      postcss(),
 
       // postcss({
       //   // 将css 抽出到单独的文件
