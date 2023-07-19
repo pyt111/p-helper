@@ -37,7 +37,28 @@ export const buildModules = async () => {
         isProduction: true,
       }) as Plugin,
       vueJsx() as Plugin,
-      postcss(),
+      // 使用postcss处理scss样式
+      postcss({
+        // 抽出.vue文件中的style 到单独的文件
+        extract: true,
+        // 自动导入抽出的css文件
+        inject: {
+          insertAt: 'top',
+        },
+        // 完整配置
+        modules: true,
+        // extensions: ['.css', '.scss', '.sass'],
+        use: ['sass'],
+      }),
+
+      // postcss({
+      //   // 将css 抽出到单独的文件
+      //   extract: true,
+      //   // 自动导入抽出的css文件
+      //   inject: {
+      //     insertAt: 'top',
+      //   },
+      // }),
       nodeResolve({
         extensions: ['.mjs', '.js', '.json', '.ts', '.tsx'],
       }),

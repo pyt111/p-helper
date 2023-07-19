@@ -128,3 +128,9 @@
     },
   });
 </script>
+
+<style lang="scss" scoped>
+  .basic-upload {
+    width: 100%;
+  }
+</style>
