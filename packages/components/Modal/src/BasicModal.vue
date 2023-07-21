@@ -40,13 +40,12 @@
   import { useDesign } from '@p-helper/hooks/web/useDesign';
   import { isFunction } from '@p-helper/utils/is';
   import { deepMerge } from '@p-helper/utils';
-  import { defineOptions } from 'unplugin-vue-define-options/macros';
   import ModalHeader from './components/ModalHeader.vue';
   import ModalFooter from './components/ModalFooter.vue';
   import {
     basicModalEmits,
     basicProps,
-    modalBodyPropsKeys,
+    modalBodyScrollbarPropsKeys,
     modalPropsKeys,
   } from './props';
   import type { ModalMethods, ModalProps } from './typing';
@@ -107,7 +106,11 @@
   });
 
   const getBindModalBodyProps = computed(() => {
-    return pick(unref(getBindValue), modalBodyPropsKeys);
+    return {
+      ...pick(unref(getBindValue), modalBodyScrollbarPropsKeys),
+      height: getBindValue.value.scrollbarHeight,
+      maxHeight: getBindValue.value.maxScrollbarHeight,
+    };
   });
 
   /**

@@ -8,6 +8,7 @@ export const makeInstaller = (components: Plugin[] = []) => {
     if (app[INSTALLED_KEY]) return;
 
     if (options) {
+      // @ts-ignore
       provideGlobalConfig(options, app, true);
     }
     app[INSTALLED_KEY] = true;

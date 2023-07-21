@@ -30,13 +30,6 @@ export const modalProps = {
 };
 
 export const modalBodyProps = {
-  height: {
-    type: [String, Number],
-  },
-  maxHeight: {
-    type: [String, Number],
-    default: '70vh',
-  },
   native: {
     type: Boolean,
   },
@@ -66,7 +59,7 @@ export const modalBodyProps = {
   },
 };
 
-export const modalBodyPropsKeys = Object.keys(modalBodyProps);
+export const modalBodyScrollbarPropsKeys = Object.keys(modalBodyProps);
 export const modalPropsKeys = Object.keys(modalProps);
 
 // 这些传入到dialog会报警告 过滤使用
@@ -108,6 +101,8 @@ export const excludePropsKeys = [
 ];
 
 export const basicProps = Object.assign({}, modalProps, modalBodyProps, {
+  scrollbarHeight: { type: [String, Number] },
+  maxScrollbarHeight: { type: [String, Number], default: '70vh' },
   subTitle: { type: String },
   closeFunc: Function as PropType<() => Promise<boolean>>,
   centered: { type: Boolean, default: false },
