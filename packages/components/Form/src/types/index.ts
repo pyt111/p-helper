@@ -98,6 +98,7 @@ export type ComponentType =
   | 'RadioButtonGroup'
   | 'Radio'
   | 'RadioGroup'
+  | 'FormRadioGroup'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'AutoComplete'

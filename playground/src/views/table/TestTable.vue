@@ -187,13 +187,30 @@
   });
 
   const [registerModal, { openModal, closeModal }] = useModal();
-  const [registerForm, { submit }] = useForm({
+  const [registerForm, { submit, getFieldsValue }] = useForm({
     schemas: [
       {
         field: 'asd',
         label: 'ssss',
         component: 'DatePicker',
         required: true,
+      },
+      {
+        field: 'ssd',
+        label: '测试-FormRadioGroup',
+        component: 'RadioGroup',
+        componentProps: {
+          options: [
+            {
+              label: '444',
+              content: '选项1',
+            },
+            {
+              label: '123',
+              content: '选项2',
+            },
+          ],
+        },
       },
       {
         field: 'bb',
@@ -217,9 +234,9 @@
     onEditRow([0, ...keys], true);
   };
 
-  const onOk = (val) => {
+  const onOk = (_, val) => {
     submit();
-    console.log('onOk >--->', val);
+    console.log('onOk >--->', getFieldsValue());
     // closeModal();
   };
 </script>

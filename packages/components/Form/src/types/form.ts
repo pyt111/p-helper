@@ -9,9 +9,13 @@ import type {
   ISelectProps,
   InputNumberProps,
   InputProps,
+  RadioEmits,
+  RadioGroupEmits,
+  RadioGroupProps,
+  RadioProps,
   SwitchProps,
 } from 'element-plus';
-import type { CSSProperties, Ref, VNode } from 'vue';
+import type { CSSProperties, Ref, Slot, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@p-helper/components/Button';
 import type { FormItem } from './formItem';
 import type { ColEx, ComponentType } from './index';
@@ -236,6 +240,21 @@ export type FormSchemaExpand = Readonly<
     | {
         component: 'InputNumber';
         componentProps?: ComponentProps | Partial<InputNumberProps>;
+      }
+    | {
+        component: 'RadioGroup';
+        componentProps?: (
+          | ComponentProps
+          | Partial<RadioGroupProps & RadioGroupEmits>
+        ) & {
+          options: Partial<
+            RadioProps &
+              RadioEmits & {
+                slot: null | VNode | VNode[] | (() => VNode | VNode[]);
+                content: Slot | string;
+              }
+          >[];
+        };
       }
   )
 >;
