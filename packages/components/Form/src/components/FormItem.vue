@@ -146,6 +146,7 @@
           label,
           dynamicRules,
           required,
+          itemProps,
         } = props.schema;
 
         if (isFunction(dynamicRules)) {
@@ -228,7 +229,7 @@
         if (characterInx !== -1 && !rules[characterInx].validator) {
           rules[characterInx].message = rules[characterInx].message;
         }
-        return rules;
+        return [...(itemProps?.rules || []), ...rules];
       }
 
       function renderComponent() {

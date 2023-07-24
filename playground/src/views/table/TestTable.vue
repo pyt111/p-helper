@@ -188,6 +188,16 @@
 
   const [registerModal, { openModal, closeModal }] = useModal();
   const [registerForm, { submit, getFieldsValue }] = useForm({
+    // rules: {
+    //   asd: [{ message: '请输入', required: true, trigger: 'blur' }],
+    //   // bb: [
+    //   //   { message: '请输入111', required: true, trigger: 'blur' },
+    //   //   {
+    //   //     pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
+    //   //     message: '只能以字母开头,含有数字、字母、下划线',
+    //   //   },
+    //   // ],
+    // },
     schemas: [
       {
         field: 'asd',
@@ -214,9 +224,18 @@
       },
       {
         field: 'bb',
-        label: 'aaa',
+        label: 'aaa2',
         component: 'Input',
-        required: true,
+        itemProps: {
+          rules: [{ required: true, message: '请输入' }],
+        },
+        rules: [
+          { required: true, message: '不允许为空' },
+          {
+            pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
+            message: '只能以字母开头,含有数字、字母、下划线',
+          },
+        ],
       },
     ],
   });
