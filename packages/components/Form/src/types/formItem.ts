@@ -1,5 +1,5 @@
 import type { NamePath } from '@p-helper/components/Form/src/types/form';
-import type { ColProps } from 'element-plus';
+import type { ColProps, FormItemRule } from 'element-plus';
 import type { HTMLAttributes, VNodeChild } from 'vue';
 
 export interface FormItem {
@@ -77,7 +77,7 @@ export interface FormItem {
   /**
    * validation rules of form
    */
-  rules?: object | object[];
+  rules?: FormItemRule[];
   /**
    * Whether to automatically associate form fields. In most cases, you can setting automatic association.
    * If the conditions for automatic association are not met, you can manually associate them. See the notes below.
