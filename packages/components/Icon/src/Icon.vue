@@ -27,29 +27,15 @@
   } from 'vue';
   // import Iconify from '@purge-icons/generated';
   import { isString } from '@p-helper/utils/is';
-  import { propTypes } from '@p-helper/utils/propTypes';
   import SvgIcon from './SvgIcon.vue';
+  import { iconProps } from './props';
   import type { CSSProperties, PropType } from 'vue';
 
   const SVG_END_WITH_FLAG = '|svg';
   export default defineComponent({
     name: 'Icon',
     components: { SvgIcon },
-    props: {
-      // icon name
-      icon: propTypes.string,
-      // icon color
-      // svg 有feColorMatrix滤镜的地方 不生效
-      color: propTypes.string,
-      disabled: propTypes.bool.def(undefined),
-      // icon size
-      size: {
-        type: [String, Number] as PropType<string | number>,
-        default: 16,
-      },
-      spin: propTypes.bool.def(false),
-      prefix: propTypes.string.def(''),
-    },
+    props: iconProps,
     setup(props) {
       const elRef = ref<ElRef>(null);
 

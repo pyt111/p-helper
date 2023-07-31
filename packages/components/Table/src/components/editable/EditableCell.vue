@@ -70,7 +70,7 @@
   import { omit, pick, set } from 'lodash-es';
   import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
   import { useDesign } from '@p-helper/hooks/web/useDesign';
-  import { treeToList } from '@p-helper/utils/helper/treeHelper';
+  // import { treeToList } from '@p-helper/utils/helper/treeHelper';
   import ClickOutside from '@p-helper/utils/directives/clickOutside';
   import { syncProp } from '@p-helper/hooks';
   import VNodeRenderer from '@p-helper/components/VNodeRenderer';
@@ -152,7 +152,8 @@
   });
 
   const editDecisionButtonShow = computed(() => {
-    const { editDecisionButtonShow } = props.column;
+    const { editDecisionButtonShow, editIsUpdateOnChange } = props.column;
+    if (editIsUpdateOnChange) return false;
     if (isFunction(editDecisionButtonShow)) {
       return editDecisionButtonShow(unref(getEmitParams));
     } else if (isBoolean(editDecisionButtonShow)) {
@@ -310,25 +311,26 @@
   }
 
   function handleOptionsChange(options: LabelValueOptions) {
-    const { replaceFields } = props.column?.editComponentProps ?? {};
-    const component = unref(getComponent);
-    if (component === 'ApiTreeSelect') {
-      const {
-        title = 'title',
-        value = 'value',
-        children = 'children',
-      } = replaceFields || {};
-      let listOptions: Recordable[] = treeToList(options, { children });
-      listOptions = listOptions.map((item) => {
-        return {
-          label: item[title],
-          value: item[value],
-        };
-      });
-      optionsRef.value = listOptions as LabelValueOptions;
-    } else {
-      optionsRef.value = options;
-    }
+    // const { props } = props.column?.editComponentProps ?? {};
+    // const component = unref(getComponent);
+    // if (component === 'TreeSelect') {
+    //   const {
+    //     label = 'label',
+    //     value = 'value',
+    //     children = 'children',
+    //   } = props || {};
+    //   let listOptions: Recordable[] = treeToList(options, { children });
+    //   listOptions = listOptions.map((item) => {
+    //     return {
+    //       label: item[label],
+    //       value: item[value],
+    //     };
+    //   });
+    //   optionsRef.value = listOptions as LabelValueOptions;
+    // } else {
+    //
+    // }
+    optionsRef.value = options;
   }
 
   // 找到当前操作的行

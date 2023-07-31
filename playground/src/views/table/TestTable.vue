@@ -13,16 +13,18 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
   import { computed, nextTick, ref } from 'vue';
   import {
     BasicForm,
     BasicModal,
     BasicTable,
+    TableIconCell,
     useForm,
     useModal,
     useTable,
   } from '@p-helper/components';
+  import type { BasicColumn } from '@p-helper/components';
   // TestTable
 
   const [
@@ -96,8 +98,39 @@
         label: 'a',
         edit: true,
         editComponent: 'Input',
-        editDecisionButtonShow: false,
+        // editDecisionButtonShow: false,
         editIsUpdateOnChange: true,
+      },
+      {
+        prop: 'a',
+        label: 'cca',
+      },
+      {
+        prop: 'a',
+        label: 'ccas',
+        component: 'TableIconCell',
+        // component: ({ row, column }) => (
+        //   <div>
+        //     <el-button>{row.a}</el-button>
+        //     <el-button>asd</el-button>
+        //   </div>
+        // ),
+        // componentProps: {
+        //   icon: 'code',
+        //   size: '12',
+        //   suffixIcon: 'code',
+        // },
+        componentProps: ({ row }) => ({
+          icon: 'code',
+          // size: '12',
+          // suffixIcon: 'code',
+          cellText: row.a,
+        }),
+        // customRender: ({ row, record, index }) => {
+        //   return () => {
+        //     return <TableIconCell icon="code" cellText={row.a} size="12" />;
+        //   };
+        // },
       },
     ],
     useSearchForm: true,
@@ -230,7 +263,7 @@
           // rules: [{ required: true, message: '请输入' }],
         },
         rules: [
-          { required: true, message: '不允许为空' },
+          { required: true, message: '不允许为空', trigger: 'blur' },
           {
             pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
             message: '只能以字母开头,含有数字、字母、下划线',

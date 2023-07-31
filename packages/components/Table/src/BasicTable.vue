@@ -33,25 +33,25 @@
         @sort-change="tableSortChange"
       >
         <template v-for="col in getViewColumns" :key="col.prop">
-          <template v-if="col.custom">
-            <el-table-column
-              :align="columnDefaultAlign"
-              :formatter="col.formatter || formatter"
-              :show-overflow-tooltip="true"
-              v-bind="col"
-            >
-              <template #default="{ row, column, $index }">
-                <slot
-                  :col="col"
-                  :column="column"
-                  :index="$index"
-                  name="custom"
-                  :row="row"
-                />
-              </template>
-            </el-table-column>
-          </template>
-          <template v-else-if="col.customRender">
+          <!--          <template v-if="col.custom">-->
+          <!--            <el-table-column-->
+          <!--              :align="columnDefaultAlign"-->
+          <!--              :formatter="col.formatter || formatter"-->
+          <!--              :show-overflow-tooltip="true"-->
+          <!--              v-bind="col"-->
+          <!--            >-->
+          <!--              <template #default="{ row, column, $index }">-->
+          <!--                <slot-->
+          <!--                  :col="col"-->
+          <!--                  :column="column"-->
+          <!--                  :index="$index"-->
+          <!--                  name="custom"-->
+          <!--                  :row="row"-->
+          <!--                />-->
+          <!--              </template>-->
+          <!--            </el-table-column>-->
+          <!--          </template>-->
+          <template v-if="col.customRender">
             <el-table-column
               :align="columnDefaultAlign"
               :formatter="col.formatter || formatter"
@@ -83,7 +83,19 @@
               :formatter="col.formatter || formatter"
               :show-overflow-tooltip="true"
               v-bind="col"
-            />
+            >
+              <template v-if="col.component" #default="{ row, column, $index }">
+                <CustomCellComponent
+                  v-bind="{
+                    componentProps: col.componentProps,
+                    row,
+                    column,
+                    index: $index,
+                  }"
+                  :component="col.component"
+                />
+              </template>
+            </el-table-column>
           </template>
         </template>
 
@@ -130,6 +142,7 @@
   import { createTableContext } from './hooks/useTableContext';
   import { useTableForm } from './hooks/useTableForm';
   import { basicProps, basicTableEmits } from './props';
+  import { CustomCellComponent } from './components/custom/CustomCellComponent';
   import type { BasicTableProps, TableActionType } from './types/table';
 
   export default defineComponent({
@@ -139,6 +152,7 @@
       ElTable,
       ElTableColumn,
       ElCard,
+      CustomCellComponent,
     },
     props: basicProps,
 

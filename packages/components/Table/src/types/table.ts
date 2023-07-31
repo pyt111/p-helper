@@ -1,3 +1,5 @@
+import type ElSelect from 'element-plus/es/components/select';
+import type { ComponentPropsMap } from '../../componentMap';
 import type {
   EditRecordRow,
   EditRowRecordRow,
@@ -6,8 +8,9 @@ import type {
 import type { TableProps } from 'element-plus/es/components/table/src/table/defaults';
 import type { CurrencyParams, basicProps } from '../props';
 import type { PaginationProps } from './pagination';
-import type { ComponentType } from './componentType';
-import type { ComputedRef, ExtractPropTypes, VNode, VNodeChild } from 'vue';
+import type { ComponentType, CustomComponentType } from './componentType';
+import type { ExtractPropTypes, VNode, VNodeChild, h } from 'vue';
+import type ElTree from 'element-plus/es/components/tree';
 
 export declare type SortOrder = 'ascend' | 'descend';
 
@@ -81,7 +84,15 @@ export interface TableActionType {
 }
 export declare type AlignType = 'left' | 'center' | 'right';
 
-export type BasicColumn = {
+export type TableComponentTypes =
+  | ComponentType
+  | CustomComponentType
+  | ReturnType<typeof h>
+  | ((obj?: ComponentPropsParams) => ReturnType<typeof h>)
+  | JSX.Element;
+
+export type ColumnTypes = {
+  // component?: TableComponentTypes;
   children?: BasicColumn[];
   multiColumnVNode?: VNode;
   prop?: string;
@@ -124,12 +135,75 @@ export type BasicColumn = {
   record?: EditRecordRow;
   editComponent?: ComponentType; // 编辑组件
   editFilterShow?: boolean | ((obj: CurrencyParams) => boolean); // 过滤当前列 哪些不编辑 返回true是编辑 false不可编辑
-  customRender?: (
-    obj: Params
-  ) => (VNode | VNode[] | (() => VNode | VNode[])) | JSX.Element | undefined | string | null;
+  customRender?: (obj: Params) => TableComponentTypes | null | undefined | void;
   // 自定义修改后显示的内容
   editRender?: (opt: CurrencyParams) => VNodeChild | JSX.Element;
 };
+
+export type ComponentPropsParams = {
+  row: Record<string, any>;
+  column: Record<string, any>;
+  index: number;
+};
+
+export type ComponentPropsFn = (
+  obj: ComponentPropsParams
+) => ColumnTypesExpand['componentProps'];
+export type ColumnTypesExpand =
+  | {
+      component?:
+        | ((obj: ComponentPropsParams) => VNode | JSX.Element)
+        | JSX.Element
+        | VNode
+        | VNode[];
+      componentProps?: never;
+    }
+  | {
+      component?: 'Input';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['Input'];
+    }
+  | {
+      component?: 'InputNumber';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['InputNumber'];
+    }
+  | {
+      component?: 'Select';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['Select'];
+    }
+  | {
+      component: 'TreeSelect';
+      componentProps?: (
+        | ComponentPropsFn
+        | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
+      ) & {
+        data: any;
+      };
+    }
+  | {
+      component?: 'TreeSelect';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['Select'];
+    }
+  | {
+      component?: 'Switch';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['Switch'];
+    }
+  | {
+      component?: 'Checkbox';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['Checkbox'];
+    }
+  | {
+      component?: 'DatePicker';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['DatePicker'];
+    }
+  | {
+      component?: 'TimePicker';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['TimePicker'];
+    }
+  | {
+      component?: 'TableIconCell';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['TableIconCell'];
+    };
+export type BasicColumn = ColumnTypes & ColumnTypesExpand;
 
 // @ts-ignore
 export interface BasicTableProps extends BasePropsType, TableProps<any> {

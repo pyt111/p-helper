@@ -69,15 +69,14 @@
       }
     }
   }
+
   .editable-cell {
     position: relative;
 
     &__wrapper {
       display: flex;
       align-items: center;
-      justify-content: center;
     }
-
     &__icon {
       cursor: pointer;
 
@@ -114,11 +113,16 @@
     }
   }
 
+  .is-center {
+    .editable-cell {
+      &__wrapper {
+        justify-content: center;
+      }
+    }
+  }
   .trigger-item {
     width: 100%;
   }
-
-
 
   .table-form-card {
     .form-content-wrapper {

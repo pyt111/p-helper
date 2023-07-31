@@ -20,6 +20,7 @@ export function createPlaceholderMessage(component: ComponentType) {
     component.includes('Select') ||
     component.includes('Checkbox') ||
     component.includes('Radio') ||
+    component.includes('RadioGroup') ||
     component.includes('Switch') ||
     component.includes('DatePicker') ||
     component.includes('TimePicker')

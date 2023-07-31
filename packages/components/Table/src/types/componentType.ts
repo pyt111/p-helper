@@ -2,9 +2,10 @@ export type ComponentType =
   | 'Input'
   | 'InputNumber'
   | 'Select'
-  | 'ApiSelect'
-  | 'ApiTreeSelect'
+  | 'TreeSelect'
   | 'Checkbox'
   | 'Switch'
   | 'DatePicker'
   | 'TimePicker';
+
+export type CustomComponentType = 'TableIconCell';

@@ -113,6 +113,7 @@ export function useColumns(
     );
     // renderEditCell(actionColumn);
     if (hasIndex === -1) {
+      // @ts-ignore
       columns.push({
         ...columns[hasIndex],
         fixed: 'right',
@@ -184,6 +185,7 @@ export function useColumns(
         if (!item.children) return;
         item.multiColumnVNode = handleItem(item, propsRef);
         // 这里去掉children 是为了element-plus警告
+        // @ts-ignore
         columns[i] = omit(item, 'children');
       });
     }
@@ -219,7 +221,7 @@ export function useColumns(
           ACTION_COLUMN_FLAG,
         ].includes(flag!);
 
-        // 编辑单元
+        // 编辑单元格
         if ((edit || editRow) && !isDefaultAction) {
           if (!column.record) {
             column.record = {
