@@ -27,6 +27,12 @@ export interface CurrencyParams {
   column: BasicColumn;
   value?: string | number | boolean | Recordable;
 }
+export interface TableCustomCellParams {
+  index: number;
+  row: Record<string, any>;
+  elColumn: Record<string, any>;
+  value?: string | number | boolean | Recordable;
+}
 
 export type TableApi = (data?: Record<string, any>) => Promise<any>;
 

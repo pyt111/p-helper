@@ -1,16 +1,8 @@
-import { defineComponent, h, isVNode, useAttrs, useSlots } from 'vue';
+import { h, isVNode } from 'vue';
 import { isFunction, isString } from 'lodash-es';
 import { componentMap, customComponentMap } from '../../../componentMap';
-import { ColumnTypesExpand } from '../../types/table';
 import type { ComponentPropsFn, TableComponentTypes } from '../../types/table';
-import type { DefineComponent } from '@vue/runtime-core';
-import type {
-  Component,
-  ExtractPropTypes,
-  FunctionalComponent,
-  PropType,
-  VNode,
-} from 'vue';
+import type { Component, ExtractPropTypes, PropType, VNode } from 'vue';
 import type {
   ComponentType,
   CustomComponentType,
@@ -26,7 +18,7 @@ const basicProps = {
   row: {
     type: Object as PropType<Recordable>,
   },
-  column: {
+  elColumn: {
     type: Object as PropType<Recordable>,
   },
   index: {
@@ -44,7 +36,7 @@ export const CustomCellComponent = (
   }
   const params = {
     row: props.row,
-    column: props.column,
+    elColumn: props.elColumn,
     index: props.index,
   };
   if (isFunction(props.component)) {

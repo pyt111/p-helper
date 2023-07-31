@@ -15,26 +15,41 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue';
+  import { computed, unref, useAttrs } from 'vue';
   import { useNamespace } from '@p-helper/hooks';
   import { Icon } from '@p-helper/components/Icon';
+  import { isFunction } from 'lodash-es';
   import { iconCellProps } from './props';
+  import type { TableCustomCellParams } from '../../../props';
 
   // TableIconCell
   defineOptions({
     name: 'TableIconCell',
   });
 
-  const props = defineProps(iconCellProps);
-
   const ns = useNamespace('icon-cell');
+  const props = defineProps(iconCellProps);
+  const attrs = useAttrs();
+
+  const iconCellCallParams = computed<TableCustomCellParams>(() => {
+    return {
+      row: attrs.row as Record<string, any>,
+      elColumn: attrs.elColumn as Record<string, any>,
+      index: attrs.index as number,
+      value: props.cellText,
+    };
+  });
 
   // 规范化icon
   const normalizeIcon = (icon) => {
     if (!icon) {
       return '';
     }
-    return icon.endsWith('|svg') ? icon : `${icon}|svg`;
+    let iconStr = icon;
+    if (isFunction(icon)) {
+      iconStr = icon(unref(iconCellCallParams));
+    }
+    return iconStr.endsWith('|svg') ? iconStr : `${iconStr}|svg`;
   };
 
   const preIconValue = computed(() => normalizeIcon(props.icon));

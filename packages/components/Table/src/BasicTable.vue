@@ -89,7 +89,7 @@
                   v-bind="{
                     componentProps: col.componentProps,
                     row,
-                    column,
+                    elColumn: column,
                     index: $index,
                   }"
                   :component="col.component"

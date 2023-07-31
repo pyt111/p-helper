@@ -121,7 +121,8 @@
         //   suffixIcon: 'code',
         // },
         componentProps: ({ row }) => ({
-          icon: 'code',
+          icon: ({ index }) => (index ? 'code' : ''),
+          suffixIcon: ({ row, index }) => (index ? 'code' : ''),
           // size: '12',
           // suffixIcon: 'code',
           cellText: row.a,
