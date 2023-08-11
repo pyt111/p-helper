@@ -1,10 +1,5 @@
 <template>
-  <ElCard
-    ref="formWrapperRef"
-    class="form-card"
-    body-style="padding-bottom: 0;"
-    shadow="never"
-  >
+  <div ref="formWrapperRef" class="form-card">
     <div class="form-content-wrapper">
       <div v-if="$slots.formLeft" class="form-left">
         <slot name="formLeft" />
@@ -60,7 +55,7 @@
     <div v-if="$slots.formBottom" class="form-bottom">
       <slot name="formBottom" />
     </div>
-  </ElCard>
+  </div>
 </template>
 <script lang="ts">
   import {
