@@ -17,7 +17,11 @@
         <slot :name="item" v-bind="data || {}" />
       </template>
     </BasicForm>
-    <ElCard class="table-card" :header="getProps.cardTitle" shadow="never">
+    <ElCard
+      :class="['table-card', getProps.fullHeight ? 'table-full-height' : '']"
+      :header="getProps.cardTitle"
+      shadow="never"
+    >
       <template v-if="$slots['card-header']" #header>
         <slot name="card-header" />
       </template>
@@ -30,73 +34,9 @@
         @select="onSelect"
         @select-all="onSelect"
         @selection-change="setSelectRows"
-        @sort-change="tableSortChange"
       >
         <template v-for="col in getViewColumns" :key="col.prop">
-          <!--          <template v-if="col.custom">-->
-          <!--            <el-table-column-->
-          <!--              :align="columnDefaultAlign"-->
-          <!--              :formatter="col.formatter || formatter"-->
-          <!--              :show-overflow-tooltip="true"-->
-          <!--              v-bind="col"-->
-          <!--            >-->
-          <!--              <template #default="{ row, column, $index }">-->
-          <!--                <slot-->
-          <!--                  :col="col"-->
-          <!--                  :column="column"-->
-          <!--                  :index="$index"-->
-          <!--                  name="custom"-->
-          <!--                  :row="row"-->
-          <!--                />-->
-          <!--              </template>-->
-          <!--            </el-table-column>-->
-          <!--          </template>-->
-          <template v-if="col.customRender">
-            <el-table-column
-              :align="columnDefaultAlign"
-              :formatter="col.formatter || formatter"
-              :show-overflow-tooltip="true"
-              v-bind="col"
-            >
-              <template #default="{ row, column, $index }">
-                <component
-                  :is="
-                    col.customRender({
-                      row,
-                      index: $index,
-                      record: col.record,
-                      elColumn: column,
-                    })
-                  "
-                  :key="col.prop"
-                />
-              </template>
-            </el-table-column>
-          </template>
-          <template v-else>
-            <template v-if="col.multiColumnVNode">
-              <component :is="col.multiColumnVNode" v-bind="col" />
-            </template>
-            <el-table-column
-              :key="col.prop"
-              :align="columnDefaultAlign"
-              :formatter="col.formatter || formatter"
-              :show-overflow-tooltip="true"
-              v-bind="col"
-            >
-              <template v-if="col.component" #default="{ row, column, $index }">
-                <CustomCellComponent
-                  v-bind="{
-                    componentProps: col.componentProps,
-                    row,
-                    elColumn: column,
-                    index: $index,
-                  }"
-                  :component="col.component"
-                />
-              </template>
-            </el-table-column>
-          </template>
+          <BasicColumnComponent :column="col" />
         </template>
 
         <template #actions="data">
@@ -129,7 +69,6 @@
     toRefs,
     unref,
   } from 'vue';
-  // import { usePagination } from '@p-helper/hooks/pagination';
   import { ElCard, ElTable, ElTableColumn } from 'element-plus';
   import { cloneDeep, pick } from 'lodash-es';
   import { BasicForm, useForm } from '@p-helper/components/Form';
@@ -143,6 +82,7 @@
   import { useTableForm } from './hooks/useTableForm';
   import { basicProps, basicTableEmits } from './props';
   import { CustomCellComponent } from './components/custom/CustomCellComponent';
+  import BasicColumnComponent from './BasicColumn';
   import type { BasicTableProps, TableActionType } from './types/table';
 
   export default defineComponent({
@@ -153,6 +93,7 @@
       ElTableColumn,
       ElCard,
       CustomCellComponent,
+      BasicColumnComponent,
     },
     props: basicProps,
 
@@ -245,20 +186,24 @@
       const getBindValues = computed(() => {
         const dataSource = unref(getDataSourceRef);
 
-        const bottomHeight = getBindValues.value?.noPage ? 0 : 52;
         const propsData = {
           ...unref(getProps),
           columns: toRaw(unref(getViewColumns)),
           ...attrs,
-          style: {
-            height: bottomHeight
-              ? `calc(100% - ${bottomHeight + 10}px)`
-              : false,
-          },
-          height: unref(getProps).height || '100%',
+          height: unref(getProps).height,
           currentRowKey: unref(getRowKey),
           data: dataSource,
         };
+
+        // 是否撑满
+        if (getProps.value.fullHeight) {
+          const bottomHeight = getBindValues.value?.noPage ? 0 : 52;
+          propsData.style = {
+            height: bottomHeight
+              ? `calc(100% - ${bottomHeight + 10}px)`
+              : '100%',
+          };
+        }
 
         return propsData;
       });
@@ -325,11 +270,6 @@
 
       createTableContext({ ...tableAction, wrapRef, getBindValues });
 
-      // const handleSearchInfoChange = (values) => {
-      //   getBindValues.value.queryParams = values;
-      //   queryTableData();
-      // };
-
       const setSelectRows = (rows) => {
         // console.log('setSelectRows');
         emit('selectionChange', rows);
@@ -337,18 +277,6 @@
 
       const onSelect = (selection: Record<string, any>[]) => {
         state.selectionData = selection;
-      };
-
-      const tableSortChange = () => {
-        // console.log('tableSortChange');
-      };
-
-      const formatter = (_row, _style, val) => {
-        return val ?? '--';
-      };
-
-      const handleDelete = () => {
-        // console.log('handleDelete', row);
       };
 
       const onCellDblclick = (row, col) => {
@@ -381,13 +309,7 @@
         elTablePropsKeys,
 
         setSelectRows,
-        tableSortChange,
-        formatter,
         onSelect,
-        // fetchData,
-        handleDelete,
-        // queryTableData,
-        // refreshOfflineTableData,
         onCellDblclick,
         updateTableCellStatusKey,
         registerForm,

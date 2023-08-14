@@ -1,7 +1,6 @@
 import { computed, h, ref, shallowRef, toRaw, unref, watch } from 'vue';
 import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
 import { cloneDeep, omit } from 'lodash-es';
-import { ElTableColumn } from 'element-plus';
 import { renderEditCell } from '../components/editable';
 import { ACTION_COLUMN_FLAG, INDEX_COLUMN_FLAG, ROW_KEY } from '../const';
 import TableAction from '../components/TableAction.vue';
@@ -42,7 +41,23 @@ export function useColumns(
   };
 
   const getEditRows = () => {
-    return getViewColumns.value.filter((item) => !!item.editRow);
+    const result: BasicColumn[] = [];
+
+    const stack = getViewColumns.value.slice(); // 复制数组以避免修改原数组
+
+    while (stack.length > 0) {
+      const item = stack.pop();
+
+      if (item && item.editRow) {
+        result.push(item);
+      }
+
+      if (item && item.children && item.children.length) {
+        stack.push(...item.children);
+      }
+    }
+
+    return result;
   };
 
   const findRowKeys = (k: EditRowKey, isIndex = false) => {
@@ -157,13 +172,6 @@ export function useColumns(
     }
   }
 
-  // 生成多级表头的虚拟节点
-  const handleItem = (column: BasicColumn, propsRef) => {
-    const prop = omit(column, ['children']);
-    return h(ElTableColumn, prop, {
-      default: () => column.children?.map((item) => handleItem(item, propsRef)),
-    });
-  };
   watch(
     () => unref(propsRef).columns,
     (columns) => {
@@ -181,12 +189,6 @@ export function useColumns(
         Object.assign(item, {
           align: propsRef.value.columnDefaultAlign || item.align,
         });
-
-        if (!item.children) return;
-        item.multiColumnVNode = handleItem(item, propsRef);
-        // 这里去掉children 是为了element-plus警告
-        // @ts-ignore
-        columns[i] = omit(item, 'children');
       });
     }
   );
@@ -205,6 +207,37 @@ export function useColumns(
     return isIfShow;
   }
 
+  // 处理column
+  const doCreateColumn = (column: BasicColumn) => {
+    const stack = [column];
+
+    while (stack.length > 0) {
+      const currentColumn = stack.pop()!;
+
+      const { edit, editRow, flag, children, align } = currentColumn;
+      const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(
+        flag!
+      );
+
+      if (children && children.length) {
+        for (const childColumn of children) {
+          stack.push(childColumn);
+        }
+      }
+
+      if ((edit || editRow) && !isDefaultAction) {
+        if (!currentColumn.record) {
+          currentColumn.record = {
+            rowKeyName: getRowKey.value,
+            cacheEditRows,
+            getIsRowEditCacheRowKeys,
+          };
+        }
+        currentColumn.customRender = renderEditCell(currentColumn, propsRef);
+      }
+    }
+  };
+
   const getViewColumns = computed(() => {
     const viewColumns = unref(getColumnsRef);
 
@@ -215,23 +248,7 @@ export function useColumns(
         return isIfShow(column);
       })
       .map((column) => {
-        const { edit, editRow, flag, align } = column;
-        const isDefaultAction = [
-          INDEX_COLUMN_FLAG,
-          ACTION_COLUMN_FLAG,
-        ].includes(flag!);
-
-        // 编辑单元格
-        if ((edit || editRow) && !isDefaultAction) {
-          if (!column.record) {
-            column.record = {
-              rowKeyName: getRowKey.value,
-              cacheEditRows,
-              getIsRowEditCacheRowKeys,
-            };
-          }
-          column.customRender = renderEditCell(column, propsRef);
-        }
+        doCreateColumn(column);
         return column;
       });
   });

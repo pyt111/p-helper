@@ -58,6 +58,7 @@
 
   export default defineComponent({
     name: 'BasicFormAction',
+    inheritAttrs: false,
     components: {
       BasicButton,
       // BasicArrow,
@@ -97,10 +98,12 @@
           : {};
         const actionColOpt: Partial<ColEx> = {
           style: { justifyContent: 'flex-start' },
-          span: showAdvancedButton ? 6 : 2,
+          span: showAdvancedButton ? 6 : 4,
           ...advancedSpanObj,
           ...actionColOptions,
         };
+
+        console.log('actionColOpt >--->', actionColOpt);
         return actionColOpt;
       });
 

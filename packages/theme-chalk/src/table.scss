@@ -3,6 +3,10 @@
   display: flex;
   flex-direction: column;
 
+  .el-card {
+    border: none;
+  }
+
   .basic-form {
     display: flex;
     justify-content: space-between;
@@ -19,9 +23,15 @@
     flex-direction: column;
     border: none;
 
+    &.table-full-height {
+      .el-card__body {
+        flex: 1;
+        height: 0;
+      }
+    }
+
     .el-card__body {
-      height: 0;
-      flex: 1;
+      padding-top: 0;
     }
   }
 
@@ -125,6 +135,9 @@
   }
 
   .table-form-card {
+    .el-card__body {
+      padding-bottom: 0;
+    }
     .form-content-wrapper {
       display: flex;
       justify-content: flex-end;

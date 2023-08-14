@@ -94,7 +94,6 @@ export type TableComponentTypes =
 export type ColumnTypes = {
   // component?: TableComponentTypes;
   children?: BasicColumn[];
-  multiColumnVNode?: VNode;
   prop?: string;
   label: string;
   type?: 'selection' | 'index' | 'expand';

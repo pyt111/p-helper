@@ -124,9 +124,10 @@ export const basicProps = {
     type: Array as PropType<BasicColumn[]>,
     default: () => [],
   },
+  // 是否根据父节点撑满高度
+  fullHeight: propTypes.bool,
   height: {
     type: [Number, String],
-    default: 0,
   },
   autoQuery: {
     type: Boolean,

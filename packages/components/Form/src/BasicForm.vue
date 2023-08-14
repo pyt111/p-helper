@@ -1,5 +1,5 @@
 <template>
-  <div ref="formWrapperRef" class="form-card">
+  <ElCard ref="formWrapperRef" class="form-card" shadow="never">
     <div class="form-content-wrapper">
       <div v-if="$slots.formLeft" class="form-left">
         <slot name="formLeft" />
@@ -55,7 +55,7 @@
     <div v-if="$slots.formBottom" class="form-bottom">
       <slot name="formBottom" />
     </div>
-  </div>
+  </ElCard>
 </template>
 <script lang="ts">
   import {
@@ -358,7 +358,7 @@
         setFormModel,
         getFormClass,
         getFormActionBindProps: computed(
-          (): Recordable => ({ ...getProps.value, ...advanceState })
+          () => ({ ...getProps.value, ...advanceState })
         ),
         ...formActionType,
         formWrapperRef,

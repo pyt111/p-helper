@@ -40,6 +40,7 @@
       getSelectionData,
     },
   ] = useTable({
+    // fullHeight: true,
     beforeFetch: (params) => {
       params.catalogDataId = 1;
       return params;
@@ -52,6 +53,9 @@
             d: 1222,
             c: 22123,
             a: '123',
+            ds: 333,
+            ds1: 555,
+            ds2: 666,
           },
           {
             id: 15,
@@ -75,6 +79,22 @@
         type: 'selection',
       },
       {
+        prop: 'ds',
+        label: 'ds',
+        children: [
+          {
+            prop: 'ds1',
+            label: 'ds1',
+            edit: true,
+          },
+          {
+            prop: 'ds2',
+            label: 'ds2',
+            editRow: true,
+          },
+        ],
+      },
+      {
         prop: 'd',
         label: 'd',
         editRow: true,
@@ -95,7 +115,7 @@
       },
       {
         prop: 'a',
-        label: 'a',
+        label: 'a1',
         edit: true,
         editComponent: 'Input',
         // editDecisionButtonShow: false,
@@ -149,6 +169,7 @@
         onClick: (obj) => {
           const { index, record, row } = obj;
           console.log('row.id >--->', row.id);
+          console.log('row >--->', row);
           record.onEditRow(row.id || row.key);
           console.log('编辑 cacheEditRows >--->', record.cacheEditRows.value);
         },
@@ -305,7 +326,7 @@
     const d = insertTableDataRecord({}, 0);
     const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
     const keys = getIsRowEditCacheRowKeys();
-    onEditRow([0, 2, ...keys], true);
+    onEditRow([0, ...keys], true);
   };
 
   const onEdit = () => {
