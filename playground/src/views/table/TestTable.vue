@@ -159,25 +159,77 @@
     // columnDefaultAlign: 'center',
     actionColumn: {
       label: '操作',
+      editRow: true,
+      editButtonsProps: () => {
+        return [
+          {
+            // label: 'ss',
+            buttonName: 'edit',
+          },
+        ];
+      },
+      allActions: [
+        {
+          label: '删除1',
+          // ifShow: (action, { row, record }) => {
+          //   return !record.isEditableRow();
+          // },
+          onClick: (obj) => {
+            const { index, row, record } = obj;
+            console.log('row.id >--->', row.id, row);
+            deleteTableDataRecord(row.id || row.key);
+            record.onEditRow(record.getIsRowEditCacheRowKeys());
+          },
+        },
+        {
+          label: '删除2',
+          onClick: (obj) => {
+            const { index, row, record } = obj;
+            deleteTableDataRecord(row.id || row.key);
+            record.onEditRow(record.getIsRowEditCacheRowKeys());
+          },
+        },
+        {
+          label: '删除3',
+          ifShow: (action, { row, record }) => {
+            console.log('record >--->', record);
+            return !record.isEditableRow();
+          },
+          onClick: (obj) => {
+            const { index, row, record } = obj;
+            // deleteTableDataRecord(row.id || row.key);
+            // record.onEditRow(record.getIsRowEditCacheRowKeys());
+          },
+        },
+        {
+          label: '删除4',
+          onClick: (obj) => {
+            const { index, row, record } = obj;
+            deleteTableDataRecord(row.id || row.key);
+            record.onEditRow(record.getIsRowEditCacheRowKeys());
+          },
+        },
+      ],
     },
     actions: [
-      {
-        label: '编辑',
-        ifShow: (action, { row, record }) => {
-          return !record.cacheEditRows.value?.[row.id || row.key];
-        },
-        onClick: (obj) => {
-          const { index, record, row } = obj;
-          console.log('row.id >--->', row.id);
-          console.log('row >--->', row);
-          record.onEditRow(row.id || row.key);
-          console.log('编辑 cacheEditRows >--->', record.cacheEditRows.value);
-        },
-      },
+      // {
+      //   label: '编辑',
+      //   ifShow: (action, { record }) => {
+      //     return !record.isEditableRow();
+      //   },
+      //   onClick: (obj) => {
+      //     const { index, record, row } = obj;
+      //     console.log('row.id >--->', row.id);
+      //     console.log('row >--->', row);
+      //     record.onEditRow(row.id || row.key);
+      //     console.log('record >--->', record);
+      //     console.log('编辑 cacheEditRows >--->', record.cacheEditRows.value);
+      //   },
+      // },
       {
         label: '删除',
         ifShow: (action, { row, record }) => {
-          return !record.cacheEditRows.value?.[row.id || row.key];
+          return !record.isEditableRow();
         },
         onClick: (obj) => {
           const { index, row, record } = obj;
@@ -186,25 +238,39 @@
           record.onEditRow(record.getIsRowEditCacheRowKeys());
         },
       },
+      // {
+      //   label: '保存',
+      //   ifShow: (action, { row, record }) => {
+      //     return record.isEditableRow();
+      //   },
+      //   onClick: ({ row, record, index }) => {
+      //     record.onEditRowSave(index, true);
+      //     console.log('保存 cacheEditRows >--->', record.cacheEditRows);
+      //   },
+      // },
+      // {
+      //   label: '取消',
+      //   ifShow: (action, { row, record }) => {
+      //     return record.isEditableRow();
+      //   },
+      //   onClick: ({ row, record, index }) => {
+      //     // console.log('index >--->', index, row, record);
+      //     record.onEditRowCancel(row.id || row.key);
+      //     console.log('取消 cacheEditRows >--->', record.cacheEditRows);
+      //   },
+      // },
+    ],
+    dropDownActions: [
       {
-        label: '保存',
+        label: '删除7',
         ifShow: (action, { row, record }) => {
-          return record.cacheEditRows.value?.[row.id || row.key];
+          return !record.isEditableRow();
         },
-        onClick: ({ row, record, index }) => {
-          record.onEditRowSave(index, true);
-          console.log('保存 cacheEditRows >--->', record.cacheEditRows);
-        },
-      },
-      {
-        label: '取消',
-        ifShow: (action, { row, record }) => {
-          return record.cacheEditRows.value?.[row.id || row.key];
-        },
-        onClick: ({ row, record, index }) => {
-          // console.log('index >--->', index, row, record);
-          record.onEditRowCancel(row.id || row.key);
-          console.log('取消 cacheEditRows >--->', record.cacheEditRows);
+        onClick: (obj) => {
+          const { index, row, record } = obj;
+          console.log('row.id >--->', row.id, row);
+          deleteTableDataRecord(row.id || row.key);
+          record.onEditRow(record.getIsRowEditCacheRowKeys());
         },
       },
     ],
@@ -330,9 +396,8 @@
   };
 
   const onEdit = () => {
-    const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
-    const keys = getIsRowEditCacheRowKeys();
-    onEditRow([0, ...keys], true);
+    const { onEditRow } = getEditRowRecord();
+    onEditRow([0, 2], true);
   };
 
   const onOk = (_, val) => {

@@ -10,12 +10,13 @@ import type {
 import type { ComputedRef, Ref, ShallowRef } from 'vue';
 
 export type EditRowRecordRow<T = Recordable> = {
-  onEditRow: (key: EditRowKey, isIndex?: boolean) => void;
+  onEditRow: (key?: EditRowKey, isIndex?: boolean) => void;
   onEditRowSave: (key: EditRowKey, isIndex?: boolean) => void;
   onEditRowCancel: (key: EditRowKey, isiIndex?: boolean) => void;
   rowKeyName: string | number;
   updateTableActionUi: () => void;
   updateIndex: Ref<number>;
+  isEditableRow: () => boolean;
   cacheEditRows: ShallowRef;
   getIsRowEditCacheRowKeys: () => string[];
 } & T;

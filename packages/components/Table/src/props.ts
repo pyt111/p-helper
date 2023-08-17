@@ -4,13 +4,14 @@ import {
   DEFAULT_SORT_FN,
   FETCH_SETTING,
 } from '@p-helper/components/Table/src/const';
-import type { FormActionType, FormProps } from '@p-helper/components/Form';
 import type {
+  BasicActionColumn,
   BasicColumn,
   FetchSetting,
   SorterResult,
   TableActionType,
 } from '@p-helper/components/Table/src/types/table';
+import type { FormActionType, FormProps } from '@p-helper/components/Form';
 import type { PropType, Ref } from 'vue';
 import type {
   EditRecordRow,
@@ -141,13 +142,15 @@ export const basicProps = {
     type: Function as PropType<(data: CurrencyParams) => Promise<any>>,
   },
   actionColumn: {
-    type: Object as PropType<BasicColumn>,
+    type: Object as PropType<BasicActionColumn>,
     default: null,
   },
+  // actions中的按钮必定直接展示在column列中,优先级比actionColumn.allActions高
   actions: {
     type: Array as PropType<ActionItem[] | ((obj: Params) => ActionItem[])>,
     default: null,
   },
+  // dropDownActions中的按钮必定在column列中的下拉中,优先级比actionColumn.allActions高
   dropDownActions: {
     type: Array as PropType<ActionItem[] | ((obj: Params) => ActionItem[])>,
     default: null,

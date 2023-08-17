@@ -1,9 +1,6 @@
 <template>
   <div :class="[prefixCls, getAlign]">
-    <template
-      v-for="(action, index) in getActions"
-      :key="`${index}-${action.label}`"
-    >
+    <template v-for="(action, i) in getActions" :key="`${i}-${action.label}`">
       <el-tooltip v-if="action.tooltip" v-bind="getTooltip(action.tooltip)">
         <div>
           <PopConfirmButton v-bind="action">
@@ -25,7 +22,7 @@
         <template v-if="action.label">{{ action.label }}</template>
       </PopConfirmButton>
       <el-divider
-        v-if="(divider || action.divider) && index < getActions.length - 1"
+        v-if="(divider || action.divider) && i < getActions.length - 1"
         class="action-divider"
         direction="vertical"
       />
@@ -63,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, toRaw, unref } from 'vue';
+  import { computed, toRaw, unref } from 'vue';
   import Icon from '@p-helper/components/Icon';
   import { PopConfirmButton } from '@p-helper/components/Button';
   import { isBoolean, isFunction, isString } from '@p-helper/utils/is';
@@ -74,8 +71,8 @@
   import { Dropdown } from '@p-helper/components/Dropdown';
   import { omit } from 'lodash-es';
   import { MoreFilled } from '@element-plus/icons-vue';
+  import type { PropType } from 'vue';
   import type {
-    EditRecordRow,
     EditRowRecordRow,
     TableActionParams,
   } from '@p-helper/components/Table/src/components/editable';
@@ -209,6 +206,7 @@
         onCancel: popConfirm?.cancel?.bind(null, emitParams),
         text: label,
         divider: index < list.length - 1 ? props.divider : false,
+        updateIndex: props.record?.updateIndex?.value,
       };
     });
   });

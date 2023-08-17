@@ -1,10 +1,12 @@
-import type ElSelect from 'element-plus/es/components/select';
-import type { ComponentPropsMap } from '../../componentMap';
 import type {
   EditRecordRow,
   EditRowRecordRow,
   Params,
+  TableActionParams,
 } from '@p-helper/components/Table/src/components/editable';
+import type { ActionItem } from './tableAction';
+import type ElSelect from 'element-plus/es/components/select';
+import type { ComponentPropsMap } from '../../componentMap';
 import type { TableProps } from 'element-plus/es/components/table/src/table/defaults';
 import type { CurrencyParams, basicProps } from '../props';
 import type { PaginationProps } from './pagination';
@@ -70,9 +72,9 @@ export interface TableActionType {
   setShowPagination: (show: boolean) => Promise<void>;
   getShowPagination: () => boolean;
   getPaginationRef: () => PaginationProps | boolean;
-  getTableData: () => any[];
+  getTableData: () => Recordable[];
   getColumns: (opt?: GetColumnsParams) => BasicColumn[];
-  getEditRowRecord: () => EditRowRecordRow;
+  getEditRowRecord: (rows?: Recordable[]) => EditRowRecordRow;
   getRowDataByRowIndex: (rowIndex: number | number[]) => Recordable;
   getPagination: () => PaginationProps | boolean;
   redoHeight: () => void;
@@ -203,6 +205,17 @@ export type ColumnTypesExpand =
       componentProps?: ComponentPropsFn | ComponentPropsMap['TableIconCell'];
     };
 export type BasicColumn = ColumnTypes & ColumnTypesExpand;
+
+export type TypeOrReturnTypeFun<T> = T | ((params: TableActionParams) => T);
+
+export type TableActions = TypeOrReturnTypeFun<ActionItem[]>;
+
+export type BasicActionColumn = BasicColumn &
+  Partial<{
+    editButtonsProps: TableActions;
+    allActions: TableActions;
+    showButtonsLength: TypeOrReturnTypeFun<number>;
+  }>;
 
 // @ts-ignore
 export interface BasicTableProps extends BasePropsType, TableProps<any> {

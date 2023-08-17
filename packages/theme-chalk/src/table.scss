@@ -33,6 +33,14 @@
     .el-card__body {
       padding-top: 0;
     }
+
+    .basic-table-action {
+      .el-button {
+        & + .el-dropdown {
+          margin-left: 12px;
+        }
+      }
+    }
   }
 
   .card-bottom {

@@ -103,7 +103,6 @@
           ...actionColOptions,
         };
 
-        console.log('actionColOpt >--->', actionColOpt);
         return actionColOpt;
       });
 

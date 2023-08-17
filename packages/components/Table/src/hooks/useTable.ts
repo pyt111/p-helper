@@ -147,8 +147,9 @@ export function useTable(
       return getTableInstance?.().getSelectionData?.();
     },
     // 不想在外部监听Selection事件的，直接通过这个方法取
-    getEditRowRecord: (...args): EditRowRecordRow => {
-      return getTableInstance().getEditRowRecord(...args);
+    getEditRowRecord: (rows?: Recordable[], ...args): EditRowRecordRow => {
+      const tableData = getTableInstance().getTableData();
+      return getTableInstance().getEditRowRecord(tableData, ...args);
     },
     // 不想在外部监听Selection事件的，直接通过这个方法取
     getRowDataByRowIndex: (...args) => {

@@ -19,11 +19,17 @@ export interface ActionItem extends ExtractPropTypes<ButtonProps> {
   // 权限编码控制是否显示
   auth?: string | string[];
   // 业务控制是否显示
-  ifShow?: boolean | ((action: ActionItem, emitParams: Params) => boolean);
+  ifShow?:
+    | boolean
+    | ((
+        action: ActionItem,
+        emitParams: TableActionParams
+      ) => boolean | undefined);
   dynamicIfShow?:
     | boolean
-    | ((action: ActionItem, emitParams: Params) => boolean);
+    | ((action: ActionItem, emitParams: TableActionParams) => boolean);
   tooltip?: string | ElTooltipProps;
+  buttonName?: 'edit' | 'save' | 'cancel';
 }
 
 export interface PopConfirm {
