@@ -21,10 +21,7 @@ export interface ActionItem extends ExtractPropTypes<ButtonProps> {
   // 业务控制是否显示
   ifShow?:
     | boolean
-    | ((
-        action: ActionItem,
-        emitParams: TableActionParams
-      ) => boolean | undefined);
+    | ((action: ActionItem, emitParams: TableActionParams) => boolean);
   dynamicIfShow?:
     | boolean
     | ((action: ActionItem, emitParams: TableActionParams) => boolean);

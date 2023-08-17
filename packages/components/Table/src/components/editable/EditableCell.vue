@@ -488,17 +488,17 @@
     };
 
     // 编辑行
-    props.record.onEditRow = (key: EditRowKey, isIndex?: boolean) => {
+    props.record.onEditRow = (key?: EditRowKey, isIndex?: boolean) => {
       nextTick(() => {
         isArray(props.record?.editRowCbs) && props.record?.editRowCbs.forEach((fn) => fn(key, isIndex));
       })
     }
 
-    props.record.onEditRowSave = (key: EditRowKey, isIndex?: boolean) => {
+    props.record.onEditRowSave = (key?: EditRowKey, isIndex?: boolean) => {
       props.record.onSubmitEdit(key, isIndex)
     }
 
-    props.record.onEditRowCancel = (key: EditRowKey, isIndex?: boolean) => {
+    props.record.onEditRowCancel = (key?: EditRowKey, isIndex?: boolean) => {
       props.record.onCancelEdit(key, isIndex)
     }
   }

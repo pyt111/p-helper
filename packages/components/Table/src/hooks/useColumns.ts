@@ -103,16 +103,16 @@ export function useColumns(
         });
         updateTableActionUi();
       },
-      onEditRowSave(key: EditRowKey, isIndex?: boolean) {
-        const keys = findRowKeys(key, isIndex);
+      onEditRowSave(key?: EditRowKey, isIndex?: boolean) {
+        const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
         onCacheEditRows(keys, false);
         getEditRows().forEach((item) => {
           item.record?.onEditRowSave?.(keys, isIndex);
         });
         updateTableActionUi();
       },
-      onEditRowCancel(key: EditRowKey, isIndex?: boolean) {
-        const keys = findRowKeys(key, isIndex);
+      onEditRowCancel(key?: EditRowKey, isIndex?: boolean) {
+        const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
         onCacheEditRows(keys, false);
         getEditRows().forEach((item) => {
           item.record?.onEditRowCancel?.(keys, isIndex);
@@ -138,11 +138,11 @@ export function useColumns(
     {
       label: '保存',
       buttonName: 'save',
-      ifShow: (action, { row, record }) => {
+      ifShow: (action, { record }) => {
         return record.isEditableRow();
       },
-      onClick: ({ record, index }) => {
-        record.onEditRowSave(index, true);
+      onClick: ({ record }) => {
+        record.onEditRowSave();
       },
     },
     {
@@ -151,8 +151,8 @@ export function useColumns(
       ifShow: (action, { record }) => {
         return record.isEditableRow();
       },
-      onClick: ({ row, record }) => {
-        record.onEditRowCancel(row.id || row.key);
+      onClick: ({ record }) => {
+        record.onEditRowCancel();
       },
     },
   ];
