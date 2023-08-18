@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider :locale="zhCn" size="small">
+  <el-config-provider :locale="zhCn">
     <router-view v-slot="{ Component, route }">
       <transition appear mode="out-in" name="fade-transform">
         <component :is="Component" :key="route.fullPath" />
