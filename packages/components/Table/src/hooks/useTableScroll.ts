@@ -96,7 +96,9 @@ export function useTableScroll(
     const otherHeight =
       (resizeHeightOffset || 0) + paddingHeight + paginationHeight + formHeight;
     let height = boundingHeight - otherHeight;
-    height = (height > maxHeight! ? (maxHeight as number) : height) ?? height;
+    height =
+      (height > (maxHeight as number) ? (maxHeight as number) : height) ??
+      height;
     setTimeout(() => {
       setHeight(height);
     }, 100);
