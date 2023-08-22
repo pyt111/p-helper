@@ -54,7 +54,7 @@ export const buildModules = async () => {
       commonjs(),
       terser({
         compress: {
-          // drop_console: true,
+          drop_console: true,
         },
       }),
       esbuild({
