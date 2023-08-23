@@ -58,11 +58,11 @@
 
   export default defineComponent({
     name: 'BasicFormAction',
-    inheritAttrs: false,
     components: {
       BasicButton,
       // BasicArrow,
     },
+    inheritAttrs: false,
     props: {
       showActionButtonGroup: propTypes.bool.def(true),
       showResetButton: propTypes.bool.def(true),
@@ -140,7 +140,7 @@
 </script>
 
 <style lang="scss" scoped>
-  :deep(.el-form-item) {
+  .form-action:deep(.el-form-item) {
     .el-form-item__content {
       justify-content: v-bind('actionColOpt.style.justifyContent');
       flex-wrap: nowrap;
