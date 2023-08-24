@@ -34,7 +34,7 @@ export const buildModules = async () => {
     plugins: [
       DefineOptions(),
       vue({
-        isProduction: true,
+        isProduction: false,
       }) as Plugin,
       vueJsx() as Plugin,
       // 使用postcss处理scss样式
