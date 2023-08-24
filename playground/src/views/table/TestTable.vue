@@ -142,10 +142,12 @@
         // },
         componentProps: ({ row }) => ({
           icon: ({ index }) => (index ? 'code' : ''),
-          suffixIcon: ({ row, index }) => (index ? 'code' : ''),
+          suffixIcon: ({ row, index }) => (!index ? 'code' : ''),
           // size: '12',
           // suffixIcon: 'code',
+          class: 'asd',
           cellText: row.a,
+          // color: 'red',
         }),
         // customRender: ({ row, record, index }) => {
         //   return () => {

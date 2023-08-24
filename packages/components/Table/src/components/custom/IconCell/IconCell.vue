@@ -1,5 +1,5 @@
 <template>
-  <div :class="[ns.b()]" class="table-icon-cell-wrapper">
+  <div :class="[ns.b()]" class="table-icon-cell-wrapper" v-bind="$attrs">
     <slot>
       <div :class="ns.e('wrapper')">
         <Icon v-if="preIconValue" v-bind="IconPropsBind" :icon="preIconValue" />
@@ -29,13 +29,12 @@
 
   const ns = useNamespace('icon-cell');
   const props = defineProps(iconCellProps);
-  const attrs = useAttrs();
 
   const iconCellCallParams = computed<TableCustomCellParams>(() => {
     return {
-      row: attrs.row as Record<string, any>,
-      elColumn: attrs.elColumn as Record<string, any>,
-      index: attrs.index as number,
+      row: props.row as Record<string, any>,
+      elColumn: props.elColumn as Record<string, any>,
+      index: props.index as number,
       value: props.cellText,
     };
   });
@@ -56,7 +55,17 @@
   const suffixIconValue = computed(() => normalizeIcon(props.suffixIcon));
 
   const IconPropsBind = computed(() => {
-    const { icon, suffixIcon, cellText, ...rest } = props;
+    const {
+      icon,
+      suffixIcon,
+      cellText,
+      row,
+      componentProps,
+      component,
+      elColumn,
+      record,
+      ...rest
+    } = props;
     return rest;
   });
 </script>

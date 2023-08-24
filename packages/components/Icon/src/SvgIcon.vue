@@ -67,6 +67,8 @@
             // 如果没有originalFill 说明path本身没有fill值  是不需要覆盖
             if (originalFill) {
               pathElement.setAttribute('fill', color ? color : originalFill);
+            } else if (color) {
+              pathElement.setAttribute('fill', color);
             }
           });
         }
@@ -83,8 +85,8 @@
     },
   });
 </script>
-<style lang="scss" scoped>
-  .svg-icon {
+<style lang="scss">
+  .yee-svg-icon {
     display: inline-block;
     overflow: hidden;
     vertical-align: -0.15em;

@@ -1,5 +1,6 @@
-import { Slot, ref } from 'vue';
+import { Slot, h, ref } from 'vue';
 import { omit } from 'lodash-es';
+import { CustomCellComponent } from './components/custom/CustomCellComponent';
 import type { BasicColumn, TableComponentTypes } from './types/table';
 import type { FunctionalComponent, PropType, SetupContext, VNode } from 'vue';
 
@@ -49,6 +50,22 @@ const BasicColumnComponent = (props: FComponentProps) => {
         },
       }
     );
+  }
+
+  if (props.column.component) {
+    return RenderColumn(props, {
+      slots: {
+        default: ({ row, column, $index }) =>
+          h(CustomCellComponent, {
+            componentProps: props.column.componentProps,
+            row,
+            index: $index,
+            record: props.column.record || {},
+            elColumn: column,
+            component: props.column.component,
+          }),
+      },
+    });
   }
 
   if (props.column.customRender) {

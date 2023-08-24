@@ -2,13 +2,13 @@ import { h, isVNode } from 'vue';
 import { isFunction, isString } from 'lodash-es';
 import { componentMap, customComponentMap } from '../../../componentMap';
 import type { ComponentPropsFn, TableComponentTypes } from '../../types/table';
-import type { Component, ExtractPropTypes, PropType, VNode } from 'vue';
+import type { Component, FunctionalComponent, PropType, VNode } from 'vue';
 import type {
   ComponentType,
   CustomComponentType,
 } from '../../types/componentType';
 
-const basicProps = {
+export const basicProps = {
   componentProps: {
     type: [Object, Function] as PropType<Recordable | ComponentPropsFn>,
   },
@@ -18,6 +18,9 @@ const basicProps = {
   row: {
     type: Object as PropType<Recordable>,
   },
+  record: {
+    type: Object as PropType<Recordable>,
+  },
   elColumn: {
     type: Object as PropType<Recordable>,
   },
@@ -25,10 +28,11 @@ const basicProps = {
     type: Number as PropType<number>,
   },
 };
-export const CustomCellComponent = (
-  props: ExtractPropTypes<typeof basicProps>,
+// @ts-ignore
+export const CustomCellComponent: FunctionalComponent = (
+  props: typeof basicProps,
   { attrs, slots }: any
-): VNode | Component | JSX.Element | string => {
+) => {
   // eslint-disable-next-line vue/no-setup-props-destructure
   let Comp: VNode | Component | JSX.Element | string = '';
   if (!props.component) {
@@ -52,9 +56,11 @@ export const CustomCellComponent = (
     componentMap.has(props.component as ComponentType)
   ) {
     Comp = componentMap.get(props.component as ComponentType) as Component;
-  } else if (customComponentMap.has(props.component as CustomComponentType)) {
+  } else if (
+    customComponentMap.has(props.component as unknown as CustomComponentType)
+  ) {
     Comp = customComponentMap.get(
-      props.component as CustomComponentType
+      props.component as unknown as CustomComponentType
     ) as Component;
   } else {
     return Comp; // 纯字符串

@@ -39,6 +39,3 @@
     { [`${prefixCls}-normal`]: props.normal },
   ]);
 </script>
-<style lang="scss">
-
-</style>

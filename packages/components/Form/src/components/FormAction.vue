@@ -139,8 +139,8 @@
   });
 </script>
 
-<style lang="scss" scoped>
-  .form-action:deep(.el-form-item) {
+<style lang="scss">
+  .form-action .el-form-item {
     .el-form-item__content {
       justify-content: v-bind('actionColOpt.style.justifyContent');
       flex-wrap: nowrap;
