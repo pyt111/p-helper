@@ -106,6 +106,7 @@
       const paginationElRef = ref(null);
       const tableData = ref([]);
       const innerPropsRef = ref();
+      const elTablePropsKeys = Object.keys(ElTable.props);
 
       const [registerForm, formActions] = useForm({
         isCol: false,
@@ -208,11 +209,11 @@
         return propsData;
       });
 
-      const elTablePropsKeys = Object.keys(ElTable.props);
       const getTableProps = computed(() => {
         return {
           headerCellClassName: 'table-header-background', // 头部默认背景色
           ...pick(unref(getBindValues), elTablePropsKeys),
+          ...attrs,
         };
       });
 

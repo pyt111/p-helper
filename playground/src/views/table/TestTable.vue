@@ -3,7 +3,7 @@
     <el-button @click="openModal(true)">asd</el-button>
     <el-button @click="onAdd">新增</el-button>
     <el-button @click="onEdit">编辑行</el-button>
-    <BasicTable @register="register">
+    <BasicTable @register="register" @select="onSelect">
       <template #form-formBottom />
     </BasicTable>
 
@@ -392,6 +392,9 @@
     ],
   });
 
+  const onSelect = (v) => {
+    console.log('onSelect >--->', v);
+  };
   const onAdd = () => {
     const d = insertTableDataRecord({}, 0);
     const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
