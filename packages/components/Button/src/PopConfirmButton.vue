@@ -44,7 +44,7 @@
         if (!props.enable) {
           return Button;
         }
-        console.log('getBindValues >--->', bindValues);
+        // console.log('getBindValues >--->', bindValues);
         return h(ElPopconfirm, bindValues, { reference: () => Button });
       };
     },

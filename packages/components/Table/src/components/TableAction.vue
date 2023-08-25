@@ -47,7 +47,6 @@
       <slot name="more" />
       <el-button
         v-if="!$slots.more"
-        size="small"
         text
         type="primary"
         class="button-more"
@@ -151,7 +150,6 @@
             unref((table as any)?.wrapRef.value) ?? document.body,
           link: true,
           bg: false,
-          size: 'small',
           ...propsActions,
           ...(popConfirm || {}),
           onClick: onClick?.bind(null, emitParams),
