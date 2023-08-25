@@ -2,7 +2,7 @@ import { Slot, h, ref } from 'vue';
 import { omit } from 'lodash-es';
 import { CustomCellComponent } from './components/custom/CustomCellComponent';
 import type { BasicColumn, TableComponentTypes } from './types/table';
-import type { FunctionalComponent, PropType, SetupContext, VNode } from 'vue';
+import type { PropType } from 'vue';
 
 type FComponentProps = {
   column: BasicColumn;

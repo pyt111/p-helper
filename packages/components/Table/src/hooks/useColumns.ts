@@ -1,6 +1,7 @@
 import { computed, h, ref, shallowRef, toRaw, unref, watch } from 'vue';
 import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
 import { cloneDeep } from 'lodash-es';
+import componentSetting from '@p-helper/constants/settings/componentSetting';
 import { renderEditCell } from '../components/editable';
 import { ACTION_COLUMN_FLAG, INDEX_COLUMN_FLAG, ROW_KEY } from '../const';
 import TableAction from '../components/TableAction.vue';
@@ -303,7 +304,11 @@ export function useColumns(
         }
         // 设置一些全局默认属性
         Object.assign(item, {
-          align: propsRef.value.columnDefaultAlign || item.align,
+          ...componentSetting.table.column,
+          align:
+            item.align ??
+            propsRef.value.columnDefaultAlign ??
+            componentSetting.table.column.align,
         });
       });
     }

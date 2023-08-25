@@ -1,6 +1,6 @@
 // Used to configure the general configuration of some components without modifying the components
 
-import type { SorterResult } from '@p-helper/components/Table';
+import type { BasicColumn, SorterResult } from '@p-helper/components/Table';
 
 export default {
   // basic-table setting
@@ -41,6 +41,7 @@ export default {
     defaultFilterFn: (data: Partial<Recordable<string[]>>) => {
       return data;
     },
+    column: {} as BasicColumn,
   },
   vxeTable: {
     table: {

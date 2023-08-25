@@ -11,7 +11,11 @@ import App from './App.vue';
 import { setupRouter } from '@/router';
 
 setSetting({
-  table: {},
+  table: {
+    column: {
+      // align: 'left',
+    },
+  },
 });
 
 const app = createApp(App);

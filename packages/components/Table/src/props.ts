@@ -40,7 +40,6 @@ export type TableApi = (data?: Record<string, any>) => Promise<any>;
 export const basicProps = {
   columnDefaultAlign: {
     type: String as PropType<BasicColumn['align']>,
-    default: '',
   },
   editRow: {
     type: [Boolean, Function] as PropType<

@@ -81,11 +81,13 @@
       {
         prop: 'ds',
         label: 'ds',
+        align: 'center',
         children: [
           {
             prop: 'ds1',
             label: 'ds1',
             edit: true,
+            align: 'right',
           },
           {
             prop: 'ds2',
