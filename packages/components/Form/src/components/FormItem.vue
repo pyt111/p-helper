@@ -227,11 +227,12 @@
         }
 
         // Maximum input length rule check
-        const characterInx = rules.findIndex((val) => val.max);
-        if (characterInx !== -1 && !rules[characterInx].validator) {
-          rules[characterInx].message = rules[characterInx].message;
-        }
+        // const characterInx = rules.findIndex((val) => val.max);
+        // if (characterInx !== -1 && !rules[characterInx].validator) {
+        //   rules[characterInx].message = rules[characterInx].message;
+        // }
         const rootRules = formRules?.[field] || [];
+        // @ts-ignore
         return [...rootRules, ...(itemProps?.rules || []), ...rules];
       }
 
