@@ -6,21 +6,32 @@
     @click="props.onClick"
   >
     <template #default="data">
-      <Icon v-if="props.preIcon" :icon="props.preIcon" :size="props.iconSize" />
+      <ActionIcon
+        v-if="preIconValue"
+        name="pre"
+        :icon="preIconValue"
+        :icon-size="props.iconSize"
+        :color="props.color"
+      />
       <slot v-bind="data || {}" />
-      <Icon
-        v-if="props.postIcon"
-        :icon="props.postIcon"
-        :size="props.iconSize"
+      <ActionIcon
+        v-if="suffixIconValue"
+        name="suffix"
+        :icon="suffixIconValue"
+        :icon-size="props.iconSize"
+        :color="props.color"
       />
     </template>
   </el-button>
 </template>
 <script lang="ts" setup>
-  import { computed, unref } from 'vue';
+  import { computed, h, toRaw, unref } from 'vue';
   import Icon from '@p-helper/components/Icon/src/Icon.vue';
   import { useAttrs } from '@p-helper/hooks/core/useAttrs';
+  import { ElButton, ElIcon } from 'element-plus';
+  import { isObject } from 'lodash-es';
   import { buttonProps } from './props';
+  import { ActionIcon } from './ActionIcon';
 
   defineOptions({
     name: 'PButton',
@@ -33,16 +44,30 @@
     const { colorClassName, disabled } = props;
     return [
       {
+        'basic-button': true,
         [`yee-btn-${colorClassName}`]: !!colorClassName,
         [`is-disabled`]: disabled,
       },
     ];
   });
+  // 规范化icon
+  const normalizeIcon = (icon) => {
+    if (!icon) {
+      return;
+    }
+    if (isObject(icon)) {
+      return toRaw(icon);
+    }
+    const iconStr = icon;
+    return iconStr.endsWith('|svg') ? iconStr : `${iconStr}|svg`;
+  };
 
-  // get inherit binding value
+  const preIconValue = computed(() => normalizeIcon(props.preIcon));
+  const suffixIconValue = computed(() => normalizeIcon(props.suffixIcon));
+
   const getBindValue = computed(() => ({
-    icon: props.elIcon,
     ...unref(attrs),
-    ...props,
+    ...unref(props),
+    icon: toRaw(props.elIcon),
   }));
 </script>

@@ -37,7 +37,12 @@
 
       return () => {
         const bindValues = omit(unref(getBindValues), 'enable');
-        const btnBind = omit(bindValues, 'title') as Recordable;
+        const btnBind = omit(bindValues, [
+          'title',
+          'confirmButtonText',
+          'cancelButtonText',
+          'getPopupContainer',
+        ]) as Recordable;
         if (btnBind.disabled) btnBind.colorClassName = '';
         const Button = h(BasicButton, btnBind, extendSlots(slots));
 

@@ -75,3 +75,13 @@
     margin-left: 10px;
   }
 }
+
+.basic-button  {
+  .el-icon,
+  .button-icon--pre {
+    margin-right: 4px;
+  }
+  .button-icon--suffix {
+    margin-left: 4px;
+  }
+}

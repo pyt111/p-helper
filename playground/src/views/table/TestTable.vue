@@ -14,7 +14,8 @@
 </template>
 
 <script lang="tsx" setup>
-  import { computed, nextTick, ref } from 'vue';
+import {computed, h, nextTick, ref} from 'vue';
+  import { View  } from '@element-plus/icons-vue'
   import {
     BasicForm,
     BasicModal,
@@ -46,6 +47,7 @@
       return params;
     },
     api: async () => {
+      console.log('111 >--->', );
       return {
         data: [
           {
@@ -235,6 +237,9 @@
         ifShow: (action, { row, record }) => {
           return !record.isEditableRow();
         },
+        elIcon: View,
+        // suffixIcon: 'code',
+        // preIcon: 'code',
         onClick: (obj) => {
           const { index, row, record } = obj;
           console.log('row.id >--->', row.id, row);

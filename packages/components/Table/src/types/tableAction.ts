@@ -1,3 +1,4 @@
+import type { BasicButtonProps } from '../../../Button/src/props';
 import type {
   Params,
   TableActionParams,
@@ -6,28 +7,29 @@ import type { CSSProperties, Component, ExtractPropTypes } from 'vue';
 import type { ElTooltipProps } from 'element-plus/es/components/tooltip';
 import type { ButtonProps } from 'element-plus/es/components/button';
 
-export interface ActionItem extends ExtractPropTypes<ButtonProps> {
-  onClick?: (obj: TableActionParams) => void;
-  label?: string;
-  divided?: boolean;
-  colorClassName?: 'success' | 'error' | 'warning' | 'danger';
-  icon?: string;
-  elIcon?: string | Component;
-  popConfirm?: PopConfirm;
-  disabled?: boolean;
-  divider?: boolean;
-  // 权限编码控制是否显示
-  auth?: string | string[];
-  // 业务控制是否显示
-  ifShow?:
-    | boolean
-    | ((action: ActionItem, emitParams: TableActionParams) => boolean);
-  dynamicIfShow?:
-    | boolean
-    | ((action: ActionItem, emitParams: TableActionParams) => boolean);
-  tooltip?: string | ElTooltipProps;
-  buttonName?: 'edit' | 'save' | 'cancel';
-}
+export type ActionItem = Partial<
+  ButtonProps &
+    BasicButtonProps & {
+      onClick?: (obj: TableActionParams) => void;
+      label?: string;
+      divided?: boolean;
+      colorClassName?: 'success' | 'error' | 'warning' | 'danger';
+      popConfirm?: PopConfirm;
+      disabled?: boolean;
+      divider?: boolean;
+      // 权限编码控制是否显示
+      auth?: string | string[];
+      // 业务控制是否显示
+      ifShow?:
+        | boolean
+        | ((action: ActionItem, emitParams: TableActionParams) => boolean);
+      dynamicIfShow?:
+        | boolean
+        | ((action: ActionItem, emitParams: TableActionParams) => boolean);
+      tooltip?: string | ElTooltipProps;
+      buttonName?: 'edit' | 'save' | 'cancel';
+    }
+>;
 
 export interface PopConfirm {
   title: string;

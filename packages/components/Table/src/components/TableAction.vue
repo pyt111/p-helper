@@ -45,12 +45,7 @@
       trigger="click"
     >
       <slot name="more" />
-      <el-button
-        v-if="!$slots.more"
-        text
-        type="primary"
-        class="button-more"
-      >
+      <el-button v-if="!$slots.more" text type="primary" class="button-more">
         {{ dropDownButtonText }}
         <el-icon><MoreFilled /></el-icon>
       </el-button>
@@ -136,6 +131,7 @@
   });
 
   const getActions = computed(() => {
+    console.log('asd >--->', );
     const emitParams = unref(getemitParams);
     return (toRaw(props.actions) || [])
       .filter((action) => {
