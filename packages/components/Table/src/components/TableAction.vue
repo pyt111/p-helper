@@ -131,7 +131,6 @@
   });
 
   const getActions = computed(() => {
-    console.log('asd >--->', );
     const emitParams = unref(getemitParams);
     return (toRaw(props.actions) || [])
       .filter((action) => {

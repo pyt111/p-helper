@@ -14,8 +14,7 @@
 </template>
 
 <script lang="tsx" setup>
-import {computed, h, nextTick, ref} from 'vue';
-  import { View  } from '@element-plus/icons-vue'
+  import { computed, h, nextTick, ref } from 'vue';
   import {
     BasicForm,
     BasicModal,
@@ -25,6 +24,7 @@ import {computed, h, nextTick, ref} from 'vue';
     useModal,
     useTable,
   } from '@p-helper/components';
+  import { View } from '@element-plus/icons-vue';
   import type { BasicColumn } from '@p-helper/components';
   // TestTable
 
@@ -47,7 +47,6 @@ import {computed, h, nextTick, ref} from 'vue';
       return params;
     },
     api: async () => {
-      console.log('111 >--->', );
       return {
         data: [
           {
@@ -237,6 +236,7 @@ import {computed, h, nextTick, ref} from 'vue';
         ifShow: (action, { row, record }) => {
           return !record.isEditableRow();
         },
+        icon: 'code|svg',
         elIcon: View,
         // suffixIcon: 'code',
         // preIcon: 'code',
@@ -292,6 +292,10 @@ import {computed, h, nextTick, ref} from 'vue';
           field: 'asd',
           label: 'ssss',
           component: 'Input',
+          componentProps: {
+            type: 'textarea',
+            rows: 4,
+          },
         },
         {
           field: 'parentId',

@@ -11,9 +11,11 @@ export const buttonProps = {
   link: { type: Boolean },
   label: { type: String },
   disabled: { type: Boolean },
+  // 支持element-plus的图标与Icon组件
   preIcon: { type: [String, Object] },
+  // 支持element-plus的图标与Icon组件
   suffixIcon: { type: [String, Object] },
-  // 按钮图标 只支持使用svg图片的name
+  // 按钮图标 只支持使用svg图片的name, 如code|svg, 传给Icon组件
   icon: { type: [String] },
   // element-plus图标
   elIcon: { type: [String, Object] },

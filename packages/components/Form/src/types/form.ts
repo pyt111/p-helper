@@ -171,14 +171,17 @@ export type FormSchemaExpand = Readonly<
   } & (
     | {
         component: 'Input';
-        componentProps?: (ComponentProps | Partial<InputProps>) &
-          Partial<{
-            onChange: ((...args: any[]) => any) | undefined;
-            maxlength: string | number;
-            minlength: string | number;
-            max: string | number;
-            min: string | number;
-          }>;
+        componentProps?:
+          | ComponentProps
+          | (Partial<InputProps> &
+              Partial<{
+                onChange: ((...args: any[]) => any) | undefined;
+                maxlength: string | number;
+                minlength: string | number;
+                max: string | number;
+                min: string | number;
+              }> &
+              Recordable);
       }
     | {
         component: 'Select';

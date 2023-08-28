@@ -1,5 +1,5 @@
 import { propTypes } from '@p-helper/utils/propTypes';
-import type { FieldMapToTime, FormSchema } from './types/form';
+import type { FieldMapToTime, FormActionType, FormSchema } from './types/form';
 import type { CSSProperties, PropType } from 'vue';
 import type { ColEx } from './types';
 import type { TableActionType } from '@p-helper/components/Table';
@@ -151,3 +151,11 @@ export const excludeFormPropsKeys = [
   'colon',
   'rowProps',
 ];
+
+export const basicFormEmits = {
+  'advanced-change': () => [],
+  register: (instance: FormActionType) => [instance],
+  reset: (val: Recordable) => [val],
+  submit: (res: any) => [res],
+  'field-value-change': (key: string, val: any) => [key, val],
+};

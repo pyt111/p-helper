@@ -86,7 +86,7 @@
   import { createFormContext } from './hooks/useFormContext';
   import { useAutoFocus } from './hooks/useAutoFocus';
   // import { useModalContext } from '@p-helper/components/Modal';
-  import { basicProps, excludeFormPropsKeys } from './props';
+  import { basicFormEmits, basicProps, excludeFormPropsKeys } from './props';
   import type { Ref } from 'vue';
   import type { AdvanceState } from './types/hooks';
   import type { FormActionType, FormProps, FormSchema } from './types/form';
@@ -95,13 +95,7 @@
     name: 'BasicForm',
     components: { FormItem, FormAction },
     props: basicProps,
-    emits: [
-      'advanced-change',
-      'reset',
-      'submit',
-      'register',
-      'field-value-change',
-    ],
+    emits: basicFormEmits,
     setup(props, { emit, attrs }) {
       const formModel = reactive<any>({});
       // const modalFn = useModalContext();
@@ -357,9 +351,10 @@
         formActionType: formActionType as any,
         setFormModel,
         getFormClass,
-        getFormActionBindProps: computed(
-          () => ({ ...getProps.value, ...advanceState })
-        ),
+        getFormActionBindProps: computed(() => ({
+          ...getProps.value,
+          ...advanceState,
+        })),
         ...formActionType,
         formWrapperRef,
         width,
