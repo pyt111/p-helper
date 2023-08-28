@@ -323,7 +323,7 @@
   const [registerModal, { openModal, closeModal }] = useModal();
   const [registerForm, { submit, getFieldsValue }] = useForm({
     // rules: {
-    //   asd: [{ message: '请输入', required: true, trigger: 'blur' }],
+    //   asd: [{ message: '请输入11', required: true, trigger: 'blur' }],
     //   // bb: [
     //   //   { message: '请输入111', required: true, trigger: 'blur' },
     //   //   {
@@ -338,6 +338,7 @@
         label: 'ssss',
         component: 'DatePicker',
         required: true,
+        rules: [{ required: true, message: '请选择日期' }],
       },
       {
         field: 'ssd',

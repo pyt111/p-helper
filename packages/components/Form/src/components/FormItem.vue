@@ -139,6 +139,7 @@
       }
 
       function handleRules(): ValidationRule[] {
+        const { rules: formRules } = props.formProps;
         const {
           rules: defRules = [],
           component,
@@ -147,6 +148,7 @@
           dynamicRules,
           required,
           itemProps,
+          field,
         } = props.schema;
 
         if (isFunction(dynamicRules)) {
@@ -229,7 +231,8 @@
         if (characterInx !== -1 && !rules[characterInx].validator) {
           rules[characterInx].message = rules[characterInx].message;
         }
-        return [...(itemProps?.rules || []), ...rules];
+        const rootRules = formRules?.[field] || [];
+        return [...rootRules, ...(itemProps?.rules || []), ...rules];
       }
 
       function renderComponent() {
