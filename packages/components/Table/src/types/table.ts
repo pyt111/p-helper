@@ -1,3 +1,4 @@
+import type { TableColumnInstance } from 'element-plus';
 import type {
   EditRecordRow,
   EditRowRecordRow,
@@ -15,7 +16,6 @@ import type { ExtractPropTypes, VNode, VNodeChild, h } from 'vue';
 import type ElTree from 'element-plus/es/components/tree';
 
 export declare type SortOrder = 'ascend' | 'descend';
-
 export interface FetchParams {
   searchInfo?: Recordable;
   page?: number;
@@ -204,7 +204,9 @@ export type ColumnTypesExpand =
       component?: 'TableIconCell';
       componentProps?: ComponentPropsFn | ComponentPropsMap['TableIconCell'];
     };
-export type BasicColumn = ColumnTypes & ColumnTypesExpand;
+export type BasicColumn = Partial<TableColumnInstance> &
+  ColumnTypes &
+  ColumnTypesExpand;
 
 export type TypeOrReturnTypeFun<T> = T | ((params: TableActionParams) => T);
 
