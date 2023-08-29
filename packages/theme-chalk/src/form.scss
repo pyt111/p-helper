@@ -7,6 +7,12 @@
       }
     }
   }
+
+  .form-action .el-form-item {
+    .el-form-item__content {
+      flex-wrap: nowrap;
+    }
+  }
 }
 
 .el-dialog {

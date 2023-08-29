@@ -138,12 +138,3 @@
     },
   });
 </script>
-
-<style lang="scss">
-  .form-action .el-form-item {
-    .el-form-item__content {
-      justify-content: v-bind('actionColOpt.style.justifyContent');
-      flex-wrap: nowrap;
-    }
-  }
-</style>
