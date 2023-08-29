@@ -149,6 +149,7 @@
     .form-content-wrapper {
       display: flex;
       justify-content: flex-end;
+      align-items: flex-start;
       flex-wrap: wrap;
 
       .form-left {

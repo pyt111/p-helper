@@ -4,7 +4,9 @@
     <el-button @click="onAdd">新增</el-button>
     <el-button @click="onEdit">编辑行</el-button>
     <BasicTable @register="register" @select="onSelect">
-      <template #form-formBottom />
+      <template #form-formLeft>
+        <el-button>ddd</el-button>
+      </template>
     </BasicTable>
 
     <BasicModal @register="registerModal" @ok="onOk">
@@ -293,8 +295,6 @@
           label: 'ssss',
           component: 'Input',
           componentProps: {
-            type: 'textarea',
-            rows: 4,
           },
         },
         {
@@ -339,6 +339,14 @@
         component: 'DatePicker',
         required: true,
         rules: [{ required: true, message: '请选择日期' }],
+      },
+      {
+        field: 'dst',
+        label: '数字',
+        component: 'Render',
+        render: () => {
+          return;
+        },
       },
       {
         field: 'ssd',
