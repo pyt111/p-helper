@@ -82,8 +82,8 @@ export function useColumns(
       return [];
     }
 
-    handelIndexColumn(propsRef, getPaginationInfo, columnsRef.value);
-    handleActionColumn(propsRef, columnsRef.value);
+    handelIndexColumn(propsRef, getPaginationInfo, columns);
+    handleActionColumn(propsRef, columns);
     return columns;
   });
   // 缓存当前行编辑状态，便于外部获取
