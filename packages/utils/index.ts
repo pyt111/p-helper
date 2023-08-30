@@ -9,6 +9,7 @@ export * from './error';
 export * from './types';
 export * from './objects';
 export * from './typescript';
+export * from './file';
 
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   let key: string;
