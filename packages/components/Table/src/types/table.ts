@@ -103,6 +103,7 @@ export type ColumnTypes = {
   fixed?: boolean | 'left' | 'right';
   custom?: boolean;
   flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION';
+  totalIndex?: boolean;
   // 是否默认隐藏列，可以在列配置中显示
   defaultHidden?: boolean;
   formatter?: (

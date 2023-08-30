@@ -3,8 +3,16 @@ import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
 import { cloneDeep } from 'lodash-es';
 import componentSetting from '@p-helper/constants/settings/componentSetting';
 import { renderEditCell } from '../components/editable';
-import { ACTION_COLUMN_FLAG, INDEX_COLUMN_FLAG, ROW_KEY } from '../const';
+import {
+  ACTION_COLUMN_FLAG,
+  INDEX_COLUMN_FLAG,
+  PAGE_SIZE,
+  ROW_KEY,
+} from '../const';
 import TableAction from '../components/TableAction.vue';
+import type { usePagination } from './usePagination';
+import type { PaginationProps } from '../types/pagination';
+import type { useDataSource } from './useDataSource';
 import type {
   BasicColumn,
   BasicTableProps,
@@ -16,9 +24,52 @@ import type { ComputedRef, Ref } from 'vue';
 
 export type EditRowKey = string | number | (string | number)[];
 
+export type useColumnsOptions = {
+  getRowKey: Ref<string>;
+  getDataSource: ReturnType<typeof useDataSource>['getDataSource'];
+  getRowDataByRowIndex: ReturnType<
+    typeof useDataSource
+  >['getRowDataByRowIndex'];
+  findTableDataRecord: ReturnType<typeof useDataSource>['findTableDataRecord'];
+  getPaginationInfo: ReturnType<typeof usePagination>['getPaginationInfo'];
+};
+
+// 这里为了生成默认的操作列，并做一些处理
+const convertParamsTool = <T>(
+  acs: TypeOrReturnTypeFun<T>,
+  params: TableActionParams
+) => {
+  if (!acs) return acs;
+  return isFunction(acs) ? acs(params) : acs;
+};
+
+const handelIndexColumn = (
+  propsRef: ComputedRef<BasicTableProps>,
+  getPaginationRef: ComputedRef<boolean | PaginationProps>,
+  columns: BasicColumn[]
+) => {
+  const indColumn = columns.find((column) => column.type === 'index');
+  if (!indColumn) return;
+  if (indColumn.totalIndex) {
+    const getPagination = unref(getPaginationRef);
+
+    const index =
+      indColumn.index ??
+      ((i) => {
+        if (isBoolean(getPagination)) {
+          return `${i + 1}`;
+        }
+        const { currentPage = 1, pageSize = PAGE_SIZE } = getPagination;
+        return ((currentPage < 1 ? 1 : currentPage) - 1) * pageSize + i + 1;
+      });
+    Object.assign(indColumn, {
+      index,
+    });
+  }
+};
 export function useColumns(
   propsRef: ComputedRef<BasicTableProps>,
-  { getRowKey, getDataSource, getRowDataByRowIndex, findTableDataRecord }
+  { getRowKey, getRowDataByRowIndex, getPaginationInfo }: useColumnsOptions
 ) {
   const columnsRef = ref(unref(propsRef).columns) as unknown as Ref<
     BasicColumn[]
@@ -30,9 +81,11 @@ export function useColumns(
     if (!columns) {
       return [];
     }
+
+    handelIndexColumn(propsRef, getPaginationInfo, columnsRef.value);
+    handleActionColumn(propsRef, columnsRef.value);
     return columns;
   });
-
   // 缓存当前行编辑状态，便于外部获取
   const cacheEditRows = shallowRef({});
 
@@ -157,15 +210,6 @@ export function useColumns(
       },
     },
   ];
-
-  // 这里为了生成默认的操作列，并做一些处理
-  const convertParamsTool = <T>(
-    acs: TypeOrReturnTypeFun<T>,
-    params: TableActionParams
-  ) => {
-    if (!acs) return acs;
-    return isFunction(acs) ? acs(params) : acs;
-  };
 
   // 这里为了生成默认的操作列，并做一些处理
   const getEditRowActions = (params: TableActionParams) => {
@@ -293,7 +337,6 @@ export function useColumns(
     () => unref(propsRef).columns,
     (columns) => {
       columnsRef.value = columns;
-      handleActionColumn(propsRef, columnsRef.value);
       columns.forEach((item, i) => {
         if (item.type && ['index', 'selection', 'expand'].includes(item.type)) {
           item.showOverflowTooltip = false;

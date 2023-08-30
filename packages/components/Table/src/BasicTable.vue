@@ -170,10 +170,11 @@
       const { getViewColumns, getColumns, getEditRowRecord } = useColumns(
         getProps,
         {
-          getRowKey,
+          getRowKey: getRowKey as any,
           getDataSource,
           getRowDataByRowIndex,
           findTableDataRecord,
+          getPaginationInfo,
         }
       );
 

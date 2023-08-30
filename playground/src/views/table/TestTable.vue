@@ -82,6 +82,12 @@
         type: 'selection',
       },
       {
+        prop: 'index',
+        label: '序号',
+        type: 'index',
+        totalIndex: true,
+      },
+      {
         prop: 'ds',
         label: 'ds',
         align: 'center',
