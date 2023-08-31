@@ -90,7 +90,7 @@
       const renderFormItem = () => {
         return (
           <el-form-item>
-            {slots.submitBefore()}
+            {slots.submitBefore?.()}
 
             {props.showSubmitButton ? (
               <BasicButton
@@ -101,7 +101,7 @@
                 {getSubmitBtnOptions.value.label}
               </BasicButton>
             ) : null}
-            {slots.resetBefore()}
+            {slots.resetBefore?.()}
             {props.showResetButton ? (
               <BasicButton
                 type="primary"
@@ -111,13 +111,13 @@
                 {getResetBtnOptions.value.label}
               </BasicButton>
             ) : null}
-            {slots.advanceBefore()}
+            {slots.advanceBefore?.()}
             {props.showAdvancedButton && !props.hideAdvanceBtn ? (
               <BasicButton size="small" link={true} onClick={toggleAdvanced}>
                 {props.isAdvanced ? '收起' : '展开'}
               </BasicButton>
             ) : null}
-            {slots.advanceAfter()}
+            {slots.advanceAfter?.()}
           </el-form-item>
         );
       };
