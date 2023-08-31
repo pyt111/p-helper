@@ -9,6 +9,9 @@
   }
 
   .form-action .el-form-item {
+    .el-button {
+      margin-left: 8px;
+    }
     .el-form-item__content {
       flex-wrap: nowrap;
     }

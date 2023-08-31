@@ -1,49 +1,4 @@
-<template>
-  <el-col
-    v-if="showActionButtonGroup"
-    v-bind="actionColOpt"
-    class="form-action"
-  >
-    <div style="width: 100%">
-      <el-form-item>
-        <slot name="submitBefore" />
-
-        <BasicButton
-          v-if="showSubmitButton"
-          class="ml-8px"
-          type="primary"
-          v-bind="getSubmitBtnOptions"
-          @click="submitAction"
-        >
-          {{ getSubmitBtnOptions.label }}
-        </BasicButton>
-
-        <slot name="resetBefore" />
-        <BasicButton
-          v-if="showResetButton"
-          class="ml-8px"
-          type="primary"
-          v-bind="getResetBtnOptions"
-          @click="resetAction"
-        >
-          {{ getResetBtnOptions.label }}
-        </BasicButton>
-        <slot name="advanceBefore" />
-        <BasicButton
-          v-if="showAdvancedButton && !hideAdvanceBtn"
-          size="small"
-          link
-          @click="toggleAdvanced"
-        >
-          {{ isAdvanced ? '收起' : '展开' }}
-          <!--          <BasicArrow class="ml-1" :expand="!isAdvanced" up />-->
-        </BasicButton>
-        <slot name="advanceAfter" />
-      </el-form-item>
-    </div>
-  </el-col>
-</template>
-<script lang="ts">
+<script lang="tsx">
   //import type { ButtonProps } from 'ant-design-vue/es/button/buttonTypes';
   import { computed, defineComponent } from 'vue';
   import { BasicButton } from '@p-helper/components/Button';
@@ -85,8 +40,11 @@
       hideAdvanceBtn: propTypes.bool,
     },
     emits: ['toggle-advanced'],
-    setup(props, { emit }) {
+    setup(props, { emit, attrs, slots }) {
       const actionColOpt = computed(() => {
+        if (!attrs.isCol) {
+          return;
+        }
         const {
           showAdvancedButton,
           actionSpan: span,
@@ -127,13 +85,52 @@
       function toggleAdvanced() {
         emit('toggle-advanced');
       }
+      const { submitAction, resetAction } = useFormContext();
 
-      return {
-        actionColOpt,
-        getResetBtnOptions,
-        getSubmitBtnOptions,
-        toggleAdvanced,
-        ...useFormContext(),
+      const renderFormItem = () => {
+        return (
+          <el-form-item>
+            {slots.submitBefore()}
+
+            {props.showSubmitButton ? (
+              <BasicButton
+                type="primary"
+                {...getSubmitBtnOptions.value}
+                onClick={submitAction}
+              >
+                {getSubmitBtnOptions.value.label}
+              </BasicButton>
+            ) : null}
+            {slots.resetBefore()}
+            {props.showResetButton ? (
+              <BasicButton
+                type="primary"
+                {...getResetBtnOptions.value}
+                onClick={resetAction}
+              >
+                {getResetBtnOptions.value.label}
+              </BasicButton>
+            ) : null}
+            {slots.advanceBefore()}
+            {props.showAdvancedButton && !props.hideAdvanceBtn ? (
+              <BasicButton size="small" link={true} onClick={toggleAdvanced}>
+                {props.isAdvanced ? '收起' : '展开'}
+              </BasicButton>
+            ) : null}
+            {slots.advanceAfter()}
+          </el-form-item>
+        );
+      };
+
+      return () => {
+        if (attrs.isCol) {
+          return props.showActionButtonGroup ? (
+            <el-col {...actionColOpt.value} class="form-action">
+              <div style="width: 100%">{renderFormItem()}</div>
+            </el-col>
+          ) : null;
+        }
+        return renderFormItem();
       };
     },
   });
