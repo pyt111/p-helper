@@ -6,7 +6,7 @@
           <PopConfirmButton v-bind="action">
             <Icon
               v-if="action.icon"
-              :class="{ 'mr-1': !!action.label }"
+              :class="{ 'button-icon--pre': !!action.label }"
               :icon="action.icon"
             />
             <template v-if="action.label">{{ action.label }}</template>
@@ -16,7 +16,7 @@
       <PopConfirmButton v-else v-bind="action">
         <Icon
           v-if="action.icon"
-          :class="{ 'mr-1': !!action.label }"
+          :class="{ 'button-icon--pre': !!action.label }"
           :icon="action.icon"
         />
         <template v-if="action.label">{{ action.label }}</template>
@@ -183,24 +183,26 @@
     };
   }
 
-  const getDropdownList = computed((): any[] => {
+  const getDropdownList = computed((): ActionItem[] => {
     const emitParams = unref(getemitParams);
 
     const list = (toRaw(props.dropDownActions) || []).filter((action) => {
       return isIfShow(action);
     });
     return list.map((action, index) => {
-      const { label, popConfirm, onClick } = action;
+      const { popConfirm, onClick } = action;
       return {
+        icon: toRaw(action.icon || action.elIcon),
         ...action,
-        ...(popConfirm || {}),
+        popConfirm: {
+          ...popConfirm,
+          onConfirm: popConfirm?.confirm.bind(null, emitParams),
+          onCancel: popConfirm?.cancel?.bind(null, emitParams),
+        },
         onClick: onClick?.bind(null, emitParams),
-        onConfirm: popConfirm?.confirm.bind(null, emitParams),
-        onCancel: popConfirm?.cancel?.bind(null, emitParams),
-        text: label,
         divider: index < list.length - 1 ? props.divider : false,
         updateIndex: props.record?.updateIndex?.value,
-      };
+      } as ActionItem;
     });
   });
 </script>

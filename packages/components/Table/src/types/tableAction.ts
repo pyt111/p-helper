@@ -3,7 +3,6 @@ import type {
   Params,
   TableActionParams,
 } from '@p-helper/components/Table/src/components/editable';
-import type { CSSProperties, Component, ExtractPropTypes } from 'vue';
 import type { ElTooltipProps } from 'element-plus/es/components/tooltip';
 import type { ButtonProps } from 'element-plus/es/components/button';
 

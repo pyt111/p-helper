@@ -4,24 +4,45 @@
       <slot />
     </span>
     <template #dropdown>
-      <el-dropdown-menu>
-        <template v-for="item in dropMenuList" :key="`${item.text}`">
+      <el-dropdown-menu class="basic-table-action-pop-confirm">
+        <template v-for="item in dropMenuList" :key="`${item.label}`">
           <el-dropdown-item v-bind="getBindValues(item)" @click="onClose(item)">
-            <el-popconfirm v-if="popconfirm && item.popConfirm" v-bind="item">
+            <el-popconfirm
+              v-if="popconfirm && item.popConfirm"
+              v-bind="item.popConfirm"
+            >
               <template #reference>
                 <div class="trigger-item">
-                  <Icon
-                    v-if="item.popConfirm.icon"
-                    :icon="item.popConfirm.icon"
+                  <ActionIcon
+                    v-if="item.preIcon"
+                    :icon="item.preIcon"
+                    :order="item.label ? 'pre' : ''"
+                    v-bind="item.preIconProps"
                   />
-                  <Icon v-if="item.icon" :icon="item.icon" />
-                  <span>{{ item.text }}</span>
+                  <span>{{ item.label }}</span>
+                  <ActionIcon
+                    v-if="item.suffixIcon"
+                    :icon="item.suffixIcon"
+                    :order="item.label ? 'suffix' : ''"
+                    v-bind="item.suffixIconProps"
+                  />
                 </div>
               </template>
             </el-popconfirm>
             <template v-else>
-              <Icon v-if="item.icon" :icon="item.icon" />
-              <span>{{ item.text }}</span>
+              <ActionIcon
+                v-if="item.preIcon"
+                :order="item.label ? 'pre' : ''"
+                :icon="item.preIcon"
+                v-bind="item.preIconProps"
+              />
+              <span>{{ item.label }}</span>
+              <ActionIcon
+                v-if="item.suffixIcon"
+                :order="item.label ? 'suffix' : ''"
+                :icon="item.suffixIcon"
+                v-bind="item.suffixIconProps"
+              />
             </template>
           </el-dropdown-item>
         </template>
@@ -32,10 +53,10 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { Icon } from '@p-helper/components/Icon';
   import { omit } from 'lodash-es';
+  import { ActionIcon } from '@p-helper/components/Button';
+  import type { ActionItem } from '../../Table';
   import type { PropType } from 'vue';
-  import type { DropMenu } from './typing';
 
   const props = defineProps({
     popconfirm: Boolean,
@@ -46,7 +67,7 @@
       },
     },
     dropMenuList: {
-      type: Array as PropType<(DropMenu & Recordable)[]>,
+      type: Array as PropType<(ActionItem & Recordable)[]>,
       default: () => [],
     },
     selectedKeys: {
@@ -68,7 +89,3 @@
     return omit(item, ['popConfirm', 'confirm']);
   };
 </script>
-
-<style scoped lang="scss">
-
-</style>

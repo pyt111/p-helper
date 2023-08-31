@@ -1,5 +1,5 @@
 import { propTypes } from '@p-helper/utils/propTypes';
-import type { PropType } from 'vue';
+import type { ExtractPropTypes, PropType } from 'vue';
 
 export const iconProps = {
   // icon name
@@ -16,3 +16,5 @@ export const iconProps = {
   spin: propTypes.bool.def(false),
   prefix: propTypes.string.def(''),
 };
+
+export type BasicIconProps = ExtractPropTypes<typeof iconProps>;

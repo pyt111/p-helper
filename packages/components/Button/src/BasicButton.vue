@@ -7,34 +7,34 @@
   >
     <template #default="data">
       <ActionIcon
-        v-if="preIconValue"
-        name="pre"
-        :icon="preIconValue"
+        v-if="props.preIcon"
+        :order="props.label ? 'pre' : ''"
+        :icon="props.preIcon"
         :icon-size="props.iconSize"
         :color="props.color"
+        v-bind="props.preIconProps"
       />
       <slot v-bind="data || {}" />
       <ActionIcon
-        v-if="suffixIconValue"
-        name="suffix"
-        :icon="suffixIconValue"
+        v-if="props.suffixIcon"
+        :order="props.label ? 'suffix' : ''"
+        :icon="props.suffixIcon"
         :icon-size="props.iconSize"
         :color="props.color"
+        v-bind="props.suffixIconProps"
       />
     </template>
   </el-button>
 </template>
 <script lang="ts" setup>
-  import { computed, h, toRaw, unref } from 'vue';
-  import Icon from '@p-helper/components/Icon/src/Icon.vue';
+  import { computed, toRaw, unref } from 'vue';
   import { useAttrs } from '@p-helper/hooks/core/useAttrs';
-  import { ElButton, ElIcon } from 'element-plus';
-  import { isObject } from 'lodash-es';
+  import { ElButton } from 'element-plus';
   import { buttonProps } from './props';
   import { ActionIcon } from './ActionIcon';
 
   defineOptions({
-    name: 'PButton',
+    name: 'BasicButton',
     inheritAttrs: false,
   });
   const props = defineProps(buttonProps);
@@ -50,20 +50,6 @@
       },
     ];
   });
-  // 规范化icon
-  const normalizeIcon = (icon) => {
-    if (!icon) {
-      return;
-    }
-    if (isObject(icon)) {
-      return toRaw(icon);
-    }
-    const iconStr = icon;
-    return iconStr.endsWith('|svg') ? iconStr : `${iconStr}|svg`;
-  };
-
-  const preIconValue = computed(() => normalizeIcon(props.preIcon));
-  const suffixIconValue = computed(() => normalizeIcon(props.suffixIcon));
 
   const getBindValue = computed(() => ({
     ...unref(attrs),

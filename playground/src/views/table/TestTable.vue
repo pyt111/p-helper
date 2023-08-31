@@ -173,6 +173,7 @@
     actionColumn: {
       label: '操作',
       editRow: true,
+      minWidth: 280,
       editButtonsProps: () => {
         return [
           {
@@ -187,6 +188,7 @@
           // ifShow: (action, { row, record }) => {
           //   return !record.isEditableRow();
           // },
+          icon: 'code|svg',
           onClick: (obj) => {
             const { index, row, record } = obj;
             console.log('row.id >--->', row.id, row);
@@ -196,11 +198,19 @@
         },
         {
           label: '删除2',
-          onClick: (obj) => {
-            const { index, row, record } = obj;
-            deleteTableDataRecord(row.id || row.key);
-            record.onEditRow(record.getIsRowEditCacheRowKeys());
+          preIcon: View,
+          suffixIcon: 'code',
+          popConfirm: {
+            title: '提醒',
+            confirm: (obj) => {
+              console.log('obj >--->', obj);
+            },
           },
+          // onClick: (obj) => {
+          //   const { index, row, record } = obj;
+          //   deleteTableDataRecord(row.id || row.key);
+          //   record.onEditRow(record.getIsRowEditCacheRowKeys());
+          // },
         },
         {
           label: '删除3',
@@ -244,13 +254,17 @@
         ifShow: (action, { row, record }) => {
           return !record.isEditableRow();
         },
-        icon: 'code|svg',
+        // icon: 'code|svg',
         elIcon: View,
-        // suffixIcon: 'code',
-        // preIcon: 'code',
+        suffixIcon: 'code',
+        preIcon: 'code',
+        disabled: true,
+        // preIconProps: {
+        //   disabled: true,
+        // },
         onClick: (obj) => {
           const { index, row, record } = obj;
-          console.log('row.id >--->', row.id, row);
+          // console.log('row.id >--->', row.id, row);
           deleteTableDataRecord(row.id || row.key);
           record.onEditRow(record.getIsRowEditCacheRowKeys());
         },
@@ -283,6 +297,8 @@
         ifShow: (action, { row, record }) => {
           return !record.isEditableRow();
         },
+        preIcon: View,
+        suffixIcon: 'code',
         onClick: (obj) => {
           const { index, row, record } = obj;
           console.log('row.id >--->', row.id, row);
@@ -300,8 +316,7 @@
           field: 'asd',
           label: 'ssss',
           component: 'Input',
-          componentProps: {
-          },
+          componentProps: {},
         },
         {
           field: 'parentId',

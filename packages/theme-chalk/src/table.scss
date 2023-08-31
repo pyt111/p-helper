@@ -159,3 +159,19 @@
     }
   }
 }
+.basic-table-action-pop-confirm {
+ .trigger-item {
+   display: flex;
+   align-items: center;
+ }
+}
+.basic-table,
+.el-dropdown-menu {
+  .el-icon,
+  .button-icon--pre {
+    margin-right: 4px;
+  }
+  .button-icon--suffix {
+    margin-left: 4px;
+  }
+}
