@@ -28,15 +28,12 @@ export const buttonProps = {
 
 export const iconProps = {
   order: {
-    type: String as PropType<'pre' | 'suffix'>,
+    type: String as PropType<'pre' | 'suffix' | undefined | ''>,
   },
   // 支持element-plus的图标与Icon组件
   icon: {
     type: [String, Object] as PropType<string | object>,
   },
-  // iconProps: {
-  //   type: Object as PropType<Partial<BasicIconProps>>,
-  // },
   iconSize: { type: [Number, String] as PropType<string | number> },
   color: {
     type: String,

@@ -8,41 +8,21 @@
         <template v-for="item in dropMenuList" :key="`${item.label}`">
           <el-dropdown-item v-bind="getBindValues(item)" @click="onClose(item)">
             <el-popconfirm
-              v-if="popconfirm && item.popConfirm"
+              v-if="popconfirm && item.enablePopConfirm"
               v-bind="item.popConfirm"
             >
               <template #reference>
                 <div class="trigger-item">
-                  <ActionIcon
-                    v-if="item.preIcon"
-                    :icon="item.preIcon"
-                    :order="item.label ? 'pre' : ''"
-                    v-bind="item.preIconProps"
-                  />
-                  <span>{{ item.label }}</span>
-                  <ActionIcon
-                    v-if="item.suffixIcon"
-                    :icon="item.suffixIcon"
-                    :order="item.label ? 'suffix' : ''"
-                    v-bind="item.suffixIconProps"
-                  />
+                  <DropdownItemContent :action="item">
+                    <template v-if="item.label">{{ item.label }}</template>
+                  </DropdownItemContent>
                 </div>
               </template>
             </el-popconfirm>
             <template v-else>
-              <ActionIcon
-                v-if="item.preIcon"
-                :order="item.label ? 'pre' : ''"
-                :icon="item.preIcon"
-                v-bind="item.preIconProps"
-              />
-              <span>{{ item.label }}</span>
-              <ActionIcon
-                v-if="item.suffixIcon"
-                :order="item.label ? 'suffix' : ''"
-                :icon="item.suffixIcon"
-                v-bind="item.suffixIconProps"
-              />
+              <DropdownItemContent :action="item">
+                <template v-if="item.label">{{ item.label }}</template>
+              </DropdownItemContent>
             </template>
           </el-dropdown-item>
         </template>
@@ -54,7 +34,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { omit } from 'lodash-es';
-  import { ActionIcon } from '@p-helper/components/Button';
+  import DropdownItemContent from './DropdownItemContent';
   import type { ActionItem } from '../../Table';
   import type { PropType } from 'vue';
 

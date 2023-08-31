@@ -170,6 +170,7 @@
     useSearchForm: true,
     rowKey: 'id',
     // columnDefaultAlign: 'center',
+    dropDownButtonText: '更多',
     actionColumn: {
       label: '操作',
       editRow: true,
@@ -188,18 +189,25 @@
           // ifShow: (action, { row, record }) => {
           //   return !record.isEditableRow();
           // },
-          icon: 'code|svg',
-          onClick: (obj) => {
-            const { index, row, record } = obj;
-            console.log('row.id >--->', row.id, row);
-            deleteTableDataRecord(row.id || row.key);
-            record.onEditRow(record.getIsRowEditCacheRowKeys());
+          popConfirm: {
+            title: '删除提醒',
+            confirm: () => {
+              console.log('删除提醒 >--->');
+            },
           },
+          icon: 'code|svg',
+          // onClick: (obj) => {
+          //   const { index, row, record } = obj;
+          //   console.log('row.id >--->', row.id, row);
+          //   deleteTableDataRecord(row.id || row.key);
+          //   record.onEditRow(record.getIsRowEditCacheRowKeys());
+          // },
         },
         {
           label: '删除2',
           preIcon: View,
           suffixIcon: 'code',
+          type: 'danger',
           popConfirm: {
             title: '提醒',
             confirm: (obj) => {

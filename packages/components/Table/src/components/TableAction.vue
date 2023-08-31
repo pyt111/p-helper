@@ -2,25 +2,31 @@
   <div :class="[prefixCls, getAlign]">
     <template v-for="(action, i) in getActions" :key="`${i}-${action.label}`">
       <el-tooltip v-if="action.tooltip" v-bind="getTooltip(action.tooltip)">
-        <div>
-          <PopConfirmButton v-bind="action">
-            <Icon
-              v-if="action.icon"
-              :class="{ 'button-icon--pre': !!action.label }"
-              :icon="action.icon"
-            />
-            <template v-if="action.label">{{ action.label }}</template>
-          </PopConfirmButton>
-        </div>
+        <DropdownItemContent :action="action">
+          <template v-if="action.label">{{ action.label }}</template>
+        </DropdownItemContent>
+        <!--        <div>-->
+        <!--          <PopConfirmButton v-bind="action">-->
+        <!--            <Icon-->
+        <!--              v-if="action.icon"-->
+        <!--              :class="{ 'button-icon&#45;&#45;pre': !!action.label }"-->
+        <!--              :icon="action.icon"-->
+        <!--            />-->
+        <!--            <template v-if="action.label">{{ action.label }}</template>-->
+        <!--          </PopConfirmButton>-->
+        <!--        </div>-->
       </el-tooltip>
-      <PopConfirmButton v-else v-bind="action">
-        <Icon
-          v-if="action.icon"
-          :class="{ 'button-icon--pre': !!action.label }"
-          :icon="action.icon"
-        />
+      <DropdownItemContent v-else :action="action">
         <template v-if="action.label">{{ action.label }}</template>
-      </PopConfirmButton>
+      </DropdownItemContent>
+      <!--      <PopConfirmButton v-else v-bind="action">-->
+      <!--        <Icon-->
+      <!--          v-if="action.icon"-->
+      <!--          :class="{ 'button-icon&#45;&#45;pre': !!action.label }"-->
+      <!--          :icon="action.icon"-->
+      <!--        />-->
+      <!--        <template v-if="action.label">{{ action.label }}</template>-->
+      <!--      </PopConfirmButton>-->
       <el-divider
         v-if="(divider || action.divider) && i < getActions.length - 1"
         class="action-divider"
@@ -62,7 +68,7 @@
   import { useTableContext } from '@p-helper/components/Table/src/hooks/useTableContext';
   import { useDesign } from '@p-helper/hooks/web/useDesign';
   import { ACTION_COLUMN_FLAG } from '@p-helper/components/Table/src/const';
-  import { Dropdown } from '@p-helper/components/Dropdown';
+  import { Dropdown, DropdownItemContent } from '@p-helper/components/Dropdown';
   import { omit } from 'lodash-es';
   import { MoreFilled } from '@element-plus/icons-vue';
   import type { PropType } from 'vue';
@@ -130,6 +136,27 @@
     };
   });
 
+  const genPublicProps = (
+    action: ActionItem,
+    emitParams: TableActionParams
+  ) => {
+    const { popConfirm, onClick } = action;
+    const propsActions = omit(action, 'ifShow');
+    return {
+      link: true,
+      bg: false,
+      ...propsActions,
+      popConfirm: {
+        ...popConfirm,
+        onConfirm: popConfirm?.confirm.bind(null, emitParams),
+        onCancel: popConfirm?.cancel?.bind(null, emitParams),
+      },
+      onClick: onClick?.bind(null, emitParams),
+      enablePopConfirm: !!popConfirm,
+      updateIndex: props.record?.updateIndex?.value,
+    };
+  };
+
   const getActions = computed(() => {
     const emitParams = unref(getemitParams);
     return (toRaw(props.actions) || [])
@@ -137,21 +164,12 @@
         return isIfShow(action);
       })
       .map((action) => {
-        const { popConfirm, onClick } = action;
-        const propsActions = omit(action, 'ifShow');
+        const publicProps = genPublicProps(action, emitParams);
 
         return {
           getPopupContainer: () =>
             unref((table as any)?.wrapRef.value) ?? document.body,
-          link: true,
-          bg: false,
-          ...propsActions,
-          ...(popConfirm || {}),
-          onClick: onClick?.bind(null, emitParams),
-          onConfirm: popConfirm?.confirm.bind(null, emitParams),
-          onCancel: popConfirm?.cancel?.bind(null, emitParams),
-          enable: !!popConfirm,
-          updateIndex: props.record?.updateIndex?.value,
+          ...publicProps,
         } as ActionItem;
       });
   });
@@ -190,18 +208,13 @@
       return isIfShow(action);
     });
     return list.map((action, index) => {
-      const { popConfirm, onClick } = action;
+      const publicProps = genPublicProps(action, emitParams);
+
       return {
         icon: toRaw(action.icon || action.elIcon),
-        ...action,
-        popConfirm: {
-          ...popConfirm,
-          onConfirm: popConfirm?.confirm.bind(null, emitParams),
-          onCancel: popConfirm?.cancel?.bind(null, emitParams),
-        },
-        onClick: onClick?.bind(null, emitParams),
+        type: 'default',
         divider: index < list.length - 1 ? props.divider : false,
-        updateIndex: props.record?.updateIndex?.value,
+        ...publicProps,
       } as ActionItem;
     });
   });

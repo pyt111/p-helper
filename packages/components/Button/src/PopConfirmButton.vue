@@ -3,15 +3,15 @@
   import { ElPopconfirm } from 'element-plus';
   import { extendSlots } from '@p-helper/utils/helper/tsxHelper';
   import { omit } from 'lodash-es';
-  import { useAttrs } from '@p-helper/hooks/core/useAttrs';
   import BasicButton from './BasicButton.vue';
+  import type { ActionItem } from '../../Table';
 
   const props = {
     /**
-     * 是否启用下拉菜单
+     * 是否启用弹框提示
      * @default: true
      */
-    enable: {
+    enablePopConfirm: {
       type: Boolean,
       default: true,
     },
@@ -21,22 +21,17 @@
     name: 'PopButton',
     inheritAttrs: false,
     props,
-    setup(props, { slots }) {
-      const attrs = useAttrs();
-
+    setup(props, { slots, attrs }) {
       // get inherit binding value
       const getBindValues = computed(() => {
-        return Object.assign(
-          {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-          },
-          { ...props, ...unref(attrs) }
-        );
+        return { ...props, ...unref(attrs) };
       });
 
       return () => {
-        const bindValues = omit(unref(getBindValues), 'enable');
+        const bindValues = omit(
+          unref(getBindValues),
+          'enablePopConfirm'
+        ) as ActionItem;
         const btnBind = omit(bindValues, [
           'title',
           'confirmButtonText',
@@ -46,11 +41,18 @@
         if (btnBind.disabled) btnBind.colorClassName = '';
         const Button = h(BasicButton, btnBind, extendSlots(slots));
 
-        if (!props.enable) {
+        if (!props.enablePopConfirm) {
           return Button;
         }
-        // console.log('getBindValues >--->', bindValues);
-        return h(ElPopconfirm, bindValues, { reference: () => Button });
+        return h(
+          ElPopconfirm,
+          {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            ...bindValues.popConfirm,
+          },
+          { reference: () => Button }
+        );
       };
     },
   });

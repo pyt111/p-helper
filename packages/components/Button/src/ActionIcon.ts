@@ -3,8 +3,12 @@ import { isObject } from 'lodash-es';
 import Icon from '@p-helper/components/Icon/src/Icon.vue';
 import { ElIcon } from 'element-plus';
 import { iconProps } from './props';
-export const ActionIcon = (props: typeof iconProps, { attrs }) => {
-  const className = `button-icon--${props.order}`;
+import type { ExtractPropTypes, FunctionalComponent } from 'vue';
+export const ActionIcon = (
+  props: ExtractPropTypes<typeof iconProps>,
+  { attrs }
+) => {
+  const className = props.order ? `button-icon--${props.order}` : '';
 
   // 规范化icon
   const normalizeIcon = (icon) => {

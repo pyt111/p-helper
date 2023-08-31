@@ -27,6 +27,7 @@ export type ActionItem = Partial<
         | ((action: ActionItem, emitParams: TableActionParams) => boolean);
       tooltip?: string | ElTooltipProps;
       buttonName?: 'edit' | 'save' | 'cancel';
+      enablePopConfirm?: boolean;
     }
 >;
 
