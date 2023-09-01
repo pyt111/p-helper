@@ -66,7 +66,7 @@
   };
 
   const getBindItemContentValues = (item: (typeof props.dropMenuList)[0]) => {
-    return omit(item, ['onClick']);
+    return omit(item, ['onClick', 'elIcon']);
   };
 
   const getBindValues = (item: (typeof props.dropMenuList)[0]) => {

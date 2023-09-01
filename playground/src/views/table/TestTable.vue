@@ -189,6 +189,7 @@
           // ifShow: (action, { row, record }) => {
           //   return !record.isEditableRow();
           // },
+          elIcon: 'Share',
           popConfirm: {
             title: '删除提醒',
             confirm: () => {
@@ -306,8 +307,9 @@
         ifShow: (action, { row, record }) => {
           return !record.isEditableRow();
         },
-        preIcon: View,
-        suffixIcon: 'code',
+        icon: 'Share',
+        // preIcon: View,
+        // suffixIcon: 'code',
         onClick: (obj) => {
           const { index, row, record } = obj;
           console.log('row.id >--->', row.id);
