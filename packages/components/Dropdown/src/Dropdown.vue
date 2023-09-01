@@ -13,14 +13,14 @@
             >
               <template #reference>
                 <div class="trigger-item">
-                  <DropdownItemContent :action="item">
+                  <DropdownItemContent :action="getBindItemContentValues(item)">
                     <template v-if="item.label">{{ item.label }}</template>
                   </DropdownItemContent>
                 </div>
               </template>
             </el-popconfirm>
             <template v-else>
-              <DropdownItemContent :action="item">
+              <DropdownItemContent :action="getBindItemContentValues(item)">
                 <template v-if="item.label">{{ item.label }}</template>
               </DropdownItemContent>
             </template>
@@ -63,6 +63,10 @@
       return;
     }
     dropdownRef.value?.handleClose();
+  };
+
+  const getBindItemContentValues = (item: (typeof props.dropMenuList)[0]) => {
+    return omit(item, ['onClick']);
   };
 
   const getBindValues = (item: (typeof props.dropMenuList)[0]) => {

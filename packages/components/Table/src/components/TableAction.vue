@@ -5,28 +5,10 @@
         <DropdownItemContent :action="action">
           <template v-if="action.label">{{ action.label }}</template>
         </DropdownItemContent>
-        <!--        <div>-->
-        <!--          <PopConfirmButton v-bind="action">-->
-        <!--            <Icon-->
-        <!--              v-if="action.icon"-->
-        <!--              :class="{ 'button-icon&#45;&#45;pre': !!action.label }"-->
-        <!--              :icon="action.icon"-->
-        <!--            />-->
-        <!--            <template v-if="action.label">{{ action.label }}</template>-->
-        <!--          </PopConfirmButton>-->
-        <!--        </div>-->
       </el-tooltip>
       <DropdownItemContent v-else :action="action">
         <template v-if="action.label">{{ action.label }}</template>
       </DropdownItemContent>
-      <!--      <PopConfirmButton v-else v-bind="action">-->
-      <!--        <Icon-->
-      <!--          v-if="action.icon"-->
-      <!--          :class="{ 'button-icon&#45;&#45;pre': !!action.label }"-->
-      <!--          :icon="action.icon"-->
-      <!--        />-->
-      <!--        <template v-if="action.label">{{ action.label }}</template>-->
-      <!--      </PopConfirmButton>-->
       <el-divider
         v-if="(divider || action.divider) && i < getActions.length - 1"
         class="action-divider"
@@ -61,8 +43,6 @@
 
 <script lang="ts" setup>
   import { computed, toRaw, unref } from 'vue';
-  import Icon from '@p-helper/components/Icon';
-  import { PopConfirmButton } from '@p-helper/components/Button';
   import { isBoolean, isFunction, isString } from '@p-helper/utils/is';
   import { propTypes } from '@p-helper/utils/propTypes';
   import { useTableContext } from '@p-helper/components/Table/src/hooks/useTableContext';

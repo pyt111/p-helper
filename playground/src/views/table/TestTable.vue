@@ -228,6 +228,7 @@
           },
           onClick: (obj) => {
             const { index, row, record } = obj;
+            console.log(' 删除3>--->', );
             // deleteTableDataRecord(row.id || row.key);
             // record.onEditRow(record.getIsRowEditCacheRowKeys());
           },
@@ -309,7 +310,7 @@
         suffixIcon: 'code',
         onClick: (obj) => {
           const { index, row, record } = obj;
-          console.log('row.id >--->', row.id, row);
+          console.log('row.id >--->', row.id);
           deleteTableDataRecord(row.id || row.key);
           record.onEditRow(record.getIsRowEditCacheRowKeys());
         },
