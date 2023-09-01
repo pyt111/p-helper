@@ -307,7 +307,8 @@
         ifShow: (action, { row, record }) => {
           return !record.isEditableRow();
         },
-        icon: 'Share',
+        type: 'primary',
+        elIcon: 'Share',
         // preIcon: View,
         // suffixIcon: 'code',
         onClick: (obj) => {
