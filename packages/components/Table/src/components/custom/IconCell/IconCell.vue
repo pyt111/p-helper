@@ -4,7 +4,7 @@
       <div :class="ns.e('wrapper')">
         <Icon v-if="preIconValue" v-bind="IconPropsBind" :icon="preIconValue" />
         <span :class="ns.em('wrapper', 'text')">{{
-          props.componentProps.cellText
+          props.componentProps?.cellText
         }}</span>
         <Icon
           v-if="suffixIconValue"
@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, unref, useAttrs } from 'vue';
+  import { computed, unref } from 'vue';
   import { useNamespace } from '@p-helper/hooks';
   import { Icon } from '@p-helper/components/Icon';
   import { isFunction } from 'lodash-es';
@@ -37,7 +37,7 @@
       row: props.row as Record<string, any>,
       elColumn: props.elColumn as Record<string, any>,
       index: props.index as number,
-      value: props.componentProps.cellText,
+      value: props.componentProps?.cellText,
     };
   });
 
@@ -53,23 +53,15 @@
     return iconStr.endsWith('|svg') ? iconStr : `${iconStr}|svg`;
   };
 
-  const preIconValue = computed(() => normalizeIcon(props.componentProps.icon));
+  const preIconValue = computed(() =>
+    normalizeIcon(props.componentProps?.icon)
+  );
   const suffixIconValue = computed(() =>
-    normalizeIcon(props.componentProps.suffixIcon)
+    normalizeIcon(props.componentProps?.suffixIcon)
   );
 
   const IconPropsBind = computed(() => {
-    const {
-      icon,
-      suffixIcon,
-      cellText,
-      row,
-      componentProps,
-      component,
-      elColumn,
-      record,
-      ...rest
-    } = props;
+    const { row, componentProps, component, elColumn, record, ...rest } = props;
     return rest;
   });
 </script>
