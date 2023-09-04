@@ -93,6 +93,8 @@ export type TableComponentTypes =
   | ((obj?: ComponentPropsParams) => ReturnType<typeof h>)
   | JSX.Element;
 
+export type ColumnSlots = Partial<Record<'header' | 'default', any>>;
+
 export type ColumnTypes = {
   // component?: TableComponentTypes;
   children?: BasicColumn[];
@@ -104,6 +106,7 @@ export type ColumnTypes = {
   custom?: boolean;
   flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION';
   totalIndex?: boolean;
+  columnSlots?: ColumnSlots;
   // 是否默认隐藏列，可以在列配置中显示
   defaultHidden?: boolean;
   formatter?: (
@@ -126,7 +129,9 @@ export type ColumnTypes = {
   editIsUpdateOnChange?: boolean; // 是否在编辑状态下实时更新数据
   editSlots?: Record<
     string,
-    VNode | VNode[] | ((args: Record<string, any>) => VNode | VNode[])
+    | VNodeChild
+    | VNodeChild[]
+    | ((args: Record<string, any>) => VNodeChild | VNodeChild[] | JSX.Element)
   >;
   editValueMap?: (value: any, obj: CurrencyParams) => string; // 对应单元格值枚举
   editComponentProps?: Record<string, any> & {
@@ -139,7 +144,9 @@ export type ColumnTypes = {
   editFilterShow?: boolean | ((obj: CurrencyParams) => boolean); // 过滤当前列 哪些不编辑 返回true是编辑 false不可编辑
   customRender?: (obj: Params) => TableComponentTypes | null | undefined | void;
   // 自定义修改后显示的内容
-  editRender?: (opt: CurrencyParams) => VNodeChild | JSX.Element;
+  editRender?: (
+    opt: CurrencyParams
+  ) => TableComponentTypes | VNodeChild | JSX.Element;
 };
 
 export type ComponentPropsParams = {

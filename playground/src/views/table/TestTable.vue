@@ -22,6 +22,7 @@
     BasicModal,
     BasicTable,
     TableIconCell,
+    TableTooltipHeader,
     useForm,
     useModal,
     useTable,
@@ -144,10 +145,32 @@
       {
         prop: 'a',
         label: 'a1',
+        component: 'TableIconCell',
+        componentProps: ({ row }) => {
+          return {
+            icon: 'code',
+            label: row.a,
+          };
+        },
+
+        columnSlots: {
+          header: ({ column }) => {
+            return h(TableTooltipHeader, {
+              label: column.label,
+              content: 'ssddd',
+            });
+          },
+        },
         edit: true,
         editComponent: 'Input',
         // editDecisionButtonShow: false,
         editIsUpdateOnChange: true,
+        // editRender: () => <el-button>sss</el-button>,
+        // editSlots: {
+        //   prefix: () => {
+        //     return 'editSlots';
+        //   },
+        // },
       },
       {
         prop: 'a',
@@ -157,6 +180,14 @@
         prop: 'a',
         label: 'ccas',
         component: 'TableIconCell',
+        columnSlots: {
+          header: ({ column }) => {
+            return h(TableTooltipHeader, {
+              label: column.label,
+              content: 'ssddd',
+            });
+          },
+        },
         // component: ({ row, column }) => (
         //   <div>
         //     <el-button>{row.a}</el-button>
@@ -174,7 +205,7 @@
           // size: '12',
           // suffixIcon: 'code',
           class: 'asd',
-          cellText: row.a,
+          label: row.a,
           // color: 'red',
         }),
         // customRender: ({ row, record, index }) => {

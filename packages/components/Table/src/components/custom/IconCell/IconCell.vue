@@ -4,7 +4,7 @@
       <div :class="ns.e('wrapper')">
         <Icon v-if="preIconValue" v-bind="IconPropsBind" :icon="preIconValue" />
         <span :class="ns.em('wrapper', 'text')">{{
-          props.componentProps?.cellText
+          props.componentProps?.label
         }}</span>
         <Icon
           v-if="suffixIconValue"
@@ -37,7 +37,7 @@
       row: props.row as Record<string, any>,
       elColumn: props.elColumn as Record<string, any>,
       index: props.index as number,
-      value: props.componentProps?.cellText,
+      value: props.componentProps?.label,
     };
   });
 

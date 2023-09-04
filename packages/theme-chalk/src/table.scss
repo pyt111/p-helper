@@ -158,6 +158,16 @@
       }
     }
   }
+
+  .p-table-header-tooltip {
+    &__wrapper {
+      display: flex;
+      align-items: center;
+    }
+    &__icon {
+      margin-left: 5px;
+    }
+  }
 }
 .basic-table-action-pop-confirm {
  .trigger-item {

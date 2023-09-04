@@ -10,7 +10,7 @@ export const iconCellProps = {
     type: Object as PropType<{
       icon: string | ((obj: TableCustomCellParams) => any);
       suffixIcon: string | ((obj: TableCustomCellParams) => string);
-      cellText: string;
+      label: string;
     }>,
   },
 };

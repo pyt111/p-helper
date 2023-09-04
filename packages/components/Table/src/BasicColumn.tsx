@@ -28,7 +28,30 @@ export const RenderColumn = (
 };
 
 const BasicColumnComponent = (props: FComponentProps) => {
+  const renderCustomCell = ({ row, column, $index }) => {
+    return h(CustomCellComponent, {
+      row,
+      index: $index,
+      record: props.column.record || {},
+      elColumn: column,
+      component: props.column.component,
+      componentProps: props.column.componentProps,
+    });
+  };
+
   const renderEditColumn = ({ row, column, $index }) => {
+    if (props.column.component && !props.column.editRender) {
+      props.column.editRender = ({
+        row: _row,
+        column: _column,
+        index: _index,
+      }) =>
+        renderCustomCell({
+          row: _row,
+          column: _column,
+          $index: _index,
+        });
+    }
     return props.column.customRender!({
       row,
       index: $index,
@@ -38,41 +61,37 @@ const BasicColumnComponent = (props: FComponentProps) => {
   };
 
   if (props.column.children) {
-    const p = omit(props.column, ['children']);
+    const p = omit(props.column, ['children', 'columnSlots']);
     return RenderColumn(
       { column: p as BasicColumn },
       {
         slots: {
-          default: () =>
-            props.column.children?.map((item) => {
+          default: (obj) => {
+            return props.column.children?.map((item) => {
               return BasicColumnComponent({ column: item });
-            }),
+            });
+          },
+          ...props.column.columnSlots,
         },
       }
     );
-  }
-
-  if (props.column.component) {
-    return RenderColumn(props, {
-      slots: {
-        default: ({ row, column, $index }) =>
-          h(CustomCellComponent, {
-            row,
-            index: $index,
-            record: props.column.record || {},
-            elColumn: column,
-            component: props.column.component,
-            componentProps: props.column.componentProps,
-          }),
-      },
-    });
   }
 
   if (props.column.customRender) {
     return RenderColumn(props, {
       slots: {
         default: renderEditColumn,
+        ...props.column.columnSlots,
       } as any,
+    });
+  }
+
+  if (props.column.component) {
+    return RenderColumn(props, {
+      slots: {
+        default: renderCustomCell,
+        ...props.column.columnSlots,
+      },
     });
   }
 
