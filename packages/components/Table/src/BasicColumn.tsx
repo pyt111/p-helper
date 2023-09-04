@@ -95,7 +95,11 @@ const BasicColumnComponent = (props: FComponentProps) => {
     });
   }
 
-  return RenderColumn(props);
+  return RenderColumn(props, {
+    slots: {
+      ...props.column.columnSlots,
+    },
+  });
 };
 
 BasicColumnComponent.props = {

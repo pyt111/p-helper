@@ -107,6 +107,19 @@
         ],
       },
       {
+        prop: 'ds2',
+        label: 'ds33',
+        columnSlots: {
+          header: ({ column }) => {
+            console.log(' column>--->', column);
+            return h(TableTooltipHeader, {
+              label: column.label,
+              content: 'sdddddd',
+            });
+          },
+        },
+      },
+      {
         prop: 'd',
         label: 'd',
         editRow: true,
@@ -145,22 +158,12 @@
       {
         prop: 'a',
         label: 'a1',
-        component: 'TableIconCell',
-        componentProps: ({ row }) => {
-          return {
-            icon: 'code',
-            label: row.a,
-          };
-        },
-
-        columnSlots: {
-          header: ({ column }) => {
-            return h(TableTooltipHeader, {
-              label: column.label,
-              content: 'ssddd',
-            });
-          },
-        },
+        // componentProps: ({ row }) => {
+        //   return {
+        //     icon: 'code',
+        //     label: row.a,
+        //   };
+        // },
         edit: true,
         editComponent: 'Input',
         // editDecisionButtonShow: false,
