@@ -23,6 +23,7 @@
         :color="props.color"
         v-bind="props.suffixIconProps"
       />
+      <slot name="suffix" />
     </template>
   </el-button>
 </template>

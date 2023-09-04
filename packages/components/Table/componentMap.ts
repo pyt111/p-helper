@@ -8,7 +8,7 @@ import {
   ElTimePicker,
   ElTreeSelect,
 } from 'element-plus';
-import { IconCell } from './src/components/custom';
+import { BadgeActionCell, IconCell } from './src/components/custom';
 import type { OptionType } from 'element-plus/es/components/select-v2/src/select.types';
 import type {
   CheckboxProps,
@@ -19,12 +19,12 @@ import type {
   SwitchProps,
   TimePickerDefaultProps,
 } from 'element-plus';
-import type { Component, ExtractPropTypes, Ref } from 'vue';
+import type { Component, Ref } from 'vue';
 import type {
   ComponentType,
   CustomComponentType,
 } from './src/types/componentType';
-import type { iconCellProps } from './src/components/custom/IconCell/props';
+import type { BadgeActionProps, IconCellProps } from './src/components/custom';
 import type { SelectOptions } from '../Form';
 
 export type ComponentPropsMapBasic = {
@@ -39,7 +39,8 @@ export type ComponentPropsMapBasic = {
   Checkbox: CheckboxProps;
   DatePicker: DatePickerProps;
   TimePicker: TimePickerDefaultProps;
-  TableIconCell: ExtractPropTypes<typeof iconCellProps>;
+  TableIconCell: IconCellProps['componentProps'];
+  BadgeActionCell: BadgeActionProps['componentProps'];
 };
 
 export type ComponentPropsMap = {
@@ -74,5 +75,6 @@ export function del(compName: ComponentType) {
 const customComponentMap = new Map<CustomComponentType, Component>();
 
 customComponentMap.set('TableIconCell', IconCell);
+customComponentMap.set('BadgeActionCell', BadgeActionCell);
 
 export { componentMap, customComponentMap };

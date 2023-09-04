@@ -1,3 +1,4 @@
+import type { BadgeProps } from 'element-plus';
 import type { BasicButtonProps } from '../../../Button/src/props';
 import type {
   Params,
@@ -28,6 +29,7 @@ export type ActionItem = Partial<
       tooltip?: string | ElTooltipProps;
       buttonName?: 'edit' | 'save' | 'cancel';
       enablePopConfirm?: boolean;
+      badge?: Partial<BadgeProps> | (() => Partial<BadgeProps>);
     }
 >;
 

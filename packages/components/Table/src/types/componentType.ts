@@ -8,4 +8,4 @@ export type ComponentType =
   | 'DatePicker'
   | 'TimePicker';
 
-export type CustomComponentType = 'TableIconCell';
+export type CustomComponentType = 'TableIconCell' | 'BadgeActionCell';

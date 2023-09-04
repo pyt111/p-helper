@@ -3,7 +3,9 @@
     <slot>
       <div :class="ns.e('wrapper')">
         <Icon v-if="preIconValue" v-bind="IconPropsBind" :icon="preIconValue" />
-        <span :class="ns.em('wrapper', 'text')">{{ props.cellText }}</span>
+        <span :class="ns.em('wrapper', 'text')">{{
+          props.componentProps.cellText
+        }}</span>
         <Icon
           v-if="suffixIconValue"
           v-bind="IconPropsBind"
@@ -35,7 +37,7 @@
       row: props.row as Record<string, any>,
       elColumn: props.elColumn as Record<string, any>,
       index: props.index as number,
-      value: props.cellText,
+      value: props.componentProps.cellText,
     };
   });
 
@@ -51,8 +53,10 @@
     return iconStr.endsWith('|svg') ? iconStr : `${iconStr}|svg`;
   };
 
-  const preIconValue = computed(() => normalizeIcon(props.icon));
-  const suffixIconValue = computed(() => normalizeIcon(props.suffixIcon));
+  const preIconValue = computed(() => normalizeIcon(props.componentProps.icon));
+  const suffixIconValue = computed(() =>
+    normalizeIcon(props.componentProps.suffixIcon)
+  );
 
   const IconPropsBind = computed(() => {
     const {

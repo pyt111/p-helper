@@ -2,13 +2,15 @@
   <div :class="[prefixCls, getAlign]">
     <template v-for="(action, i) in getActions" :key="`${i}-${action.label}`">
       <el-tooltip v-if="action.tooltip" v-bind="getTooltip(action.tooltip)">
-        <DropdownItemContent :action="action">
+        <PopConfirmButton v-bind="action">
           <template v-if="action.label">{{ action.label }}</template>
-        </DropdownItemContent>
+          <ElBadge v-if="action.badge" v-bind="action.badge" />
+        </PopConfirmButton>
       </el-tooltip>
-      <DropdownItemContent v-else :action="action">
+      <PopConfirmButton v-else v-bind="action">
         <template v-if="action.label">{{ action.label }}</template>
-      </DropdownItemContent>
+        <ElBadge v-if="action.badge" v-bind="action.badge" />
+      </PopConfirmButton>
       <el-divider
         v-if="(divider || action.divider) && i < getActions.length - 1"
         class="action-divider"
@@ -48,14 +50,13 @@
   import { useTableContext } from '@p-helper/components/Table/src/hooks/useTableContext';
   import { useDesign } from '@p-helper/hooks/web/useDesign';
   import { ACTION_COLUMN_FLAG } from '@p-helper/components/Table/src/const';
-  import { Dropdown, DropdownItemContent } from '@p-helper/components/Dropdown';
-  import { omit } from 'lodash-es';
+  import { Dropdown } from '@p-helper/components/Dropdown';
+  import { PopConfirmButton } from '@p-helper/components/Button';
   import { MoreFilled } from '@element-plus/icons-vue';
+  import { BadgeActionCell } from '../components/custom';
+  import { useAction } from '../hooks/useAction';
   import type { PropType } from 'vue';
-  import type {
-    EditRowRecordRow,
-    TableActionParams,
-  } from '@p-helper/components/Table/src/components/editable';
+  import type { EditRowRecordRow } from '@p-helper/components/Table/src/components/editable';
   import type { TableActionType } from '@p-helper/components/Table/src/types/table';
   import type { ActionItem } from '../types/tableAction';
   import type { ElTooltipProps } from 'element-plus';
@@ -108,43 +109,15 @@
     return actionColumn?.align;
   });
 
-  const getemitParams = computed<TableActionParams>(() => {
-    return {
-      row: props.row,
-      index: props.index,
-      record: props.record,
-    };
-  });
-
-  const genPublicProps = (
-    action: ActionItem,
-    emitParams: TableActionParams
-  ) => {
-    const { popConfirm, onClick } = action;
-    const propsActions = omit(action, 'ifShow');
-    return {
-      link: true,
-      bg: false,
-      ...propsActions,
-      popConfirm: {
-        ...popConfirm,
-        onConfirm: popConfirm?.confirm.bind(null, emitParams),
-        onCancel: popConfirm?.cancel?.bind(null, emitParams),
-      },
-      onClick: onClick?.bind(null, emitParams),
-      enablePopConfirm: !!popConfirm,
-      updateIndex: props.record?.updateIndex?.value,
-    };
-  };
+  const { getemitParams, genPublicProps } = useAction(props);
 
   const getActions = computed(() => {
-    const emitParams = unref(getemitParams);
     return (toRaw(props.actions) || [])
       .filter((action) => {
         return isIfShow(action);
       })
       .map((action) => {
-        const publicProps = genPublicProps(action, emitParams);
+        const publicProps = genPublicProps(action);
 
         return {
           getPopupContainer: () =>
@@ -182,13 +155,11 @@
   }
 
   const getDropdownList = computed((): ActionItem[] => {
-    const emitParams = unref(getemitParams);
-
     const list = (toRaw(props.dropDownActions) || []).filter((action) => {
       return isIfShow(action);
     });
     return list.map((action, index) => {
-      const publicProps = genPublicProps(action, emitParams);
+      const publicProps = genPublicProps(action);
 
       return {
         icon: toRaw(action.icon || action.elIcon),

@@ -1,4 +1,4 @@
-import { Slot, h, ref } from 'vue';
+import { h } from 'vue';
 import { omit } from 'lodash-es';
 import { CustomCellComponent } from './components/custom/CustomCellComponent';
 import type { BasicColumn, TableComponentTypes } from './types/table';
@@ -57,12 +57,12 @@ const BasicColumnComponent = (props: FComponentProps) => {
       slots: {
         default: ({ row, column, $index }) =>
           h(CustomCellComponent, {
-            componentProps: props.column.componentProps,
             row,
             index: $index,
             record: props.column.record || {},
             elColumn: column,
             component: props.column.component,
+            componentProps: props.column.componentProps,
           }),
       },
     });

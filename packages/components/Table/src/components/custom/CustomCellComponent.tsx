@@ -2,13 +2,19 @@ import { h, isVNode } from 'vue';
 import { isFunction, isString } from 'lodash-es';
 import { componentMap, customComponentMap } from '../../../componentMap';
 import type { ComponentPropsFn, TableComponentTypes } from '../../types/table';
-import type { Component, FunctionalComponent, PropType, VNode } from 'vue';
+import type {
+  Component,
+  ExtractPropTypes,
+  FunctionalComponent,
+  PropType,
+  VNode,
+} from 'vue';
 import type {
   ComponentType,
   CustomComponentType,
 } from '../../types/componentType';
 
-export const basicProps = {
+export const basicCustomCellProps = {
   componentProps: {
     type: [Object, Function] as PropType<Recordable | ComponentPropsFn>,
   },
@@ -28,9 +34,13 @@ export const basicProps = {
     type: Number as PropType<number>,
   },
 };
+
+export type BasicCustomCellProps = ExtractPropTypes<
+  typeof basicCustomCellProps
+>;
 // @ts-ignore
 export const CustomCellComponent: FunctionalComponent = (
-  props: typeof basicProps,
+  props: typeof basicCustomCellProps,
   { attrs, slots }: any
 ) => {
   // eslint-disable-next-line vue/no-setup-props-destructure
@@ -75,7 +85,7 @@ export const CustomCellComponent: FunctionalComponent = (
     {
       ...props,
       ...attrs,
-      ...componentProps,
+      componentProps,
     },
     slots
   );

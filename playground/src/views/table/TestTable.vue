@@ -109,6 +109,23 @@
         prop: 'd',
         label: 'd',
         editRow: true,
+        component: 'BadgeActionCell',
+        componentProps: {
+          label: 'sssddd',
+          elIcon: 'Share',
+          badge: {
+            value: 3,
+          },
+          onClick: ({ row }) => {
+            console.log('asdasdasdasd >--->', row);
+          },
+          popConfirm: {
+            title: '确定删除吗？',
+            confirm: ({ row }) => {
+              console.log('确定删除吗----- >--->', row);
+            },
+          },
+        },
         // editFilterShow: (obj) => {
         //   console.log(' editFilterShow>--->', obj);
         //   return obj.index === 1;
@@ -196,6 +213,10 @@
               console.log('删除提醒 >--->');
             },
           },
+          badge: {
+            value: '31',
+            isDot: true,
+          },
           icon: 'code|svg',
           // onClick: (obj) => {
           //   const { index, row, record } = obj;
@@ -209,6 +230,10 @@
           preIcon: View,
           suffixIcon: 'code',
           type: 'danger',
+          badge: {
+            value: '31',
+            isDot: true,
+          },
           popConfirm: {
             title: '提醒',
             confirm: (obj) => {
@@ -229,7 +254,7 @@
           },
           onClick: (obj) => {
             const { index, row, record } = obj;
-            console.log(' 删除3>--->', );
+            console.log(' 删除3>--->');
             // deleteTableDataRecord(row.id || row.key);
             // record.onEditRow(record.getIsRowEditCacheRowKeys());
           },
@@ -378,7 +403,7 @@
         label: '数字',
         component: 'Render',
         render: () => {
-          return;
+          return '数字';
         },
       },
       {

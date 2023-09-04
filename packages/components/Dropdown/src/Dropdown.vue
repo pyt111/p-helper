@@ -13,16 +13,22 @@
             >
               <template #reference>
                 <div class="trigger-item">
-                  <DropdownItemContent :action="getBindItemContentValues(item)">
+                  <PopConfirmButton v-bind="getBindItemContentValues(item)">
                     <template v-if="item.label">{{ item.label }}</template>
-                  </DropdownItemContent>
+                    <template v-if="item.badge">
+                      <ElBadge v-bind="item.badge" />
+                    </template>
+                  </PopConfirmButton>
                 </div>
               </template>
             </el-popconfirm>
             <template v-else>
-              <DropdownItemContent :action="getBindItemContentValues(item)">
+              <PopConfirmButton v-bind="getBindItemContentValues(item)">
                 <template v-if="item.label">{{ item.label }}</template>
-              </DropdownItemContent>
+                <template v-if="item.badge">
+                  <ElBadge v-bind="item.badge" />
+                </template>
+              </PopConfirmButton>
             </template>
           </el-dropdown-item>
         </template>
@@ -34,7 +40,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { omit } from 'lodash-es';
-  import DropdownItemContent from './DropdownItemContent';
+  import { PopConfirmButton } from '@p-helper/components/Button';
   import type { ActionItem } from '../../Table';
   import type { PropType } from 'vue';
 

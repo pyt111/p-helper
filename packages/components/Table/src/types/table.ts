@@ -204,6 +204,10 @@ export type ColumnTypesExpand =
   | {
       component?: 'TableIconCell';
       componentProps?: ComponentPropsFn | ComponentPropsMap['TableIconCell'];
+    }
+  | {
+      component?: 'BadgeActionCell';
+      componentProps?: ComponentPropsFn | ComponentPropsMap['BadgeActionCell'];
     };
 export type BasicColumn = Partial<TableColumnInstance> &
   ColumnTypes &
