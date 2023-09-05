@@ -8,7 +8,11 @@ export * from './src/types/tableAction';
 export * from './src/hooks/useTable';
 export * from './src/components';
 
-export const BasicTable = withInstall(basicTable);
 
 export const TableIconCell = withInstall(tableIconCell);
 export const TableTooltipHeader = withInstall(tableTooltipHeader);
+
+export const BasicTable = withInstall(basicTable, {
+  TableTooltipHeader,
+  TableIconCell,
+});
