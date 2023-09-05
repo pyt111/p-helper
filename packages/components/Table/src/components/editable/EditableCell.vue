@@ -106,7 +106,7 @@
       default: () => ({}),
     },
     elColumn: {
-      type: Object as PropType<BasicColumn>,
+      type: Object as PropType<Recordable>,
       default: () => ({}),
     },
   });
