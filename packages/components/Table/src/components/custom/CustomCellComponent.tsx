@@ -18,11 +18,15 @@ export const basicCustomCellProps = {
   componentProps: {
     type: [Object, Function] as PropType<Recordable | ComponentPropsFn>,
   },
+  prop: {
+    type: String as PropType<any>,
+  },
   component: {
     type: [String, Object] as PropType<TableComponentTypes>,
   },
   row: {
     type: Object as PropType<Recordable>,
+    default: () => ({}),
   },
   record: {
     type: Object as PropType<Recordable>,
@@ -80,6 +84,8 @@ export const CustomCellComponent: FunctionalComponent = (
   if (componentProps && isFunction(componentProps)) {
     componentProps = attrs.componentProps(props);
   }
+  // @ts-ignore
+  componentProps.label = componentProps.label || props.row[props.prop];
   return h(
     Comp,
     {

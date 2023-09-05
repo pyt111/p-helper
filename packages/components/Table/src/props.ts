@@ -26,6 +26,7 @@ export interface CurrencyParams {
   row: Record<string, any>;
   prop?: string | number;
   column: BasicColumn;
+  elColumn?: Record<string, any>;
   value?: string | number | boolean | Recordable;
 }
 export interface TableCustomCellParams {

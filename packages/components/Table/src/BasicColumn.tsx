@@ -31,6 +31,7 @@ const BasicColumnComponent = (props: FComponentProps) => {
   const renderCustomCell = ({ row, column, $index }) => {
     return h(CustomCellComponent, {
       row,
+      prop: props.column.prop,
       index: $index,
       record: props.column.record || {},
       elColumn: column,
@@ -39,24 +40,27 @@ const BasicColumnComponent = (props: FComponentProps) => {
     });
   };
 
-  const renderEditColumn = ({ row, column, $index }) => {
+  const renderEditColumn = ({ row, column: elColumn, $index }) => {
     if (props.column.component && !props.column.editRender) {
       props.column.editRender = ({
         row: _row,
-        column: _column,
+        column,
+        elColumn: _elColumn,
         index: _index,
-      }) =>
-        renderCustomCell({
+      }) => {
+        return renderCustomCell({
           row: _row,
-          column: _column,
+          column: _elColumn,
           $index: _index,
         });
+      };
     }
+    // console.log('elColumn+++++ >--->', elColumn, props.column.prop);
     return props.column.customRender!({
       row,
       index: $index,
       record: props.column.record || {},
-      elColumn: column,
+      elColumn,
     });
   };
 

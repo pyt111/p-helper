@@ -109,11 +109,11 @@
       },
       {
         label: '浏览量',
-        prop: 'lookNum',
+        prop: 'ds2',
         // edit: true,
         // editComponent: 'Input',
         columnSlots: {
-          default: () => 'asd',
+          // default: () => 'asd',
           // header: ({ column }) => {
           //   return h(
           //     ElTooltip,
@@ -133,7 +133,6 @@
         label: 'ds33',
         columnSlots: {
           header: ({ column }) => {
-            console.log(' column>--->', column);
             return h(TableTooltipHeader, {
               label: column.label,
               content: 'sdddddd',
@@ -180,12 +179,13 @@
       {
         prop: 'a',
         label: 'a1',
-        // componentProps: ({ row }) => {
-        //   return {
-        //     icon: 'code',
-        //     label: row.a,
-        //   };
-        // },
+        component: 'BadgeActionCell',
+        componentProps: ({ row }) => {
+          return {
+            icon: 'code',
+            label: row.a,
+          };
+        },
         edit: true,
         editComponent: 'Input',
         // editDecisionButtonShow: false,
@@ -230,7 +230,6 @@
           // size: '12',
           // suffixIcon: 'code',
           class: 'asd',
-          label: row.a,
           // color: 'red',
         }),
         // customRender: ({ row, record, index }) => {

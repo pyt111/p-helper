@@ -1,7 +1,5 @@
 import { h } from 'vue';
-import { isFunction } from '@vue/shared';
 import EditableCell from './EditableCell.vue';
-import type { UnwrapNestedRefs } from '@vue/reactivity';
 import type { EditRowKey } from '../../hooks/useColumns';
 import type {
   BasicColumn,
@@ -53,7 +51,7 @@ export function renderEditCell(
   column: BasicColumn,
   propsRef: ComputedRef<BasicTableProps>
 ) {
-  return ({ row, index, record }: Params) => {
+  return ({ row, index, record, elColumn }: Params) => {
     record.onEdit = async (edit: boolean, submit = false) => {
       if (!submit) {
         record.editable = edit;
@@ -82,6 +80,7 @@ export function renderEditCell(
       column,
       rowKey: row[record.rowKeyName!] ?? row.key,
       tableProps: propsRef.value,
+      elColumn,
     });
   };
 }

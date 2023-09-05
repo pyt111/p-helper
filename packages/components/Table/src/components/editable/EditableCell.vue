@@ -105,6 +105,10 @@
       type: Object as PropType<BasicColumn>,
       default: () => ({}),
     },
+    elColumn: {
+      type: Object as PropType<BasicColumn>,
+      default: () => ({}),
+    },
   });
 
   const innerValue = syncProp(props, 'value');
@@ -137,6 +141,7 @@
     index: props.index,
     record: props.record,
     prop: props.column?.prop,
+    elColumn: props.elColumn,
   }));
 
   // 根据业务条件判断【列中某单元格】是否开启编辑

@@ -23,6 +23,7 @@ export default defineComponent({
                   return <ElBadge {...getAction.value.badge} />;
                 }
               : null,
+            ...slots,
           }}
         </PopConfirmButton>
       );

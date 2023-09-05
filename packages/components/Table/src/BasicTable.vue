@@ -82,7 +82,7 @@
   import { useTableForm } from './hooks/useTableForm';
   import { basicProps, basicTableEmits } from './props';
   import { CustomCellComponent } from './components/custom/CustomCellComponent';
-  import BasicColumnComponent, { RenderColumn } from './BasicColumn';
+  import BasicColumnComponent from './BasicColumn';
   import type { BasicTableProps, TableActionType } from './types/table';
 
   export default defineComponent({
@@ -94,7 +94,6 @@
       ElCard,
       CustomCellComponent,
       BasicColumnComponent,
-      RenderColumn,
     },
     props: basicProps,
 
