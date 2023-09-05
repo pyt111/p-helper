@@ -8,7 +8,6 @@ export * from './src/types/tableAction';
 export * from './src/hooks/useTable';
 export * from './src/components';
 
-
 export const TableIconCell = withInstall(tableIconCell);
 export const TableTooltipHeader = withInstall(tableTooltipHeader);
 
