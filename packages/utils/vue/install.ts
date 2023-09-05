@@ -1,3 +1,4 @@
+import { defineAsyncComponent } from 'vue';
 import { useGlobalConfig } from 'element-plus';
 import type { SFCWithInstall } from './typescript';
 
@@ -14,7 +15,7 @@ export const withInstall = <T, E extends Record<string, any>>(
 
   if (extra) {
     for (const [key, comp] of Object.entries(extra)) {
-      (main as any)[key] = comp;
+      (main as any)[key] = defineAsyncComponent(comp);
     }
   }
   return main as SFCWithInstall<T> & E;
