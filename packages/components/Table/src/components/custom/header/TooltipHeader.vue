@@ -24,6 +24,7 @@
   // TooltipHeader
 
   export default defineComponent({
+    name: 'TooltipHeader',
     components: {
       QuestionFilled,
     },
