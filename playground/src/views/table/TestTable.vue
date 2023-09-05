@@ -27,6 +27,7 @@
     useModal,
     useTable,
   } from '@p-helper/components';
+  import { ElTooltip } from 'element-plus';
   import { View } from '@element-plus/icons-vue';
   import type { BasicColumn } from '@p-helper/components';
   // TestTable
@@ -105,6 +106,27 @@
             editRow: true,
           },
         ],
+      },
+      {
+        label: '浏览量',
+        prop: 'lookNum',
+        // edit: true,
+        // editComponent: 'Input',
+        columnSlots: {
+          default: () => 'asd',
+          // header: ({ column }) => {
+          //   return h(
+          //     ElTooltip,
+          //     {
+          //       placement: 'top',
+          //       content: 'asdd',
+          //     },
+          //     {
+          //       default: () => '浏览量',
+          //     }
+          //   );
+          // },
+        },
       },
       {
         prop: 'ds2',
