@@ -1,4 +1,4 @@
 import tableIconCell from './custom/IconCell/IconCell.vue';
-import tooltipHeader from './custom/header/TooltipHeader.vue';
-export const TableTooltipHeader = tooltipHeader;
+import tableTooltipHeader from './custom/header/TableTooltipHeader.vue';
+export const TableTooltipHeader = tableTooltipHeader;
 export const TableIconCell = tableIconCell;
