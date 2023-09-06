@@ -20,6 +20,12 @@ import { generateExternal, writeBundles } from '../utils';
 import type { OutputOptions, Plugin } from 'rollup';
 const outDir = path.resolve(buildOutput, 'types');
 
+// esbuild的bug
+const __defProp = Object.defineProperty;
+const __name = (target, value) =>
+  __defProp(target, '', { value, configurable: true });
+globalThis.__name = __name;
+
 export const buildModules = async () => {
   const input = excludeFiles(
     await glob('**/*.{js,ts,vue}', {

@@ -28,9 +28,9 @@
     "@vitejs/plugin-vue": "^4.3.3",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "components-helper": "^2.1.2",
-    "esbuild": "^0.15.5",
+    "esbuild": "^0.14.7",
     "rollup-plugin-terser": "^7.0.2",
     "unplugin-vue-define-options": "^0.10.0",
-    "vue": "^3.2.37"
+    "vue": "^3.3.4"
   }
 }
