@@ -180,16 +180,16 @@
         prop: 'a',
         label: 'a1',
         component: 'BadgeActionCell',
-        componentProps: ({ row }) => {
-          return {
-            icon: 'code',
-            label: row.a,
-          };
-        },
-        edit: true,
-        editComponent: 'Input',
+        // componentProps: ({ row }) => {
+        //   return {
+        //     icon: 'code',
+        //     label: row.a,
+        //   };
+        // },
+        // edit: true,
+        // editComponent: 'Input',
         // editDecisionButtonShow: false,
-        editIsUpdateOnChange: true,
+        // editIsUpdateOnChange: true,
         // editRender: () => <el-button>sss</el-button>,
         // editSlots: {
         //   prefix: () => {

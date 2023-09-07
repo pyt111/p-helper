@@ -80,12 +80,13 @@ export const CustomCellComponent: FunctionalComponent = (
     return Comp; // 纯字符串
   }
 
-  let componentProps = attrs.componentProps;
+  let componentProps = props.componentProps || {};
+
   if (componentProps && isFunction(componentProps)) {
-    componentProps = attrs.componentProps(props);
+    componentProps = componentProps(props);
   }
   // @ts-ignore
-  componentProps.label = componentProps.label || props.row[props.prop];
+  componentProps.label = componentProps?.label || props.row[props.prop];
   return h(
     Comp,
     {
