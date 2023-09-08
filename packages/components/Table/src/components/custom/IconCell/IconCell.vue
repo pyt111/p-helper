@@ -58,6 +58,8 @@
     if (isFunction(icon)) {
       iconStr = icon(unref(iconCellCallParams));
     }
+
+    if (!iconStr) return '';
     return iconStr.endsWith('|svg') ? iconStr : `${iconStr}|svg`;
   };
 

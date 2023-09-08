@@ -225,7 +225,7 @@
         //   suffixIcon: 'code',
         // },
         componentProps: ({ row }) => ({
-          preIcon: ({ index }) => (index ? 'code' : ''),
+          preIcon: ({ index }) => (index ? 'bar' : ''),
           suffixIcon: ({ row, index }) => (!index ? 'code' : ''),
           suffixIconProps: {
             // color: 'blue',
@@ -261,7 +261,7 @@
           },
         ];
       },
-      allActions: [
+      allActions: () => [
         {
           label: '删除1',
           // ifShow: (action, { row, record }) => {
@@ -290,6 +290,10 @@
           label: '删除2',
           preIcon: View,
           suffixIcon: 'code',
+          suffixIconProps: {
+            color: 'blue',
+            disabled: true,
+          },
           type: 'danger',
           badge: {
             value: '31',
@@ -352,7 +356,11 @@
         },
         // icon: 'code|svg',
         elIcon: View,
-        suffixIcon: 'code',
+        suffixIcon: 'bar',
+        suffixIconProps: {
+          color: 'red',
+          disabled: true,
+        },
         preIcon: 'code',
         disabled: true,
         // preIconProps: {

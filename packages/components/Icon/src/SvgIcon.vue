@@ -1,5 +1,6 @@
 <template>
   <svg
+    :ref="svgRef"
     aria-hidden="true"
     :class="['yee-svg-icon', $attrs.class, spin && 'svg-icon-spin']"
     :style="getStyle"
@@ -44,6 +45,7 @@
       const prefixCls = 'yee';
       const symbolId = computed(() => `#${props.prefix}-${props.name}`);
       const symbolElement = ref<Element | null>();
+      const svgRef = ref();
 
       const getStyle = computed((): CSSProperties => {
         const { size } = props;
@@ -52,6 +54,10 @@
         return {
           width: s,
           height: s,
+          fill:
+            isBoolean(props.disabled) && props.disabled
+              ? disabledColor
+              : props.color,
         };
       });
       const changeColor = (color) => {
@@ -60,28 +66,24 @@
         }
 
         if (symbolElement.value) {
-          const paths = symbolElement.value.querySelectorAll('path');
+          const paths = symbolElement.value.querySelectorAll(
+            'path[data-original-fill]'
+          );
           paths.forEach((pathElement) => {
             const originalFill =
               pathElement.attributes['data-original-fill']?.value;
             // 如果没有originalFill 说明path本身没有fill值  是不需要覆盖
             if (originalFill) {
               pathElement.setAttribute('fill', color ? color : originalFill);
-            } else if (color) {
-              pathElement.setAttribute('fill', color);
             }
           });
         }
       };
 
       watchEffect(() => {
-        changeColor(
-          isBoolean(props.disabled) && props.disabled
-            ? disabledColor
-            : props.color
-        );
+        changeColor(getStyle.value.fill);
       });
-      return { symbolId, prefixCls, getStyle };
+      return { svgRef, symbolId, prefixCls, getStyle };
     },
   });
 </script>

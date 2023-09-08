@@ -29,7 +29,7 @@
   import { isString } from '@p-helper/utils/is';
   import SvgIcon from './SvgIcon.vue';
   import { iconProps } from './props';
-  import type { CSSProperties, PropType } from 'vue';
+  import type { CSSProperties } from 'vue';
 
   const SVG_END_WITH_FLAG = '|svg';
   export default defineComponent({
@@ -37,7 +37,7 @@
     components: { SvgIcon },
     props: iconProps,
     setup(props) {
-      const elRef = ref<ElRef>(null);
+      const elRef = ref<any>(null);
 
       const isSvgIcon = computed(() => props.icon?.endsWith(SVG_END_WITH_FLAG));
       const getSvgIcon = computed(() =>
