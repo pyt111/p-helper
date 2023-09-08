@@ -69,24 +69,11 @@
     normalizeIcon(props.componentProps?.suffixIcon)
   );
 
-  const IconPropsBind = computed(() => {
-    const {
-      preIcon,
-      suffixIcon,
-      elText,
-      label,
-      preIconProps,
-      suffixIconProps,
-      ...rest
-    } = props.componentProps;
-    return rest;
-  });
-
   const preIconPropsBind = computed(() => {
-    return { ...IconPropsBind.value, ...props.componentProps.preIconProps };
+    return props.componentProps?.preIconProps;
   });
 
   const suffixIconPropsBind = computed(() => {
-    return { ...IconPropsBind.value, ...props.componentProps.suffixIconProps };
+    return props.componentProps?.suffixIconProps;
   });
 </script>

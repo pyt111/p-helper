@@ -1,4 +1,4 @@
-import { iconProps } from '@p-helper/components/Icon';
+// import { iconProps } from '@p-helper/components/Icon';
 import { basicCustomCellProps } from '../CustomCellComponent';
 import type { BasicIconProps } from '../../../../../Icon/src/props';
 import type { TextProps } from 'element-plus';
@@ -6,7 +6,6 @@ import type { TableCustomCellParams } from '../../../props';
 import type { ExtractPropTypes, PropType } from 'vue';
 
 export const iconCellProps = {
-  ...iconProps,
   ...basicCustomCellProps,
   componentProps: {
     type: Object as PropType<{
