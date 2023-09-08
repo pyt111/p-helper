@@ -63,6 +63,7 @@ export const CustomCellComponent: FunctionalComponent = (
   }
 
   if (isVNode(Comp)) {
+    // 这里是使用外部的h函数创建的VNode,不需要再走后面的逻辑
     return Comp;
   }
   if (

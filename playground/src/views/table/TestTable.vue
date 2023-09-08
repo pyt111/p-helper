@@ -27,7 +27,7 @@
     useModal,
     useTable,
   } from '@p-helper/components';
-  import { ElTooltip } from 'element-plus';
+  import { ElText } from 'element-plus';
   import { View } from '@element-plus/icons-vue';
   import type { BasicColumn } from '@p-helper/components';
   // TestTable
@@ -179,7 +179,7 @@
       {
         prop: 'a',
         label: 'a1',
-        component: 'BadgeActionCell',
+        component: () => h(ElText),
         // componentProps: ({ row }) => {
         //   return {
         //     icon: 'code',
@@ -225,11 +225,17 @@
         //   suffixIcon: 'code',
         // },
         componentProps: ({ row }) => ({
-          icon: ({ index }) => (index ? 'code' : ''),
+          preIcon: ({ index }) => (index ? 'code' : ''),
           suffixIcon: ({ row, index }) => (!index ? 'code' : ''),
+          suffixIconProps: {
+            // color: 'blue',
+          },
+          elText: {
+            type: 'success',
+          },
           // size: '12',
           // suffixIcon: 'code',
-          class: 'asd',
+          // class: 'asd',
           // color: 'red',
         }),
         // customRender: ({ row, record, index }) => {
