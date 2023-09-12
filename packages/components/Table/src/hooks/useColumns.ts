@@ -342,14 +342,13 @@ export function useColumns(
     (columns) => {
       columnsRef.value = columns;
       columns.forEach((item, i) => {
-        if (
-          item.type &&
-          ['index', 'selection', 'expand', 'setting'].includes(item.type)
-        ) {
-          item.showOverflowTooltip = false;
+        if (item.type) {
+          if (['index', 'selection', 'expand', 'setting'].includes(item.type)) {
+            item.showOverflowTooltip = false;
+          }
 
-          if (item.type === 'index') {
-            item.minWidth = item.minWidth ?? 60;
+          if (['index', 'selection', 'expand'].includes(item.type)) {
+            item.width = item.width ?? 60;
           }
         }
         // 设置一些全局默认属性
