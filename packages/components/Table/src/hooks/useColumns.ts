@@ -320,6 +320,10 @@ export function useColumns(
     if (hasIndex === -1) {
       // @ts-ignore
       columns.push({
+        align:
+          actionColumn.align ??
+          propsRef.value.columnDefaultAlign ??
+          componentSetting.table.column.align,
         ...columns[hasIndex],
         fixed: 'right',
         // customRender: renderEditCell(actionColumn),
@@ -338,11 +342,14 @@ export function useColumns(
     (columns) => {
       columnsRef.value = columns;
       columns.forEach((item, i) => {
-        if (item.type && ['index', 'selection', 'expand'].includes(item.type)) {
+        if (
+          item.type &&
+          ['index', 'selection', 'expand', 'setting'].includes(item.type)
+        ) {
           item.showOverflowTooltip = false;
 
           if (item.type === 'index') {
-            item.width = item.width ?? 60;
+            item.minWidth = item.minWidth ?? 60;
           }
         }
         // 设置一些全局默认属性
