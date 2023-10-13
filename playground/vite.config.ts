@@ -59,6 +59,8 @@ export default defineConfig(() => {
     ],
     server: {
       host: true, // 开发时打开 Network
+      port: 5174,
+      // origin: 'http://127.0.0.1', // 解决资源访问
     },
   };
 });

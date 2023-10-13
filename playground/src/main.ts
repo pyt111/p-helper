@@ -14,7 +14,7 @@ import { setupRouter } from '@/router';
 setSetting({
   table: {
     column: {
-      // align: 'left',
+      align: 'center',
     },
   },
 });

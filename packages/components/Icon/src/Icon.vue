@@ -13,7 +13,9 @@
     ref="elRef"
     :class="[$attrs.class, 'app-iconify anticon', spin && 'app-iconify-spin']"
     :style="getWrapStyle"
-  />
+  >
+    <slot />
+  </span>
 </template>
 <script lang="ts">
   import {
