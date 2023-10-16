@@ -6,7 +6,7 @@
         type="primary"
         class="basic-upload-upload-button"
         :icon="Upload"
-        @click="openUploadModal"
+        @click="openUploadModal(true)"
       >
         {{ uploadButtonText }}
       </el-button>
@@ -17,7 +17,7 @@
             {{ fileList.length }}
           </template>
         </template>
-        <el-button :icon="View" @click="openPreviewModal">
+        <el-button :icon="View" @click="openPreviewModal(true)">
           <template v-if="fileList.length && showPreviewNumber">
             {{ fileList.length }}
           </template>

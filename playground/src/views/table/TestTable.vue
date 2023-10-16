@@ -481,6 +481,7 @@
         component: 'Upload',
         componentProps: {
           api: Promise.resolve,
+          showPreview: true,
         },
       },
       {
