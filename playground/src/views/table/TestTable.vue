@@ -476,6 +476,14 @@
         },
       },
       {
+        field: 'dst',
+        label: '上传',
+        component: 'Upload',
+        componentProps: {
+          api: Promise.resolve
+        },
+      },
+      {
         field: 'ssd',
         label: '测试-FormRadioGroup',
         component: 'RadioGroup',

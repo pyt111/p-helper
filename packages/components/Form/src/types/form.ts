@@ -16,6 +16,12 @@ import type {
 } from 'element-plus';
 import type { CSSProperties, Ref, Slot, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@p-helper/components/Button';
+import type {
+  UploadBasicProps,
+  UploadFileListProps,
+  UploadPreviewProps,
+  UploadUploadContainerProps,
+} from '@p-helper/components/Upload';
 import type { FormItem } from './formItem';
 import type { ColEx, ComponentType } from './index';
 import type { TableActionType } from '@p-helper/components/Table/src/types/table';
@@ -162,6 +168,14 @@ export interface SelectOptions<T = any> {
   disabled?: boolean;
 }
 
+export type UploadProps = Partial<
+  UploadBasicProps & {
+    fileListProps: Partial<UploadFileListProps>;
+    previewProps: Partial<UploadPreviewProps>;
+    uploadContainerProps: Partial<UploadUploadContainerProps>;
+  }
+> & { api: UploadBasicProps['api'] };
+
 export type FormSchemaExpand = Readonly<
   {
     componentProps?: {
@@ -242,6 +256,10 @@ export type FormSchemaExpand = Readonly<
     | {
         component: 'InputNumber';
         componentProps?: ComponentProps | Partial<InputNumberProps>;
+      }
+    | {
+        component: 'Upload';
+        componentProps?: ComponentProps<UploadProps> | UploadProps;
       }
     | {
         component: 'RadioGroup';

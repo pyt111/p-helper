@@ -11,12 +11,15 @@
   </el-radio-group>
 </template>
 
-<script lang="ts" setup name="FormRadioGroup">
+<script lang="ts" setup>
   import { computed, useAttrs } from 'vue';
   import VNodeRenderer from '@p-helper/components/VNodeRenderer';
   import { omit } from 'lodash-es';
   import type { RadioProps } from 'element-plus';
 
+  defineOptions({
+    name: 'FormRadioGroup',
+  });
   const attrs = useAttrs();
 
   interface BasicRadioProps extends RadioProps {

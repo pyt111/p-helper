@@ -1,6 +1,6 @@
 import type { PromiseFn } from '@p-helper/types/utils';
 import type { FileBasicColumn } from './typing';
-import type { PropType } from 'vue';
+import type { ExtractPropTypes, PropType } from 'vue';
 
 export const basicProps = {
   helpText: {
@@ -94,3 +94,10 @@ export const fileListProps = {
     default: null,
   },
 };
+
+export type UploadBasicProps = ExtractPropTypes<typeof basicProps>;
+export type UploadFileListProps = ExtractPropTypes<typeof fileListProps>;
+export type UploadPreviewProps = ExtractPropTypes<typeof previewProps>;
+export type UploadUploadContainerProps = ExtractPropTypes<
+  typeof uploadContainerProps
+>;
