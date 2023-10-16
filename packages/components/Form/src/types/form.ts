@@ -10,8 +10,6 @@ import type {
   InputNumberProps,
   InputProps,
   RadioEmits,
-  RadioGroupEmits,
-  RadioGroupInstance,
   RadioGroupProps,
   RadioProps,
   SwitchProps,
@@ -248,7 +246,7 @@ export type FormSchemaExpand = Readonly<
     | {
         component: 'RadioGroup';
         componentProps?: (ComponentProps | Partial<RadioGroupProps>) & {
-          onChange?: RadioGroupEmits['change'];
+          onChange?: (value: string | number | boolean) => void;
           options: Partial<
             RadioProps &
               RadioEmits & {
