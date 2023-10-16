@@ -12,6 +12,7 @@
     <BasicModal @register="registerModal" @ok="onOk">
       <BasicForm @register="registerForm" />
     </BasicModal>
+    <BasicUpload :api="uploadApi" />
   </div>
 </template>
 
@@ -21,6 +22,7 @@
     BasicForm,
     BasicModal,
     BasicTable,
+    BasicUpload,
     TableIconCell,
     TableTooltipHeader,
     useForm,
@@ -32,6 +34,15 @@
   import type { BasicColumn } from '@p-helper/components';
   // TestTable
 
+  const uploadApi = async () => {
+    return {
+      code: 200,
+      data: {
+        url: 'asd',
+      },
+      msg: 'sss',
+    };
+  };
   const [
     register,
     {
@@ -480,7 +491,15 @@
         label: '上传',
         component: 'Upload',
         componentProps: {
-          api: Promise.resolve,
+          api: async () => {
+            return {
+              code: 200,
+              data: {
+                url: 'asd',
+              },
+              msg: 'sss',
+            };
+          },
           showPreview: true,
         },
       },

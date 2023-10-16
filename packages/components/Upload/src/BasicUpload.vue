@@ -18,7 +18,7 @@
           </template>
         </template>
         <el-button :icon="View" @click="openPreviewModal(true)">
-          <template v-if="fileList.length && showPreviewNumber">
+          <template v-if="fileList.length && showPreviewNumber" #default>
             {{ fileList.length }}
           </template>
         </el-button>
@@ -89,10 +89,10 @@
       );
 
       // 上传modal保存操作
-      function handleChange(urls: string[]) {
+      function handleChange(urls: string[], fileListValue) {
         fileList.value = [...unref(fileList), ...(urls || [])];
         emit('update:value', fileList.value);
-        emit('change', fileList.value);
+        emit('change', fileList.value, fileListValue.value);
       }
 
       // 预览modal保存操作

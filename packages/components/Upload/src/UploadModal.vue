@@ -15,7 +15,7 @@
     @register="register"
     @ok="handleOk"
   >
-    <template #footer>
+    <template #centerFooter>
       <el-button
         type="primary"
         :disabled="!getIsSelectFile"
@@ -282,9 +282,9 @@
         if (fileList.length <= 0) {
           return ElMessage.warning('没有上传成功的文件，无法保存!');
         }
-        fileListRef.value = [];
         closeModal();
-        emit('change', fileList);
+        emit('change', fileList, unref(fileListRef));
+        fileListRef.value = [];
       }
 
       // 点击关闭：则所有操作不保存，包括上传的
