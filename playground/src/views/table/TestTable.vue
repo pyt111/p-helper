@@ -480,7 +480,7 @@
         label: '上传',
         component: 'Upload',
         componentProps: {
-          api: Promise.resolve
+          api: Promise.resolve,
         },
       },
       {

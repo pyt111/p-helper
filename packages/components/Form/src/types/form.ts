@@ -169,10 +169,9 @@ export interface SelectOptions<T = any> {
 }
 
 export type UploadProps = Partial<
-  UploadBasicProps & {
+  UploadUploadContainerProps & {
     fileListProps: Partial<UploadFileListProps>;
     previewProps: Partial<UploadPreviewProps>;
-    uploadContainerProps: Partial<UploadUploadContainerProps>;
   }
 > & { api: UploadBasicProps['api'] };
 

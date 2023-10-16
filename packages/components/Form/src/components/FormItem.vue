@@ -283,7 +283,7 @@
           getPopupContainer: (trigger: Element) => trigger.parentNode,
           size,
           style: {
-            width: '100%',
+            // width: '100%',
             ...componentStyle,
             ...componentProps?.style,
           },
