@@ -6,7 +6,9 @@ import type { CSSProperties, PropType } from 'vue';
 export const modalProps = {
   modelValue: { type: Boolean },
   title: { type: String },
-  width: [String, Number] as PropType<string | number>,
+  width: {
+    type: [String, Number] as PropType<string | number>,
+  },
   fullscreen: { type: Boolean, default: false },
   modal: { type: Boolean, default: false },
   appendToBody: { type: Boolean, default: false },
@@ -19,7 +21,9 @@ export const modalProps = {
   draggable: { type: Boolean, default: false },
   center: { type: Boolean, default: false },
   destroyOnClose: { type: Boolean, default: false },
-  beforeClose: Function as PropType<() => any>,
+  beforeClose: {
+    type: Function as PropType<() => any>,
+  },
   customClass: { type: String },
   closeIcon: {
     type: String,
@@ -100,11 +104,15 @@ export const excludePropsKeys = [
   'subTitle',
 ];
 
-export const basicProps = Object.assign({}, modalProps, modalBodyProps, {
+export const basicProps = {
+  ...modalProps,
+  ...modalBodyProps,
   scrollbarHeight: { type: [String, Number] },
   maxScrollbarHeight: { type: [String, Number], default: '70vh' },
   subTitle: { type: String },
-  closeFunc: Function as PropType<() => Promise<boolean>>,
+  closeFunc: {
+    type: Function as PropType<() => Promise<boolean>>,
+  },
   centered: { type: Boolean, default: false },
   cancelText: { type: String, default: '取消' },
   okText: { type: String, default: '确认' },
@@ -115,7 +123,9 @@ export const basicProps = Object.assign({}, modalProps, modalBodyProps, {
   // After enabling the wrapper, the bottom can be increased in height
   wrapperFooterOffset: { type: Number, default: 0 },
   // Warm reminder message
-  helpMessage: [String, Array] as PropType<string | string[]>,
+  helpMessage: {
+    type: [String, Array] as PropType<string | string[]>,
+  },
   // Whether to setting wrapper
   useWrapper: { type: Boolean, default: true },
   loading: { type: Boolean },
@@ -129,41 +139,59 @@ export const basicProps = Object.assign({}, modalProps, modalBodyProps, {
    */
   showOkBtn: { type: Boolean, default: true },
 
-  wrapperProps: Object as PropType<Partial<ModalWrapperProps>>,
+  wrapperProps: {
+    type: Object as PropType<Partial<ModalWrapperProps>>,
+  },
 
-  afterClose: Function as PropType<() => Promise<VueNode>>,
+  afterClose: {
+    type: Function as PropType<() => Promise<VueNode>>,
+  },
 
-  bodyStyle: Object as PropType<CSSProperties>,
+  bodyStyle: {
+    type: Object as PropType<CSSProperties>,
+  },
 
   closable: { type: Boolean, default: true },
 
-  closeIcon: Object as PropType<VueNode>,
+  closeIcon: {
+    type: Object as PropType<VueNode>,
+  },
 
   confirmLoading: { type: Boolean },
 
-  footer: Object as PropType<VueNode>,
+  footer: {
+    type: Object as PropType<VueNode>,
+  },
 
-  getContainer: Function as PropType<() => any>,
+  getContainer: {
+    type: Function as PropType<() => any>,
+  },
 
   mask: { type: Boolean, default: true },
 
   maskClosable: { type: Boolean, default: true },
   keyboard: { type: Boolean, default: true },
 
-  maskStyle: Object as PropType<CSSProperties>,
+  maskStyle: {
+    type: Object as PropType<CSSProperties>,
+  },
 
-  okType: { type: String, default: 'primary' },
+  okType: { type: String as PropType<'primary'| 'success'| 'warning'| 'danger'| 'info'>, default: 'primary' },
 
-  okButtonProps: Object as PropType<ButtonProps>,
+  okButtonProps: {
+    type: Object as PropType<ButtonProps>,
+  },
 
-  cancelButtonProps: Object as PropType<ButtonProps>,
+  cancelButtonProps: {
+    type: Object as PropType<ButtonProps>,
+  },
 
   visible: { type: Boolean },
 
   wrapClassName: { type: String },
   minHeight: { type: Number },
   scrollTop: { type: Boolean, default: true },
-});
+};
 
 export const basicModalEmits = {
   visibleChange: (val: boolean) => Boolean,
