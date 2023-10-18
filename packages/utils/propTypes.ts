@@ -1,4 +1,4 @@
-import { createTypes, toType } from 'vue-types';
+import { createTypes, toValidableType } from 'vue-types';
 import type { CSSProperties, VNodeChild } from 'vue';
 import type { VueTypeValidableDef, VueTypesInterface } from 'vue-types';
 
@@ -9,8 +9,7 @@ type PropTypes = VueTypesInterface & {
   readonly VNodeChild: VueTypeValidableDef<VueNode>;
   // readonly trueBool: VueTypeValidableDef<boolean>;
 };
-
-const tempPropTypes = createTypes({
+const newPropTypes = createTypes({
   func: undefined,
   bool: undefined,
   string: undefined,
@@ -19,35 +18,20 @@ const tempPropTypes = createTypes({
   integer: undefined,
 }) as PropTypes;
 
-// @ts-ignore
-class CustomPropTypes extends tempPropTypes {
-  static get style() {
-    return toType('style', {
+// 从 vue-types v5.0 开始，extend()方法已经废弃，
+// 当前已改为官方推荐的ES6+方法 https://dwightjack.github.io/vue-types/advanced/extending-vue-types.html#the-extend-method
+class propTypes extends newPropTypes {
+  // a native-like validator that supports the `.validable` method
+  static override get style() {
+    return toValidableType('style', {
       type: [String, Object],
-      default: undefined,
     });
   }
 
-  static get VNodeChild() {
-    return toType('VNodeChild', {
+  static override get VNodeChild() {
+    return toValidableType('VNodeChild', {
       type: undefined,
-      default: undefined,
     });
   }
 }
-
-// propTypes.extend([
-//   {
-//     name: 'style',
-//     getter: true,
-//     type: [String, Object],
-//     default: undefined,
-//   },
-//   {
-//     name: 'VNodeChild',
-//     getter: true,
-//     type: undefined,
-//   },
-// ]);
-
-export { CustomPropTypes as propTypes };
+export { propTypes };

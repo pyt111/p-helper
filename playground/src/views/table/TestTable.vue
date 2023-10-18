@@ -9,7 +9,11 @@
       </template>
     </BasicTable>
 
-    <BasicModal @register="registerModal" @ok="onOk">
+    <BasicModal
+      :ok-button-props="{ disabled: true }"
+      @register="registerModal"
+      @ok="onOk"
+    >
       <BasicForm @register="registerForm" />
     </BasicModal>
     <BasicUpload :api="uploadApi" />
@@ -30,9 +34,16 @@
     useTable,
   } from '@p-helper/components';
   import { ElText } from 'element-plus';
+  import VueTypes from 'vue-types';
   import { View } from '@element-plus/icons-vue';
   import type { BasicColumn } from '@p-helper/components';
+
   // TestTable
+
+  const prop = defineProps({
+    t: VueTypes.number,
+  });
+  console.log('prop >--->', prop, prop.t);
 
   const uploadApi = async () => {
     return {
@@ -279,10 +290,17 @@
           //   return !record.isEditableRow();
           // },
           elIcon: 'Share',
+          // dynamicLoading: ({ row, index, record }) => {
+          //   return record.loading;
+          // },
           popConfirm: {
             title: '删除提醒',
-            confirm: () => {
-              console.log('删除提醒 >--->');
+            confirm: (obj) => {
+              const { index, row, record, elColumn } = obj;
+              // console.log('删除提醒 >--->', elColumn);
+              // record.setLoading(true, record);
+              // record.loading = true;
+              // record.updateTableActionUi();
             },
           },
           badge: {

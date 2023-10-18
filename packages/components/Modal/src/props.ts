@@ -1,6 +1,6 @@
 import { UPDATE_MODEL_EVENT } from '@p-helper/constants/event';
-import type { ModalMethods, ModalWrapperProps } from './typing';
 import type { ButtonProps } from 'element-plus';
+import type { ModalMethods, ModalWrapperProps } from './typing';
 import type { CSSProperties, PropType } from 'vue';
 
 export const modalProps = {
@@ -176,14 +176,19 @@ export const basicProps = {
     type: Object as PropType<CSSProperties>,
   },
 
-  okType: { type: String as PropType<'primary'| 'success'| 'warning'| 'danger'| 'info'>, default: 'primary' },
+  okType: {
+    type: String as PropType<
+      'primary' | 'success' | 'warning' | 'danger' | 'info'
+    >,
+    default: 'primary',
+  },
 
   okButtonProps: {
-    type: Object as PropType<ButtonProps>,
+    type: Object as PropType<Partial<ButtonProps>>,
   },
 
   cancelButtonProps: {
-    type: Object as PropType<ButtonProps>,
+    type: Object as PropType<Partial<ButtonProps>>,
   },
 
   visible: { type: Boolean },

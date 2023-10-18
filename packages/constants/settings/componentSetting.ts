@@ -41,7 +41,9 @@ export default {
     defaultFilterFn: (data: Partial<Recordable<string[]>>) => {
       return data;
     },
-    column: {} as BasicColumn,
+    column: {
+      align: 'center',
+    } as BasicColumn,
   },
   vxeTable: {
     table: {

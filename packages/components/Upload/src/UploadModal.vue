@@ -31,6 +31,8 @@
         :description="getHelpText"
         type="info"
         banner
+        show-icon
+        :closable="false"
         class="upload-modal-toolbar__text"
       />
 
