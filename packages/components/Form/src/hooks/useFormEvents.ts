@@ -18,7 +18,7 @@ import {
 import type {
   FormActionType,
   FormProps,
-  FormSchema,
+  FormSchemaInner as FormSchema,
   NamePath,
 } from '../types/form';
 import type { ComputedRef, Ref } from 'vue';
@@ -319,7 +319,9 @@ export function useFormEvents({
    */
   function itemIsDateType(key: string) {
     return unref(getSchema).some((item) => {
-      return item.field === key ? dateItemType.includes(item.component) : false;
+      return item.field === key && item.component
+        ? dateItemType.includes(item.component)
+        : false;
     });
   }
 

@@ -5,8 +5,13 @@
   import { cloneDeep, upperFirst } from 'lodash-es';
   import { componentMap } from '../componentMap';
   import { createPlaceholderMessage, setComponentRuleType } from '../helper';
+  import {
+    type FormActionType,
+    type FormProps,
+    type FormSchemaInner as FormSchema,
+    isComponentFormSchema,
+  } from '../types/form';
   import type { PropType } from 'vue';
-  import type { FormActionType, FormProps, FormSchema } from '../types/form';
   // import type { ValidateOption } from 'element-plus/es/components/form/src/form.vue';
   import type { TableActionType } from '@p-helper/components/Table';
   // import { useItemLabelWidth } from '../hooks/useLabelWidth';
@@ -162,7 +167,7 @@
         const joinLabel = Reflect.has(props.schema, 'rulesMessageJoinLabel')
           ? rulesMessageJoinLabel
           : globalRulesMessageJoinLabel;
-        const defaultMsg = `${createPlaceholderMessage(component)}${
+        const defaultMsg = `${createPlaceholderMessage(component!)}${
           joinLabel ? label : ''
         }`;
 
@@ -237,6 +242,9 @@
       }
 
       function renderComponent() {
+        if (!isComponentFormSchema(props.schema)) {
+          return null;
+        }
         const {
           renderComponentContent,
           component,
@@ -391,8 +399,12 @@
           colSlot,
           renderColContent,
           component,
+          slot,
         } = props.schema;
-        if (!componentMap.has(component) && component !== 'Render') {
+        if (
+          !component ||
+          (!componentMap.has(component) && component !== 'Render' && !slot)
+        ) {
           return null;
         }
 

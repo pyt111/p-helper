@@ -17,7 +17,8 @@ import {
   ElColorPicker,
 } from 'element-plus';
 import { BasicUpload } from '@p-helper/components/Upload';
-import FormRadioGroup from '@p-helper/components/Form/src/components/FormRadioGroup.vue';
+// @ts-ignore
+import FormRadioGroup from './components/FormRadioGroup.vue';
 import type { Component } from 'vue';
 import type { ComponentType } from './types';
 

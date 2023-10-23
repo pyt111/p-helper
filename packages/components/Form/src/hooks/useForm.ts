@@ -7,7 +7,7 @@ import type { DynamicProps } from '@p-helper/types/utils';
 import type {
   FormActionType,
   FormProps,
-  FormSchema,
+  FormSchemaInner as FormSchema,
   NamePath,
   UseFormReturnType,
 } from '../types/form';

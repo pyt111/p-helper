@@ -38,7 +38,7 @@ export type Rule = FormItemRule & {
 };
 
 export interface RenderCallbackParams {
-  schema: FormSchema;
+  schema: FormSchemaInner;
   values: Recordable;
   model: Recordable;
   field: string;
@@ -58,15 +58,15 @@ export interface FormActionType {
   getFormModel: <T>() => Recordable<T>;
   clearValidate: (name?: string | string[]) => Promise<void>;
   updateSchema: (
-    data: Partial<FormSchema> | Partial<FormSchema>[]
+    data: Partial<FormSchemaInner> | Partial<FormSchemaInner>[]
   ) => Promise<void>;
   resetSchema: (
-    data: Partial<FormSchema> | Partial<FormSchema>[]
+    data: Partial<FormSchemaInner> | Partial<FormSchemaInner>[]
   ) => Promise<void>;
   setProps: (formProps: Partial<FormProps>) => Promise<void>;
   removeSchemaByFiled: (field: string | string[]) => Promise<void>;
   appendSchemaByField: (
-    schema: FormSchema,
+    schema: FormSchemaInner,
     prefixField: string | undefined,
     first?: boolean
   ) => Promise<void>;
@@ -155,12 +155,14 @@ export type FormProps = ElFormProps & {
   transformDateFunc?: (date: any) => string;
   colon?: boolean;
 };
-export type ComponentProps<T = Recordable> = (opt: {
-  schema: FormSchema;
-  tableAction: TableActionType;
-  formActionType: FormActionType;
-  formModel: Recordable;
-}) => T;
+export type ComponentProps<T = Recordable> =
+  | ((opt: {
+      schema: FormSchema;
+      tableAction: TableActionType;
+      formActionType: FormActionType;
+      formModel: Recordable;
+    }) => T)
+  | object;
 
 export interface SelectOptions<T = any> {
   label: string;
@@ -175,107 +177,227 @@ export type UploadProps = Partial<
   }
 > & { api: UploadBasicProps['api'] };
 
-export type FormSchemaExpand = Readonly<
-  {
-    componentProps?: {
-      style?: CSSProperties;
-    };
-  } & (
-    | {
-        component: 'Input';
-        componentProps?:
-          | ComponentProps
-          | (Partial<InputProps> &
-              Partial<{
-                onChange: ((...args: any[]) => any) | undefined;
-                maxlength: string | number;
-                minlength: string | number;
-                max: string | number;
-                min: string | number;
-              }> &
-              Recordable);
+export interface InputComponentSchema {
+  component: 'Input';
+  componentProps?:
+    | ComponentProps
+    | (Partial<InputProps> &
+        Partial<{
+          onChange: ((...args: any[]) => any) | undefined;
+          maxlength: string | number;
+          minlength: string | number;
+          max: string | number;
+          min: string | number;
+        }>);
+}
+
+export interface SelectComponentSchema {
+  component: 'Select';
+  componentProps?: (ComponentProps | Partial<Omit<ISelectProps, 'options'>>) &
+    Partial<
+      {
+        options:
+          | (OptionType & SelectOptions)[]
+          | Ref<(OptionType & SelectOptions)[]>;
+      } & {
+        style?: CSSProperties;
+        bbb: string;
+        onChange?: ((...args: any[]) => any) | undefined;
+        'onUpdate:modelValue'?: ((...args: any[]) => any) | undefined;
+        onFocus?: ((...args: any[]) => any) | undefined;
+        onBlur?: ((...args: any[]) => any) | undefined;
+        onClear?: ((...args: any[]) => any) | undefined;
+        onVisibleChange?: ((...args: any[]) => any) | undefined;
+        onRemoveTag?: ((...args: any[]) => any) | undefined;
       }
-    | {
-        component: 'Select';
-        componentProps?: (
-          | ComponentProps
-          | Partial<Omit<ISelectProps, 'options'>>
-        ) & {
-          options:
-            | (OptionType & SelectOptions)[]
-            | Ref<(OptionType & SelectOptions)[]>;
-        } & {
-          style?: CSSProperties;
-          onChange?: ((...args: any[]) => any) | undefined;
-          'onUpdate:modelValue'?: ((...args: any[]) => any) | undefined;
-          onFocus?: ((...args: any[]) => any) | undefined;
-          onBlur?: ((...args: any[]) => any) | undefined;
-          onClear?: ((...args: any[]) => any) | undefined;
-          onVisibleChange?: ((...args: any[]) => any) | undefined;
-          onRemoveTag?: ((...args: any[]) => any) | undefined;
-        };
-      }
-    | {
-        component: 'TreeSelect';
-        componentProps?: (
-          | ComponentProps
-          | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
-        ) & {
-          data: any;
-        };
-      }
-    | {
-        component: 'RangePicker';
-      }
-    | {
-        component: 'DatePicker';
-      }
-    | {
-        component: 'Render';
-      }
-    | {
-        component: 'Checkbox';
-        componentProps?: (
-          | ComponentProps<CheckboxProps>
-          | Partial<CheckboxProps>
-        ) & {
-          onChange?: ((...args: any[]) => any) | undefined;
-        };
-      }
-    | {
-        component: 'Switch';
-        componentProps?: (ComponentProps | Partial<SwitchProps>) & {
-          onChange?: ((...args: any[]) => any) | undefined;
-        };
-      }
-    | {
-        component: 'Divider';
-        componentProps?: ComponentProps | Partial<DividerProps>;
-      }
-    | {
-        component: 'InputNumber';
-        componentProps?: ComponentProps | Partial<InputNumberProps>;
-      }
-    | {
-        component: 'Upload';
-        componentProps?: ComponentProps<UploadProps> | UploadProps;
-      }
-    | {
-        component: 'RadioGroup';
-        componentProps?: (ComponentProps | Partial<RadioGroupProps>) & {
-          onChange?: (value: string | number | boolean) => void;
-          options: Partial<
-            RadioProps &
-              RadioEmits & {
-                slot: null | VNode | VNode[] | (() => VNode | VNode[]);
-                content: Slot | string;
-              }
-          >[];
-        };
-      }
-  )
->;
-export type FormSchema = {
+    >;
+}
+
+export interface TreeSelectComponentSchema {
+  component: 'TreeSelect';
+  componentProps?: (
+    | ComponentProps
+    | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
+  ) & {
+    data: any;
+  };
+}
+
+export interface RangePickerComponentSchema {
+  component: 'RangePicker';
+  componentProps?: ComponentProps;
+}
+
+export interface DatePickerComponentSchema {
+  component: 'DatePicker';
+  componentProps?: ComponentProps;
+}
+
+export interface RenderComponentSchema {
+  component: 'Render';
+  componentProps?: ComponentProps;
+}
+
+export interface CheckboxComponentSchema {
+  component: 'Checkbox';
+  componentProps?: (ComponentProps<CheckboxProps> | Partial<CheckboxProps>) & {
+    onChange?: ((...args: any[]) => any) | undefined;
+  };
+}
+
+export interface SwitchComponentSchema {
+  component: 'Switch';
+  componentProps?: (ComponentProps | Partial<SwitchProps>) & {
+    onChange?: ((...args: any[]) => any) | undefined;
+  };
+}
+
+export interface DividerComponentSchema {
+  component: 'Divider';
+  componentProps?: ComponentProps | Partial<DividerProps>;
+}
+
+export interface InputNumberComponentSchema {
+  component: 'InputNumber';
+  componentProps?: ComponentProps | Partial<InputNumberProps>;
+}
+
+export interface UploadComponentSchema {
+  component: 'Upload';
+  componentProps?: ComponentProps<UploadProps> | UploadProps;
+}
+
+export interface RadioGroupComponentSchema {
+  component: 'RadioGroup';
+  componentProps?:
+    | ComponentProps
+    | (Partial<RadioGroupProps> & {
+        onChange?: (value: string | number | boolean) => void;
+        options: Partial<
+          RadioProps &
+            RadioEmits & {
+              slot: null | VNode | VNode[] | (() => VNode | VNode[]);
+              content: Slot | string;
+            }
+        >[];
+      });
+}
+export type FormSchemaExpand =
+  | InputComponentSchema
+  | SelectComponentSchema
+  | TreeSelectComponentSchema
+  | RangePickerComponentSchema
+  | DatePickerComponentSchema
+  | RenderComponentSchema
+  | CheckboxComponentSchema
+  | SwitchComponentSchema
+  | DividerComponentSchema
+  | InputNumberComponentSchema
+  | UploadComponentSchema
+  | RadioGroupComponentSchema;
+
+// export type FormSchemaExpand = Readonly<
+//   {
+//     componentProps?: {
+//       style?: CSSProperties;
+//     };
+//   } & (
+//     | {
+//         component: 'Input';
+//         componentProps?:
+//           | ComponentProps
+//           | (Partial<InputProps> &
+//               Partial<{
+//                 onChange: ((...args: any[]) => any) | undefined;
+//                 maxlength: string | number;
+//                 minlength: string | number;
+//                 max: string | number;
+//                 min: string | number;
+//               }> &
+//               Recordable);
+//       }
+//     | {
+//         component: 'Select';
+//         componentProps?: (
+//           | ComponentProps
+//           | Partial<Omit<ISelectProps, 'options'>>
+//         ) & {
+//           options:
+//             | (OptionType & SelectOptions)[]
+//             | Ref<(OptionType & SelectOptions)[]>;
+//         } & {
+//           style?: CSSProperties;
+//           onChange?: ((...args: any[]) => any) | undefined;
+//           'onUpdate:modelValue'?: ((...args: any[]) => any) | undefined;
+//           onFocus?: ((...args: any[]) => any) | undefined;
+//           onBlur?: ((...args: any[]) => any) | undefined;
+//           onClear?: ((...args: any[]) => any) | undefined;
+//           onVisibleChange?: ((...args: any[]) => any) | undefined;
+//           onRemoveTag?: ((...args: any[]) => any) | undefined;
+//         };
+//       }
+//     | {
+//         component: 'TreeSelect';
+//         componentProps?: (
+//           | ComponentProps
+//           | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
+//         ) & {
+//           data: any;
+//         };
+//       }
+//     | {
+//         component: 'RangePicker';
+//       }
+//     | {
+//         component: 'DatePicker';
+//       }
+//     | {
+//         component: 'Render';
+//       }
+//     | {
+//         component: 'Checkbox';
+//         componentProps?: (
+//           | ComponentProps<CheckboxProps>
+//           | Partial<CheckboxProps>
+//         ) & {
+//           onChange?: ((...args: any[]) => any) | undefined;
+//         };
+//       }
+//     | {
+//         component: 'Switch';
+//         componentProps?: (ComponentProps | Partial<SwitchProps>) & {
+//           onChange?: ((...args: any[]) => any) | undefined;
+//         };
+//       }
+//     | {
+//         component: 'Divider';
+//         componentProps?: ComponentProps | Partial<DividerProps>;
+//       }
+//     | {
+//         component: 'InputNumber';
+//         componentProps?: ComponentProps | Partial<InputNumberProps>;
+//       }
+//     | {
+//         component: 'Upload';
+//         componentProps?: ComponentProps<UploadProps> | UploadProps;
+//       }
+//     | {
+//         component: 'RadioGroup';
+//         componentProps?: (ComponentProps | Partial<RadioGroupProps>) & {
+//           onChange?: (value: string | number | boolean) => void;
+//           options: Partial<
+//             RadioProps &
+//               RadioEmits & {
+//                 slot: null | VNode | VNode[] | (() => VNode | VNode[]);
+//                 content: Slot | string;
+//               }
+//           >[];
+//         };
+//       }
+//   )
+// >;
+
+export interface BaseFormSchema {
   // Field name
   field: string;
   // 通过连字符查找对象或数组下的值
@@ -300,10 +422,8 @@ export type FormSchema = {
   // Disable the adjustment of labelWidth with global settings of formModel,
   // and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
-  // render component
-  component: ComponentType;
   // 对应组件的属性传值  类型暂时不管 可以直接去看element-plus相对应的组件的props
-  // componentProps?: ComponentProps;
+  componentProps?: ComponentProps;
   // Required
   required?:
     | boolean
@@ -364,7 +484,39 @@ export type FormSchema = {
     | ((renderCallbackParams: RenderCallbackParams) => boolean);
 
   dynamicRules?: (renderCallbackParams: RenderCallbackParams) => Rule[];
-} & FormSchemaExpand;
+}
+
+export interface ComponentFormSchemaExpand extends BaseFormSchema {
+  // render component
+  component: ComponentType;
+  componentProps?: {
+    style?: CSSProperties;
+  };
+}
+
+export type ComponentFormSchema = ComponentFormSchemaExpand & FormSchemaExpand;
+
+export interface SlotFormSchema extends BaseFormSchema {
+  // Custom slot, in from-item
+  slot: string;
+}
+export type FormSchema = ComponentFormSchema | SlotFormSchema;
+
+export type FormSchemaInner = Partial<ComponentFormSchema> &
+  Partial<SlotFormSchema> &
+  BaseFormSchema;
+
+export function isSlotFormSchema(
+  schema: FormSchemaInner
+): schema is SlotFormSchema {
+  return 'slot' in schema;
+}
+
+export function isComponentFormSchema(
+  schema: FormSchemaInner
+): schema is ComponentFormSchema {
+  return !isSlotFormSchema(schema);
+}
 export interface HelpComponentProps {
   maxWidth: string;
   // Whether to display the serial number

@@ -10,7 +10,7 @@ export const buttonProps = {
   },
   loading: { type: Boolean },
   link: { type: Boolean },
-  label: { type: String },
+  label: { type: [String, Number] },
   disabled: { type: Boolean },
   // 支持element-plus的图标与Icon组件
   preIcon: { type: [String, Object] },

@@ -6,7 +6,8 @@ import type { ComponentType } from './types';
 /**
  * @description: 生成placeholder
  */
-export function createPlaceholderMessage(component: ComponentType) {
+export function createPlaceholderMessage(component?: ComponentType) {
+  if (!component) return '';
   if (component.includes('Input') || component.includes('Complete')) {
     return '请输入';
   }

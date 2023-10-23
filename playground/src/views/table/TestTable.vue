@@ -168,7 +168,7 @@
         editRow: true,
         component: 'BadgeActionCell',
         componentProps: {
-          label: 'sssddd',
+          // label: 'sssddd',
           elIcon: 'Share',
           badge: {
             value: 3,

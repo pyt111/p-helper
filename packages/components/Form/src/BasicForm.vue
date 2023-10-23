@@ -89,7 +89,11 @@
   import { basicFormEmits, basicProps, excludeFormPropsKeys } from './props';
   import type { Ref } from 'vue';
   import type { AdvanceState } from './types/hooks';
-  import type { FormActionType, FormProps, FormSchema } from './types/form';
+  import type {
+    FormActionType,
+    FormProps,
+    FormSchemaInner as FormSchema,
+  } from './types/form';
 
   export default defineComponent({
     name: 'BasicForm',

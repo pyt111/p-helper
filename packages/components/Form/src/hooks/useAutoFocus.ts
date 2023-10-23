@@ -1,6 +1,10 @@
 import { nextTick, unref, watchEffect } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
-import type { FormActionType, FormProps, FormSchema } from '../types/form';
+import type {
+  FormActionType,
+  FormProps,
+  FormSchemaInner as FormSchema,
+} from '../types/form';
 
 interface UseAutoFocusContext {
   getSchema: ComputedRef<FormSchema[]>;
@@ -28,7 +32,7 @@ export async function useAutoFocus({
 
     const firstItem = schemas[0];
     // Only open when the first form item is input type
-    if (!firstItem.component.includes('Input')) {
+    if (!firstItem.component?.includes('Input')) {
       return;
     }
 

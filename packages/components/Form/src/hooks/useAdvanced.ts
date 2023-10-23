@@ -5,7 +5,7 @@ import { useDebounceFn } from '@vueuse/core';
 import type { ColEx } from '../types';
 import type { AdvanceState } from '../types/hooks';
 import type { ComputedRef, Ref } from 'vue';
-import type { FormProps, FormSchema } from '../types/form';
+import type { FormProps, FormSchemaInner as FormSchema } from '../types/form';
 
 const BASIC_COL_LEN = 24;
 

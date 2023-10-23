@@ -9,7 +9,7 @@ import {
 import { dateUtil } from '@p-helper/utils/dateUtil';
 import { cloneDeep, set } from 'lodash-es';
 import type { ComputedRef, Ref } from 'vue';
-import type { FormProps, FormSchema } from '../types/form';
+import type { FormProps, FormSchemaInner as FormSchema } from '../types/form';
 
 interface UseFormValuesContext {
   defaultValueRef: Ref<any>;
