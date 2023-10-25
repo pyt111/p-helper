@@ -1,4 +1,13 @@
-import { computed, h, ref, shallowRef, toRaw, unref, watch } from 'vue';
+import {
+  computed,
+  h,
+  nextTick,
+  ref,
+  shallowRef,
+  toRaw,
+  unref,
+  watch,
+} from 'vue';
 import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
 import { cloneDeep } from 'lodash-es';
 import componentSetting from '@p-helper/constants/settings/componentSetting';
@@ -18,7 +27,10 @@ import type {
   BasicTableProps,
   TypeOrReturnTypeFun,
 } from '@p-helper/components/Table/src/types/table';
-import type { TableActionParams } from '../components/editable';
+import type {
+  EditRowRecordRow,
+  TableActionParams,
+} from '../components/editable';
 import type { ActionItem } from '../types/tableAction';
 import type { ComputedRef, Ref } from 'vue';
 
@@ -137,7 +149,7 @@ export function useColumns(
   const updateTableActionUi = () => {
     updateIndex.value += 1;
   };
-  function getEditRowRecord(rows?: Recordable[]) {
+  function getEditRowRecord(rows?: Recordable[]): EditRowRecordRow {
     const defaultKeys =
       rows?.map((item) => item[getRowKey.value] ?? item[ROW_KEY]) || [];
     return {
@@ -149,29 +161,32 @@ export function useColumns(
       isEditableRow() {
         return defaultKeys.some((k) => cacheEditRows.value[k]);
       },
-      onEditRow(key?: EditRowKey, isIndex?: boolean) {
+      onEditRow: async (key?: EditRowKey, isIndex?: boolean) => {
         const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
         onCacheEditRows(keys);
         getEditRows().forEach((item) => {
           item.record?.onEditRow?.(keys, isIndex);
         });
         updateTableActionUi();
+        await nextTick();
       },
-      onEditRowSave(key?: EditRowKey, isIndex?: boolean) {
+      onEditRowSave: async (key?: EditRowKey, isIndex?: boolean) => {
         const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
         onCacheEditRows(keys, false);
         getEditRows().forEach((item) => {
           item.record?.onEditRowSave?.(keys, isIndex);
         });
         updateTableActionUi();
+        await nextTick();
       },
-      onEditRowCancel(key?: EditRowKey, isIndex?: boolean) {
+      onEditRowCancel: async (key?: EditRowKey, isIndex?: boolean) => {
         const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
         onCacheEditRows(keys, false);
         getEditRows().forEach((item) => {
           item.record?.onEditRowCancel?.(keys, isIndex);
         });
         updateTableActionUi();
+        await nextTick();
       },
     };
   }

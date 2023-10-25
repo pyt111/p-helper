@@ -493,18 +493,18 @@
     };
 
     // 编辑行
-    props.record.onEditRow = (key?: EditRowKey, isIndex?: boolean) => {
-      nextTick(() => {
+    props.record.onEditRow = async (key?: EditRowKey, isIndex?: boolean) => {
+      await nextTick(() => {
         isArray(props.record?.editRowCbs) && props.record?.editRowCbs.forEach((fn) => fn(key, isIndex));
       })
     }
 
-    props.record.onEditRowSave = (key?: EditRowKey, isIndex?: boolean) => {
-      props.record.onSubmitEdit(key, isIndex)
+    props.record.onEditRowSave = async (key?: EditRowKey, isIndex?: boolean) => {
+      await props.record.onSubmitEdit(key, isIndex)
     }
 
-    props.record.onEditRowCancel = (key?: EditRowKey, isIndex?: boolean) => {
-      props.record.onCancelEdit(key, isIndex)
+    props.record.onEditRowCancel = async (key?: EditRowKey, isIndex?: boolean) => {
+      await props.record.onCancelEdit(key, isIndex)
     }
   }
 

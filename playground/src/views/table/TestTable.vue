@@ -278,8 +278,19 @@
       editButtonsProps: () => {
         return [
           {
-            // label: 'ss',
-            buttonName: 'edit',
+            buttonName: 'save',
+            onClick: (obj) => {
+              obj.record.onEditRowSave().then(() => {
+                console.log('obj >--->', obj.row.ds2);
+              });
+
+              // tableFieldInfo_update({
+              //   id: obj.row?.id,
+              // }).then((res) => {
+              //   updateTableDataRecord(obj.row.key, res.data || {});
+              //   obj.record.onEditRow();
+              // });
+            },
           },
         ];
       },

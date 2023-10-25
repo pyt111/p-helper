@@ -8,9 +8,9 @@ import type {
 import type { ComputedRef, Ref, ShallowRef } from 'vue';
 
 export type EditRowRecordRow<T = Recordable> = {
-  onEditRow: (key?: EditRowKey, isIndex?: boolean) => void;
-  onEditRowSave: (key?: EditRowKey, isIndex?: boolean) => void;
-  onEditRowCancel: (key?: EditRowKey, isiIndex?: boolean) => void;
+  onEditRow: (key?: EditRowKey, isIndex?: boolean) => Promise<any>;
+  onEditRowSave: (key?: EditRowKey, isIndex?: boolean) => Promise<any>;
+  onEditRowCancel: (key?: EditRowKey, isiIndex?: boolean) => Promise<any>;
   rowKeyName: string | number;
   updateTableActionUi: () => void;
   updateIndex: Ref<number>;
