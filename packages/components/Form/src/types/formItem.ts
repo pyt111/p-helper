@@ -1,5 +1,5 @@
 import type { NamePath } from '@p-helper/components/Form/src/types/form';
-import type { ColProps, FormItemRule, FormItemProps } from 'element-plus';
+import type { ColProps, FormItemProps, FormItemRule } from 'element-plus';
 import type { HTMLAttributes, VNodeChild } from 'vue';
 
 export type FormItem = {
