@@ -1,8 +1,8 @@
 import type { NamePath } from '@p-helper/components/Form/src/types/form';
-import type { ColProps, FormItemRule } from 'element-plus';
+import type { ColProps, FormItemRule, FormItemProps } from 'element-plus';
 import type { HTMLAttributes, VNodeChild } from 'vue';
 
-export interface FormItem {
+export type FormItem = {
   /**
    * Used with label, whether to display : after label text.
    * @default true
@@ -91,4 +91,4 @@ export interface FormItem {
    * When to validate the value of children node
    */
   validateTrigger?: string | string[] | false;
-}
+} & FormItemProps;
