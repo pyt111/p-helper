@@ -87,7 +87,7 @@ export const CustomCellComponent: FunctionalComponent = (
     componentProps = componentProps(props);
   }
   // @ts-ignore
-  componentProps.label = componentProps?.label || props.row[props.prop];
+  componentProps.label = props.row[props.prop];
   return h(
     Comp,
     {

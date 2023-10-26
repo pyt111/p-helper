@@ -83,18 +83,21 @@
             ds: 333,
             ds1: 555,
             ds2: 666,
+            badgeValue:  2,
           },
           {
             id: 15,
             d: 32,
             c: 42,
             a: '33asd3',
+            badgeValue:  10,
           },
           {
             id: 1002,
             d: 52,
             c: 62,
             a: '555',
+            badgeValue:  6,
           },
         ],
       };
@@ -171,7 +174,10 @@
           // label: 'sssddd',
           elIcon: 'Share',
           badge: {
-            value: 3,
+            valueKey: 'badgeValue',
+            // value: () => {
+            //   return 2;
+            // },
           },
           onClick: ({ row }) => {
             console.log('asdasdasdasd >--->', row);
@@ -369,7 +375,7 @@
           onClick: (obj) => {
             const { index, row, record } = obj;
             deleteTableDataRecord(row.id || row.key);
-            record.onEditRow(record.getIsRowEditCacheRowKeys());
+            // record.onEditRow(record.getIsRowEditCacheRowKeys());
           },
         },
       ],

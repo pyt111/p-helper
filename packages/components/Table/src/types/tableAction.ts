@@ -29,7 +29,16 @@ export type ActionItem = Partial<
       tooltip?: string | ElTooltipProps;
       buttonName?: 'edit' | 'save' | 'cancel';
       enablePopConfirm?: boolean;
-      badge?: Partial<BadgeProps> | (() => Partial<BadgeProps>);
+      badge?:
+        | Partial<
+            BadgeProps & {
+              value: (obj: TableActionParams) => string | number;
+              valueKey?: string;
+            }
+          >
+        | ((
+            obj: TableActionParams
+          ) => Partial<BadgeProps & { valueKey?: string }>);
     }
 >;
 
