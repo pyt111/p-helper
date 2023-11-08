@@ -274,12 +274,9 @@ export interface InputNumberComponentSchema {
 
 export interface CascaderComponentSchema {
   component: 'Cascader';
-  componentProps?: (
+  componentProps?:
     | ComponentProps<CascaderInstance['$props']>
-    | Partial<CascaderInstance['$props']>
-  ) & {
-    options: CascaderProps[];
-  };
+    | Partial<CascaderInstance['$props']>;
 }
 
 export interface UploadComponentSchema {
