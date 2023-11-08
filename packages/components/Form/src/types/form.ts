@@ -1,8 +1,8 @@
+import type { CascaderProps } from 'element-plus/es/components/cascader-panel/src/node';
 import type ElTree from 'element-plus/es/components/tree';
 import type ElSelect from 'element-plus/es/components/select';
-import type { TreeComponentProps } from 'element-plus/es/components/tree/src/tree.type';
 import type {
-  CascaderProps,
+  CascaderInstance,
   CheckboxProps,
   DatePickerProps,
   DividerProps,
@@ -274,7 +274,12 @@ export interface InputNumberComponentSchema {
 
 export interface CascaderComponentSchema {
   component: 'Cascader';
-  componentProps?: ComponentProps<CascaderProps> | Partial<CascaderProps>;
+  componentProps?: (
+    | ComponentProps<CascaderInstance['$props']>
+    | Partial<CascaderInstance['$props']>
+  ) & {
+    options: CascaderProps[];
+  };
 }
 
 export interface UploadComponentSchema {
