@@ -2,7 +2,9 @@ import type ElTree from 'element-plus/es/components/tree';
 import type ElSelect from 'element-plus/es/components/select';
 import type { TreeComponentProps } from 'element-plus/es/components/tree/src/tree.type';
 import type {
+  CascaderProps,
   CheckboxProps,
+  DatePickerProps,
   DividerProps,
   FormProps as ElFormProps,
   FormItemRule,
@@ -13,6 +15,7 @@ import type {
   RadioGroupProps,
   RadioProps,
   SwitchProps,
+  TimePickerDefaultProps,
 } from 'element-plus';
 import type { CSSProperties, Ref, Slot, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@p-helper/components/Button';
@@ -230,7 +233,14 @@ export interface RangePickerComponentSchema {
 
 export interface DatePickerComponentSchema {
   component: 'DatePicker';
-  componentProps?: ComponentProps;
+  componentProps?: ComponentProps<DatePickerProps> | Partial<DatePickerProps>;
+}
+
+export interface TimePickerComponentSchema {
+  component: 'TimePicker';
+  componentProps?:
+    | ComponentProps<TimePickerDefaultProps>
+    | Partial<TimePickerDefaultProps>;
 }
 
 export interface RenderComponentSchema {
@@ -260,6 +270,11 @@ export interface DividerComponentSchema {
 export interface InputNumberComponentSchema {
   component: 'InputNumber';
   componentProps?: ComponentProps | Partial<InputNumberProps>;
+}
+
+export interface CascaderComponentSchema {
+  component: 'Cascader';
+  componentProps?: ComponentProps<CascaderProps> | Partial<CascaderProps>;
 }
 
 export interface UploadComponentSchema {
@@ -294,7 +309,9 @@ export type FormSchemaExpand =
   | DividerComponentSchema
   | InputNumberComponentSchema
   | UploadComponentSchema
-  | RadioGroupComponentSchema;
+  | RadioGroupComponentSchema
+  | TimePickerComponentSchema
+  | CascaderComponentSchema;
 
 // export type FormSchemaExpand = Readonly<
 //   {
