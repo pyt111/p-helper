@@ -14,6 +14,7 @@ import { isEqual } from 'lodash-es';
 import { tryOnUnmounted } from '@vueuse/core';
 import { error } from '@p-helper/utils/log';
 import { isProdMode } from '@p-helper/utils/env';
+import type { AnyFn } from '@vueuse/shared/index';
 
 import type {
   ModalMethods,
@@ -31,7 +32,7 @@ const visibleData = reactive<{ [key: number]: boolean }>({});
  * @description: 外部调用
  */
 export function useModal(opt?: {
-  confirmCallback?: () => void;
+  confirmCallback?: AnyFn;
 }): UseModalReturnType {
   const modal = ref<Nullable<ModalMethods>>(null);
   const loaded = ref<Nullable<boolean>>(false);
@@ -115,7 +116,7 @@ export function useModal(opt?: {
 /**
  * @description 当使用一个单文件去写弹窗组件时使用这个，外部调用自己写的组件需要用useModal去在外部注册，然后可以与这个单文件组件交互
  */
-export const useModalInner = (callbackFn?: Fn): UseModalInnerReturnType => {
+export const useModalInner = (callbackFn?: AnyFn): UseModalInnerReturnType => {
   const modalInstanceRef = ref<Nullable<ModalMethods>>(null);
   const currentInstance = getCurrentInstance();
   const uidRef = ref<number | string>('');
