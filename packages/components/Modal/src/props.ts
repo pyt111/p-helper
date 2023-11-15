@@ -108,7 +108,7 @@ export const basicProps = {
   ...modalProps,
   ...modalBodyProps,
   scrollbarHeight: { type: [String, Number] },
-  maxScrollbarHeight: { type: [String, Number], default: '70vh' },
+  maxScrollbarHeight: { type: [String, Number], default: '' },
   subTitle: { type: String },
   closeFunc: {
     type: Function as PropType<() => Promise<boolean>>,

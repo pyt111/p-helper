@@ -1,4 +1,5 @@
 import {
+  BasicDrawer,
   BasicForm,
   BasicModal,
   BasicTable,
@@ -15,4 +16,5 @@ export default [
   BasicForm,
   BasicModal,
   BasicUpload,
+  BasicDrawer,
 ] as Plugin[];

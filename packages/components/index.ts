@@ -7,4 +7,5 @@ export * from './Table';
 export * from './Modal';
 export * from './Form';
 export * from './Upload';
+export * from './Drawer';
 export * from './infinite-scroll';

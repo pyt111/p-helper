@@ -1,5 +1,5 @@
 <template>
-  <BasicTitle class="el-dialog__title" :helpMessage="helpMessage">
+  <BasicTitle class="el-dialog__title" :help-message="helpMessage">
     {{ title }}
     <template v-if="subTitle">
       <el-divider direction="vertical" />
@@ -8,9 +8,9 @@
   </BasicTitle>
 </template>
 <script lang="ts">
-  import type { PropType } from 'vue';
   import { defineComponent } from 'vue';
   import { BasicTitle } from '@p-helper/components/Basic';
+  import type { PropType } from 'vue';
 
   export default defineComponent({
     name: 'BasicModalHeader',
