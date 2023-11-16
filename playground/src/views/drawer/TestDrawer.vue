@@ -6,6 +6,7 @@
         :show-close="false"
         title="头部"
         in-container
+        :modal="false"
         @register="register"
       >
         1

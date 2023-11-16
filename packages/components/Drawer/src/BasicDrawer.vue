@@ -63,9 +63,10 @@
   } from './typing';
   import type { CSSProperties } from 'vue';
 
+  export const elDrawerProps = (ElDrawer as any).props;
   export default defineComponent({
     components: { ElDrawer, ElScrollbar, DrawerFooter, DrawerHeader },
-    props: basicDrawerProps,
+    props: { ...basicDrawerProps, ...elDrawerProps },
     emits: basicDrawerEmits,
     setup(props, { emit }) {
       const openRef = ref(false);
