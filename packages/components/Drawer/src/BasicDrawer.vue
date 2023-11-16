@@ -89,7 +89,6 @@
 
       const getProps = computed((): DrawerProps => {
         const opt = {
-          direction: 'rtl',
           ...unref(attrs),
           ...unref(getMergeProps),
           modelValue: unref(openRef),
