@@ -49,7 +49,7 @@ export const basicDrawerProps = {
 
 export const basicDrawerEmits = {
   'open-change': (open: boolean) => [open],
-  register: (instance: DrawerInstance, uid: number) => [instance, uid],
+  register: (modalInstance: DrawerInstance, uid: number) => [modalInstance, uid],
   ok: () => [],
   close: () => [],
 };
