@@ -1,9 +1,9 @@
+import type { ComputedRef } from 'vue';
 import type {
   ButtonProps,
   DrawerProps as ElDrawerProps,
   ScrollbarProps,
 } from 'element-plus';
-import type { CSSProperties, ComputedRef, VNodeChild } from 'vue';
 
 export interface DrawerInstance {
   setDrawerProps: (props: Partial<DrawerProps>) => void;

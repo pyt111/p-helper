@@ -65,6 +65,7 @@
 
   export const elDrawerProps = (ElDrawer as any).props;
   export default defineComponent({
+    name: 'BasicDrawer',
     components: { ElDrawer, ElScrollbar, DrawerFooter, DrawerHeader },
     props: { ...basicDrawerProps, ...elDrawerProps },
     emits: basicDrawerEmits,
