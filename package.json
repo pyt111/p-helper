@@ -23,6 +23,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@antv/x6": "^2.15.6",
+    "@antv/x6-vue-shape": "^2.1.1",
     "@element-plus/icons-vue": "^2.1.0",
     "@p-helper/build-constants": "workspace:*",
     "@p-helper/components": "workspace:*",

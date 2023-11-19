@@ -8,4 +8,5 @@ export * from './Modal';
 export * from './Form';
 export * from './Upload';
 export * from './Drawer';
+export * from './X6';
 export * from './infinite-scroll';

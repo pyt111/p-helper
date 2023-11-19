@@ -9,9 +9,10 @@ import {
 } from 'vue';
 import { useTimeoutFn } from '@p-helper/hooks/core/useTimeout';
 import { buildUUID } from '@p-helper/utils/uuid';
-import { isArray, isBoolean, isFunction } from '@p-helper/utils/is';
+import { isArray, isBoolean, isFunction, isString } from '@p-helper/utils/is';
 import { cloneDeep, get, merge } from 'lodash-es';
 import { FETCH_SETTING, PAGE_SIZE, ROW_KEY } from '../const';
+import type { EditRecordRow } from '../components/editable';
 import type { PaginationProps } from '../types/pagination';
 import type { ComputedRef, Ref } from 'vue';
 import type { BasicTableProps, FetchParams } from '../types/table';
@@ -47,9 +48,21 @@ export function useDataSource(
   });
   const dataSourceRef = ref<Recordable[]>([]);
   const rawDataSourceRef = ref<Recordable>({});
+  const recordCache = reactive<Partial<EditRecordRow> & Record<string, any>>(
+    {}
+  );
 
   watchEffect(() => {
     tableData.value = unref(dataSourceRef);
+    dataSourceRef.value.forEach((item) => {
+      const targetKeyName = getTargetKeyName(item);
+      if (item[targetKeyName]) {
+        recordCache[item[targetKeyName]] = Object.assign(
+          { ...item },
+          recordCache[item[targetKeyName]] || {}
+        );
+      }
+    });
   });
 
   watch(
@@ -115,6 +128,15 @@ export function useDataSource(
   const getAutoCreateKey = computed(() => {
     return unref(propsRef).autoCreateKey && !unref(propsRef).rowKey;
   });
+
+  const getTargetKeyName = (row: Recordable) => {
+    const rowKeyName = unref(getRowKey);
+    let targetKeyName = rowKeyName;
+    if (isFunction(rowKeyName)) {
+      targetKeyName = rowKeyName(row);
+    }
+    return targetKeyName as string;
+  };
 
   const getRowKey = computed(() => {
     const { rowKey } = unref(propsRef);
@@ -227,7 +249,6 @@ export function useDataSource(
     index?: number
   ): Recordable | void {
     // if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
-    let targetName;
     let rowKeyName = unref(getRowKey);
 
     if (isFunction(rowKeyName)) {
@@ -411,6 +432,14 @@ export function useDataSource(
     return fetch(opt);
   }
 
+  function getCellRecord(row: Recordable | string) {
+    if (isString(row)) {
+      return recordCache[row];
+    }
+    const targetKeyName = getTargetKeyName(row);
+    return recordCache[targetKeyName];
+  }
+
   onMounted(() => {
     useTimeoutFn(() => {
       unref(propsRef).immediate && fetch();
@@ -433,5 +462,7 @@ export function useDataSource(
     insertTableDataRecord,
     findTableDataRecord,
     handleTableChange,
+    recordCache,
+    getCellRecord,
   };
 }

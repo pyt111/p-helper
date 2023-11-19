@@ -2,7 +2,6 @@ import { ElDrawer } from 'element-plus';
 import type { DrawerInstance } from './typing';
 import type { PropType } from 'vue';
 
-
 // export const elDrawerProps = ElDrawer.props;
 export const footerProps = {
   confirmLoading: { type: Boolean },

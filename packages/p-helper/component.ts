@@ -6,6 +6,7 @@ import {
   BasicUpload,
   PWaterfall,
   TestComponent,
+  BasicX6,
 } from '@p-helper/components';
 import type { Plugin } from 'vue';
 
@@ -17,4 +18,5 @@ export default [
   BasicModal,
   BasicUpload,
   BasicDrawer,
+  BasicX6,
 ] as Plugin[];

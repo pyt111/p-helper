@@ -3,7 +3,6 @@ import { debouncedWatch } from '@vueuse/core';
 import { getDynamicProps } from '@p-helper/utils';
 import { error } from '@p-helper/utils/log';
 import { isProdMode } from '@p-helper/utils/env';
-import type { EditRowRecordRow } from '../components/editable';
 import type { DynamicProps } from '@p-helper/types/utils';
 import type { WatchStopHandle } from 'vue';
 import type { FormActionType } from '@p-helper/components/Form';
@@ -147,13 +146,16 @@ export function useTable(
       return getTableInstance?.().getSelectionData?.();
     },
     // 不想在外部监听Selection事件的，直接通过这个方法取
-    getEditRowRecord: (rows?: Recordable[], ...args): EditRowRecordRow => {
-      const tableData = getTableInstance().getTableData();
-      return getTableInstance().getEditRowRecord(tableData, ...args);
-    },
+    // getEditRowRecord: (rows?: Recordable[], ...args): EditRowRecordRow => {
+    //   const tableData = getTableInstance().getTableData();
+    //   return getTableInstance().getEditRowRecord(tableData, ...args);
+    // },
     // 不想在外部监听Selection事件的，直接通过这个方法取
     getRowDataByRowIndex: (...args) => {
       return getTableInstance().getRowDataByRowIndex(...args);
+    },
+    getCellRecord: (row: Recordable | string) => {
+      return getTableInstance().getCellRecord(row);
     },
   };
   return [register, methods];

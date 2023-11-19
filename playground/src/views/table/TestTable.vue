@@ -60,7 +60,7 @@
       deleteTableDataRecord,
       getColumns,
       insertTableDataRecord,
-      getEditRowRecord,
+      getCellRecord,
       getDataSource,
       setTableData,
       setProps,
@@ -90,6 +90,8 @@
             d: 32,
             c: 42,
             a: '33asd3',
+            ds1: 777,
+            ds2: 888,
             badgeValue: 10,
           },
           {
@@ -122,7 +124,7 @@
           {
             prop: 'ds1',
             label: 'ds1',
-            edit: true,
+            editRow: true,
             align: 'right',
           },
           {
@@ -228,6 +230,7 @@
       {
         prop: 'a',
         label: 'cca',
+        edit: true,
       },
       {
         prop: 'a',
@@ -274,30 +277,30 @@
       },
     ],
     useSearchForm: true,
-    rowKey: 'id',
+    // rowKey: 'id',
     // columnDefaultAlign: 'center',
     dropDownButtonText: '更多',
     actionColumn: {
       label: '操作',
       editRow: true,
-      minWidth: 280,
+      minWidth: 380,
       editButtonsProps: () => {
         return [
-          {
-            buttonName: 'save',
-            onClick: (obj) => {
-              obj.record.onEditRowSave().then(() => {
-                console.log('obj >--->', obj.row.ds2);
-              });
-
-              // tableFieldInfo_update({
-              //   id: obj.row?.id,
-              // }).then((res) => {
-              //   updateTableDataRecord(obj.row.key, res.data || {});
-              //   obj.record.onEditRow();
-              // });
-            },
-          },
+          // {
+          //   buttonName: 'save',
+          //   onClick: (obj) => {
+          //     // obj.record.onEditRowSave().then(() => {
+          //     //   console.log('obj >--->', obj.row.ds2);
+          //     // });
+          //
+          //     // tableFieldInfo_update({
+          //     //   id: obj.row?.id,
+          //     // }).then((res) => {
+          //     //   updateTableDataRecord(obj.row.key, res.data || {});
+          //     //   obj.record.onEditRow();
+          //     // });
+          //   },
+          // },
         ];
       },
       allActions: () => [
@@ -360,8 +363,8 @@
         {
           label: '删除3',
           ifShow: (action, { row, record }) => {
-            console.log('record >--->', record);
-            return !record.isEditableRow();
+            // console.log('record >--->', record);
+            return !record.isEditableRow?.();
           },
           onClick: (obj) => {
             const { index, row, record } = obj;
@@ -374,31 +377,23 @@
           label: '删除4',
           onClick: (obj) => {
             const { index, row, record } = obj;
-            deleteTableDataRecord(row.id || row.key);
+            deleteTableDataRecord(row.key);
             // record.onEditRow(record.getIsRowEditCacheRowKeys());
           },
         },
       ],
     },
     actions: [
-      // {
-      //   label: '编辑',
-      //   ifShow: (action, { record }) => {
-      //     return !record.isEditableRow();
-      //   },
-      //   onClick: (obj) => {
-      //     const { index, record, row } = obj;
-      //     console.log('row.id >--->', row.id);
-      //     console.log('row >--->', row);
-      //     record.onEditRow(row.id || row.key);
-      //     console.log('record >--->', record);
-      //     console.log('编辑 cacheEditRows >--->', record.cacheEditRows.value);
-      //   },
-      // },
+      {
+        label: '编辑1',
+        onClick: ({ record }) => {
+          record.onEdit(true);
+        },
+      },
       {
         label: '删除',
         ifShow: (action, { row, record }) => {
-          return !record.isEditableRow();
+          return !record.isEditableRow?.();
         },
         // icon: 'code|svg',
         elIcon: View,
@@ -408,15 +403,15 @@
           disabled: true,
         },
         preIcon: 'code',
-        disabled: true,
+        // disabled: true,
         // preIconProps: {
         //   disabled: true,
         // },
         onClick: (obj) => {
           const { index, row, record } = obj;
           // console.log('row.id >--->', row.id, row);
-          deleteTableDataRecord(row.id || row.key);
-          record.onEditRow(record.getIsRowEditCacheRowKeys());
+          deleteTableDataRecord(row.key);
+          // record.onEditRow(record.getIsRowEditCacheRowKeys());
         },
       },
       // {
@@ -445,7 +440,7 @@
       {
         label: '删除7',
         ifShow: (action, { row, record }) => {
-          return !record.isEditableRow();
+          return !record.isEditableRow?.();
         },
         type: 'primary',
         elIcon: 'Share',
@@ -613,10 +608,17 @@
     console.log('onSelect >--->', v);
   };
   const onAdd = () => {
-    const d = insertTableDataRecord({}, 0);
-    const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
-    const keys = getIsRowEditCacheRowKeys();
-    onEditRow([0, ...keys], true);
+    setTableData([{}, ...getDataSource()]);
+    const data = getDataSource();
+    nextTick(() => {
+      const record = getCellRecord(data[0].key);
+      record.onEdit(true);
+    });
+    // const d = insertTableDataRecord({}, 0);
+    // const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
+    // const keys = getIsRowEditCacheRowKeys();
+    // onEditRow([0, ...keys], true);
+    // console.log('d >--->', d);
   };
 
   const onEdit = () => {

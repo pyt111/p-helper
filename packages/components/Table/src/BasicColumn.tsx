@@ -1,10 +1,16 @@
 import { h } from 'vue';
-import { omit } from 'lodash-es';
+import { isFunction, omit } from 'lodash-es';
 import { CustomCellComponent } from './components/custom/CustomCellComponent';
+import type { EditRecordRow } from './components/editable';
 import type { BasicColumn, TableComponentTypes } from './types/table';
 import type { PropType } from 'vue';
 
 type FComponentProps = {
+  recordCache: Object;
+  getRowKey: string | ((record: Recordable) => string);
+};
+
+type BasicFComponentProps = {
   column: BasicColumn;
 };
 
@@ -13,7 +19,7 @@ const formatter = (_row, _style, val) => {
 };
 
 export const RenderColumn = (
-  props: FComponentProps,
+  props: BasicFComponentProps,
   context?
 ): TableComponentTypes | null | undefined | void => {
   return (
@@ -27,7 +33,9 @@ export const RenderColumn = (
   );
 };
 
-const BasicColumnComponent = (props: FComponentProps) => {
+const BasicColumnComponent = (
+  props: BasicFComponentProps & FComponentProps
+) => {
   const renderCustomCell = ({ row, column, $index }) => {
     return h(CustomCellComponent, {
       row,
@@ -55,24 +63,32 @@ const BasicColumnComponent = (props: FComponentProps) => {
         });
       };
     }
+    const rowKey = isFunction(props.getRowKey)
+      ? props.getRowKey(row)
+      : props.getRowKey;
     // console.log('elColumn+++++ >--->', elColumn, props.column.prop);
+    const record = props.recordCache[row[rowKey]] || {};
     return props.column.customRender!({
       row,
       index: $index,
-      record: props.column.record || {},
+      record,
       elColumn,
     });
   };
 
   if (props.column.children) {
-    const p = omit(props.column, ['children', 'columnSlots']);
+    const p: any = omit(props.column, ['children', 'columnSlots']);
     return RenderColumn(
       { column: p as BasicColumn },
       {
         slots: {
           default: (obj) => {
             return props.column.children?.map((item) => {
-              return BasicColumnComponent({ column: item });
+              return BasicColumnComponent({
+                column: item,
+                getRowKey: props.getRowKey,
+                recordCache: props.recordCache,
+              });
             });
           },
           ...props.column.columnSlots,
@@ -110,6 +126,12 @@ BasicColumnComponent.props = {
   column: {
     type: Object as PropType<BasicColumn>,
     required: true,
+  },
+  recordCache: {
+    type: Object as PropType<Recordable & EditRecordRow>,
+  },
+  getRowKey: {
+    type: [String, Function],
   },
 };
 

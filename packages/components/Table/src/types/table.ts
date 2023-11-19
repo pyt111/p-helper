@@ -1,7 +1,6 @@
 import type { TableColumnInstance } from 'element-plus';
 import type {
   EditRecordRow,
-  EditRowRecordRow,
   Params,
   TableActionParams,
 } from '@p-helper/components/Table/src/components/editable';
@@ -74,7 +73,7 @@ export interface TableActionType {
   getPaginationRef: () => PaginationProps | boolean;
   getTableData: () => Recordable[];
   getColumns: (opt?: GetColumnsParams) => BasicColumn[];
-  getEditRowRecord: (rows?: Recordable[]) => EditRowRecordRow;
+  getCellRecord: (row: Recordable | string) => EditRecordRow & Recordable;
   getRowDataByRowIndex: (rowIndex: number | number[]) => Recordable;
   getPagination: () => PaginationProps | boolean;
   redoHeight: () => void;
@@ -133,7 +132,7 @@ export type ColumnTypes = {
     | VNodeChild[]
     | ((args: Record<string, any>) => VNodeChild | VNodeChild[] | JSX.Element)
   >;
-  editValueMap?: (value: any, obj: CurrencyParams) => string; // 对应单元格值枚举
+  editValueMap?: (value: any) => string; // 对应单元格值枚举
   editComponentProps?: Record<string, any> & {
     options?: LabelValueOptions;
     onChange?: (config: CurrencyParams, ...value: any) => void;

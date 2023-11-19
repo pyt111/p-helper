@@ -42,12 +42,7 @@
           @options-change="handleOptionsChange"
         />
         <div
-          v-if="
-            !getRowEditable &&
-            !isAlwaysBright &&
-            !isEditRow &&
-            editDecisionButtonShow
-          "
+          v-if="!getRowEditable && !isAlwaysBright && editDecisionButtonShow"
           :class="`${prefixCls}__action`"
         >
           <el-icon
@@ -66,9 +61,23 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, ref, shallowRef, unref, watchEffect } from 'vue';
+  import {
+    computed,
+    nextTick,
+    ref,
+    shallowRef,
+    unref,
+    watch,
+    watchEffect,
+  } from 'vue';
   import { omit, pick, set } from 'lodash-es';
-  import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
+  import {
+    isArray,
+    isBoolean,
+    isFunction,
+    isNumber,
+    isObject,
+  } from '@p-helper/utils/is';
   import { useDesign } from '@p-helper/hooks/web/useDesign';
   // import { treeToList } from '@p-helper/utils/helper/treeHelper';
   import ClickOutside from '@p-helper/utils/directives/clickOutside';
@@ -82,7 +91,7 @@
   import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
   import type { CurrencyParams } from '@p-helper/components/Table/src/props';
   import type { EditRecordRow } from '@p-helper/components/Table/src/components/editable';
-  import type { CSSProperties } from 'vue';
+  import type { CSSProperties, PropType } from 'vue';
 
   const vClickOutside = ClickOutside;
 
@@ -94,12 +103,8 @@
     index: {
       type: Number,
     },
-    rowKey: {
-      type: [Number, String],
-    },
     record: {
-      type: Object as PropType<EditRecordRow>,
-      default: () => ({}),
+      type: Object as any,
     },
     column: {
       type: Object as PropType<BasicColumn>,
@@ -108,6 +113,9 @@
     elColumn: {
       type: Object as PropType<Recordable>,
       default: () => ({}),
+    },
+    saveEditableValue: {
+      type: Function,
     },
   });
 
@@ -134,6 +142,16 @@
     const { editable } = props.record || {};
     return !!editable;
   });
+
+  watch(
+    () => getRowEditable.value,
+    (val) => {
+      const _editableValue = props.record._editableValue?.[props.column.prop as string];
+      if (val && _editableValue) {
+        currentValueRef.value = _editableValue;
+      }
+    }
+  );
 
   const getEmitParams = computed(() => ({
     row: props.value,
@@ -214,6 +232,10 @@
       placeholder: createPlaceholderMessage(unref(getComponent)),
       'onUpdate:modelValue': (value) => {
         currentValueRef.value = value;
+        // 这里为了保存编辑行状态下编辑的数据
+        if (getRowEditable.value) {
+          props.saveEditableValue?.(value);
+        }
       },
       editSlots,
       ...omit(compProps, 'onChange'),
@@ -227,10 +249,7 @@
     const value = unref(currentValueRef);
 
     if (editValueMap && isFunction(editValueMap)) {
-      return editValueMap(value, {
-        ...unref(getEmitParams),
-        value,
-      });
+      return editValueMap(value);
     }
 
     const component = unref(getComponent);
@@ -258,7 +277,6 @@
       width: 'calc(100% - 48px)',
     };
   });
-
   watchEffect(() => {
     defaultValueRef.value = props.column?.prop
       ? props.value[props.column?.prop]
@@ -338,28 +356,13 @@
     optionsRef.value = options;
   }
 
-  // 找到当前操作的行
-  const isCheckedRow = (key: (string | number)[], isIndex = false) => {
-    const rowKey = props.rowKey;
-    const findIndex = key.findIndex((k) => k === rowKey);
-    return findIndex >= 0;
-  };
-
-  async function handleSubmit(
-    needEmit = true,
-    key?: EditRowKey,
-    isIndex?: boolean
-  ) {
+  async function handleSubmit(needEmit = true) {
     const { column, value: row, record } = props;
     if (!record) return false;
 
     const { prop } = column;
     const value = unref(currentValueRef);
     if (!prop) return;
-    if (isArray(key) && isEditRow.value) {
-      const isFind = isCheckedRow(key, isIndex);
-      if (!isFind) return;
-    }
     if (!record.editable) {
       const { getBindValues } = table;
 
@@ -420,9 +423,7 @@
     handleSubmit();
   }
 
-  function handleCancel(key?: (string | number)[], isIndex?: boolean) {
-    if (isArray(key) && !isCheckedRow(key, isIndex)) return;
-    isEditRow.value = false;
+  function handleCancel() {
     isEdit.value = false;
     currentValueRef.value = defaultValueRef.value;
     table.emit?.('edit-cancel', {
@@ -442,70 +443,55 @@
     }
   }
 
-  function onEditRow(keys?: EditRowKey[], isIndex = false) {
-    const { cacheEditRows } = props.record;
-    isEditRow.value = unref(cacheEditRows)[props.rowKey!];
-    isEdit.value = isEditRow.value;
-    // const { cacheEditRows } = props.record;
-    // // console.log('isIndex >--->', keys, isIndex, unref(cacheEditRows));
-    // const isExist = keys.find((key) => {
-    //   return unref(cacheEditRows)[key];
-    // });
-    // isEditRow.value = !!isExist;
-    // isEdit.value = isEditRow.value;
-  }
-
   function initCbs(
     cbs: 'submitCbs' | 'validCbs' | 'cancelCbs' | 'editRowCbs',
     handle: Fn
   ) {
     if (props.record) {
+      const targetRowKeyName = props.column.prop as string;
       /* eslint-disable  */
-      isArray(props.record[cbs])
-        ? props.record[cbs]?.push(handle)
-        : (props.record[cbs] = [handle]);
+      props.record[cbs]
+        ? props.record[cbs][targetRowKeyName] = handle
+        : props.record[cbs] = {
+            [targetRowKeyName]: handle,
+          };
     }
   }
 
-  if (props.record) {
-    initCbs('submitCbs', handleSubmit);
-    // initCbs('validCbs', handleSubmiRule);
-    initCbs('cancelCbs', handleCancel);
-    initCbs('editRowCbs', onEditRow);
+  watch(() => props.record.key, () => {
 
-    if (props.column?.prop) {
-      if (!props.record.editValueRefs) props.record.editValueRefs = {};
-      props.record.editValueRefs[props.column.prop as any] = currentValueRef;
-    }
-    /* eslint-disable  */
-    props.record.onCancelEdit = (key, isIndex) => {
-      isArray(props.record?.cancelCbs) && props.record?.cancelCbs.forEach((fn) => fn(key, isIndex));
-    };
-    /* eslint-disable */
-    props.record.onSubmitEdit = async (key, isIndex) => {
-      if (isArray(props.record?.submitCbs)) {
-        if (props.record?.onValid && !await props.record?.onValid?.()) return;
-        const submitFns = props.record?.submitCbs || [];
-        submitFns.forEach((fn) => fn(false, key, isIndex));
-        table.emit?.('edit-row-end', unref(getEmitParams));
-        return true;
+    if (props.record) {
+      initCbs('submitCbs', handleSubmit);
+      // initCbs('validCbs', handleSubmiRule);
+      initCbs('cancelCbs', handleCancel);
+
+      if (props.column?.prop) {
+        if (!props.record.editValueRefs) props.record.editValueRefs = {};
+        props.record.editValueRefs[props.column.prop as any] = currentValueRef;
       }
-    };
+      /* eslint-disable  */
+      props.record.onCancelEdit = () => {
+        if (props.record?.cancelCbs) {
+          const cancelCbs = props.record?.cancelCbs || {};
 
-    // 编辑行
-    props.record.onEditRow = async (key?: EditRowKey, isIndex?: boolean) => {
-      await nextTick(() => {
-        isArray(props.record?.editRowCbs) && props.record?.editRowCbs.forEach((fn) => fn(key, isIndex));
-      })
+          for (const key in cancelCbs) {
+            cancelCbs[key]();
+          }
+        }
+      };
+      /* eslint-disable */
+      props.record.onSubmitEdit = async () => {
+        if (props.record?.submitCbs) {
+          if (props.record?.onValid && !await props.record?.onValid?.()) return;
+          const submitFns = props.record?.submitCbs || {};
+          for (const submitFnsKey in submitFns) {
+            submitFns[submitFnsKey](false, false);
+          }
+          table.emit?.('edit-row-end', unref(getEmitParams));
+          return true;
+        }
+      };
     }
-
-    props.record.onEditRowSave = async (key?: EditRowKey, isIndex?: boolean) => {
-      await props.record.onSubmitEdit(key, isIndex)
-    }
-
-    props.record.onEditRowCancel = async (key?: EditRowKey, isIndex?: boolean) => {
-      await props.record.onCancelEdit(key, isIndex)
-    }
-  }
+  }, {immediate: true, deep: true})
 
 </script>

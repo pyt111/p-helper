@@ -1,14 +1,5 @@
-import {
-  computed,
-  h,
-  nextTick,
-  ref,
-  shallowRef,
-  toRaw,
-  unref,
-  watch,
-} from 'vue';
-import { isArray, isBoolean, isFunction, isNumber } from '@p-helper/utils/is';
+import { computed, h, ref, shallowRef, toRaw, unref, watch } from 'vue';
+import { isBoolean, isFunction } from '@p-helper/utils/is';
 import { cloneDeep } from 'lodash-es';
 import componentSetting from '@p-helper/constants/settings/componentSetting';
 import { renderEditCell } from '../components/editable';
@@ -27,10 +18,7 @@ import type {
   BasicTableProps,
   TypeOrReturnTypeFun,
 } from '@p-helper/components/Table/src/types/table';
-import type {
-  EditRowRecordRow,
-  TableActionParams,
-} from '../components/editable';
+import type { TableActionParams } from '../components/editable';
 import type { ActionItem } from '../types/tableAction';
 import type { ComputedRef, Ref } from 'vue';
 
@@ -44,6 +32,7 @@ export type useColumnsOptions = {
   >['getRowDataByRowIndex'];
   findTableDataRecord: ReturnType<typeof useDataSource>['findTableDataRecord'];
   getPaginationInfo: ReturnType<typeof usePagination>['getPaginationInfo'];
+  recordCache: Recordable;
 };
 
 // 这里为了生成默认的操作列，并做一些处理
@@ -81,7 +70,13 @@ const handelIndexColumn = (
 };
 export function useColumns(
   propsRef: ComputedRef<BasicTableProps>,
-  { getRowKey, getRowDataByRowIndex, getPaginationInfo }: useColumnsOptions
+  {
+    getRowKey,
+    getRowDataByRowIndex,
+    getPaginationInfo,
+    getDataSource,
+    recordCache,
+  }: useColumnsOptions
 ) {
   const columnsRef = ref(unref(propsRef).columns) as unknown as Ref<
     BasicColumn[]
@@ -101,127 +96,37 @@ export function useColumns(
   // 缓存当前行编辑状态，便于外部获取
   const cacheEditRows = shallowRef({});
 
-  const updateIndex = ref(0);
-  const onCacheEditRows = (keys: (string | number)[], isEdit = true) => {
-    keys.forEach((key) => {
-      cacheEditRows.value[key] = isEdit;
-    });
-  };
-
-  const getEditRows = () => {
-    const result: BasicColumn[] = [];
-
-    const stack = getViewColumns.value.slice(); // 复制数组以避免修改原数组
-
-    while (stack.length > 0) {
-      const item = stack.pop();
-
-      if (item && item.editRow) {
-        result.push(item);
-      }
-
-      if (item && item.children && item.children.length) {
-        stack.push(...item.children);
-      }
-    }
-
-    return result;
-  };
-
-  const findRowKeys = (k: EditRowKey, isIndex = false) => {
-    const keys = isArray(k) ? k : [k];
-    return keys.map((key) => {
-      if (isNumber(key) && isIndex) {
-        const rowData = getRowDataByRowIndex(key);
-        return rowData[0]?.[getRowKey.value] ?? rowData[0]?.[ROW_KEY];
-      }
-      return key;
-    });
-  };
-
-  const getIsRowEditCacheRowKeys = () => {
-    return Object.entries(cacheEditRows.value)
-      .filter(([_, value]) => value)
-      .map(([key]) => key);
-  };
-
-  // 某些情况下需要手动调用updateUi去激活computed
-  const updateTableActionUi = () => {
-    updateIndex.value += 1;
-  };
-  function getEditRowRecord(rows?: Recordable[]): EditRowRecordRow {
-    const defaultKeys =
-      rows?.map((item) => item[getRowKey.value] ?? item[ROW_KEY]) || [];
-    return {
-      rowKeyName: getRowKey.value,
-      updateIndex,
-      updateTableActionUi,
-      cacheEditRows,
-      getIsRowEditCacheRowKeys,
-      isEditableRow() {
-        return defaultKeys.some((k) => cacheEditRows.value[k]);
-      },
-      onEditRow: async (key?: EditRowKey, isIndex?: boolean) => {
-        const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
-        onCacheEditRows(keys);
-        getEditRows().forEach((item) => {
-          item.record?.onEditRow?.(keys, isIndex);
-        });
-        updateTableActionUi();
-        await nextTick();
-      },
-      onEditRowSave: async (key?: EditRowKey, isIndex?: boolean) => {
-        const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
-        onCacheEditRows(keys, false);
-        getEditRows().forEach((item) => {
-          item.record?.onEditRowSave?.(keys, isIndex);
-        });
-        updateTableActionUi();
-        await nextTick();
-      },
-      onEditRowCancel: async (key?: EditRowKey, isIndex?: boolean) => {
-        const keys = key ? findRowKeys(key, isIndex) : defaultKeys;
-        onCacheEditRows(keys, false);
-        getEditRows().forEach((item) => {
-          item.record?.onEditRowCancel?.(keys, isIndex);
-        });
-        updateTableActionUi();
-        await nextTick();
-      },
-    };
-  }
-
   // actionColumn.editRow=true 时，需要用到这个生成编辑行开启默认操作列
   const genEditRowDefaultActions = (): ActionItem[] => [
     {
       label: '编辑',
       buttonName: 'edit',
       ifShow: (action, { record }) => {
-        return !record.isEditableRow();
+        return !record.editable;
       },
       onClick: (obj) => {
         const { record } = obj;
-        record.onEditRow();
+        record.onEdit(true);
       },
     },
     {
       label: '保存',
       buttonName: 'save',
       ifShow: (action, { record }) => {
-        return record.isEditableRow();
+        return !!record.editable;
       },
       onClick: ({ record }) => {
-        record.onEditRowSave();
+        record.onEdit(false, true);
       },
     },
     {
       label: '取消',
       buttonName: 'cancel',
       ifShow: (action, { record }) => {
-        return record.isEditableRow();
+        return !!record.editable;
       },
       onClick: ({ record }) => {
-        record.onEditRowCancel();
+        record.onEdit(false, false);
       },
     },
   ];
@@ -343,7 +248,7 @@ export function useColumns(
         fixed: 'right',
         // customRender: renderEditCell(actionColumn),
         customRender: ({ row, index, record: rec, elColumn }) => {
-          const record = Object.assign(getEditRowRecord([row]), rec);
+          const record = recordCache[row[unref(getRowKey)]];
           return genActionsColumn({ row, index, record, elColumn });
         },
         ...actionColumn,
@@ -419,21 +324,16 @@ export function useColumns(
 
       // 如果当前列的编辑或编辑行存在，且不是默认操作，则渲染编辑单元格
       if ((edit || editRow) && !isDefaultAction) {
-        // 如果当前列的记录不存在，则设置记录
-        if (!currentColumn.record) {
-          currentColumn.record = {
-            rowKeyName: getRowKey.value,
-            cacheEditRows,
-            getIsRowEditCacheRowKeys,
-          };
-        }
         // 渲染编辑单元格
-        currentColumn.customRender = renderEditCell(currentColumn, propsRef);
+        currentColumn.customRender = renderEditCell(currentColumn);
       }
     }
   };
 
+  // const recordMap = new WeakMap();
+
   const getViewColumns = computed(() => {
+    // console.log('getViewColumns >--->', getViewColumns.value);
     // 获取视图列
     const viewColumns = unref(getColumnsRef);
 
@@ -460,7 +360,6 @@ export function useColumns(
     getColumnsRef,
     getViewColumns,
     getColumns,
-    getEditRowRecord,
     cacheEditRows,
   };
 }

@@ -1,15 +1,16 @@
 import { computed } from 'vue';
 import { omit } from 'lodash-es';
 import type { ActionItem } from '../types/tableAction';
-import type { TableActionParams } from '../components/editable';
+import type { Params } from '../components/editable';
 
 export const useAction = (props) => {
-  const getemitParams = computed<TableActionParams>(() => {
+  const getemitParams = computed(() => {
     return {
       row: props.row,
       index: props.index,
       record: props.record,
-    };
+      elColumn: props.elColumn,
+    } as Params;
   });
 
   const genPublicProps = (action: ActionItem) => {
@@ -27,7 +28,6 @@ export const useAction = (props) => {
       },
       onClick: onClick?.bind(null, getemitParams.value),
       enablePopConfirm: !!popConfirm,
-      updateIndex: props.record?.updateIndex?.value,
     };
   };
 

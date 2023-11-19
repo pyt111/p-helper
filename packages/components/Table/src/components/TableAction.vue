@@ -53,10 +53,9 @@
   import { Dropdown } from '@p-helper/components/Dropdown';
   import { PopConfirmButton } from '@p-helper/components/Button';
   import { MoreFilled } from '@element-plus/icons-vue';
-  import { BadgeActionCell } from '../components/custom';
   import { useAction } from '../hooks/useAction';
+  import type { EditRecordRow } from '@p-helper/components/Table/src/components/editable';
   import type { PropType } from 'vue';
-  import type { EditRowRecordRow } from '@p-helper/components/Table/src/components/editable';
   import type { TableActionType } from '@p-helper/components/Table/src/types/table';
   import type { ActionItem } from '../types/tableAction';
   import type { ElTooltipProps } from 'element-plus';
@@ -88,7 +87,7 @@
       default: -1,
     },
     record: {
-      type: Object as PropType<EditRowRecordRow>,
+      type: Object as PropType<EditRecordRow>,
       default: () => ({}),
     },
     divider: propTypes.bool.def(false),

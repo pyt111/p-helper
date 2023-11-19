@@ -36,7 +36,11 @@
         @selection-change="setSelectRows"
       >
         <template v-for="col in getViewColumns" :key="col.prop">
-          <BasicColumnComponent :column="col" />
+          <BasicColumnComponent
+            :column="col"
+            :record-cache="recordCache"
+            :get-row-key="getRowKey"
+          />
         </template>
 
         <template #actions="data">
@@ -156,6 +160,8 @@
         reload,
         updateTableData,
         getRowDataByRowIndex,
+        recordCache,
+        getCellRecord,
       } = useDataSource(
         getProps,
         {
@@ -167,16 +173,14 @@
         },
         emit
       );
-      const { getViewColumns, getColumns, getEditRowRecord } = useColumns(
-        getProps,
-        {
-          getRowKey: getRowKey as any,
-          getDataSource,
-          getRowDataByRowIndex,
-          findTableDataRecord,
-          getPaginationInfo,
-        }
-      );
+      const { getViewColumns, getColumns } = useColumns(getProps, {
+        getRowKey: getRowKey as any,
+        getDataSource,
+        getRowDataByRowIndex,
+        findTableDataRecord,
+        getPaginationInfo,
+        recordCache,
+      });
 
       const paginationAlign = computed(
         () =>
@@ -240,7 +244,6 @@
       const tableAction: TableActionType = {
         reload,
         getColumns,
-        getEditRowRecord,
         getRowDataByRowIndex,
         // refreshOfflineTableData,
         renderPagination,
@@ -267,6 +270,7 @@
         },
         setProps,
         getSelectionData: () => cloneDeep(state.selectionData),
+        getCellRecord,
         emit,
       };
 
@@ -309,6 +313,7 @@
         getProps,
         getRowKey,
         elTablePropsKeys,
+        recordCache,
 
         setSelectRows,
         onSelect,
