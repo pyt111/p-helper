@@ -1,7 +1,7 @@
-import { h } from 'vue';
+import { h, toRaw } from 'vue';
 import EditableCell from './EditableCell.vue';
-import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
 import type { Ref } from 'vue';
+import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
 
 export type EditRowRecordRow<T = Recordable> = {
   rowKeyName: string | number;
@@ -41,7 +41,16 @@ export interface TableActionParams {
 
 export function renderEditCell(column: BasicColumn) {
   return ({ row, index, record, elColumn }: Params) => {
-    record.onEdit = async (edit: boolean, submit = false) => {
+    toRaw(record).onValid = async () => {
+      if (record?.validCbs) {
+        const validFns = Object.values(record?.validCbs).map((fn) => fn());
+        const res = await Promise.all(validFns);
+        return res.every((item) => !!item);
+      } else {
+        return false;
+      }
+    };
+    toRaw(record).onEdit = async (edit: boolean, submit = false) => {
       if (!edit) {
         // 关闭重置，
         record._editableValue = null;
@@ -51,7 +60,7 @@ export function renderEditCell(column: BasicColumn) {
       }
 
       if (!edit && submit) {
-        // if (!(await record.onValid?.())) return false;
+        if (!(await record.onValid?.())) return false;
         const res = await record.onSubmitEdit?.();
         if (res) {
           record.editable = false;

@@ -133,6 +133,7 @@ export type ColumnTypes = {
     | ((args: Record<string, any>) => VNodeChild | VNodeChild[] | JSX.Element)
   >;
   editValueMap?: (value: any) => string; // 对应单元格值枚举
+  editRule?: boolean | ((text: string, record: Recordable) => Promise<string>);
   editComponentProps?: Record<string, any> & {
     options?: LabelValueOptions;
     onChange?: (config: CurrencyParams, ...value: any) => void;

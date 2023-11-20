@@ -125,15 +125,12 @@
   const elRef = ref();
   const componentRef = ref();
   const isEdit = ref(false);
+  const ruleVisible = ref(false);
   const isLoading = ref(false);
   const ruleMessage = ref('');
   const optionsRef = ref<LabelValueOptions>([]);
-  const currentValueRef = ref<any>(
-    props.column?.prop ? props.value[props.column?.prop] : props.value
-  );
-  const defaultValueRef = ref<any>(
-    props.column?.prop ? props.value[props.column?.prop] : props.value
-  );
+  const currentValueRef = ref<any>(props.value);
+  const defaultValueRef = ref<any>(props.value);
 
   const { prefixCls } = useDesign('editable-cell');
 
@@ -146,7 +143,8 @@
   watch(
     () => getRowEditable.value,
     (val) => {
-      const _editableValue = props.record._editableValue?.[props.column.prop as string];
+      const _editableValue =
+        props.record._editableValue?.[props.column.prop as string];
       if (val && _editableValue) {
         currentValueRef.value = _editableValue;
       }
@@ -443,6 +441,34 @@
     }
   }
 
+  async function handleSubmitRule() {
+    const { column, record } = props;
+    const { editRule } = column;
+    const currentValue = unref(currentValueRef);
+
+    if (editRule) {
+      if (isBoolean(editRule) && !currentValue && !isNumber(currentValue)) {
+        ruleVisible.value = true;
+        const component = unref(getComponent);
+        ruleMessage.value = createPlaceholderMessage(component);
+        return false;
+      }
+      if (isFunction(editRule)) {
+        const res = await editRule(currentValue, record);
+        if (res) {
+          ruleMessage.value = res;
+          ruleVisible.value = true;
+          return false;
+        } else {
+          ruleMessage.value = '';
+          return true;
+        }
+      }
+    }
+    ruleMessage.value = '';
+    return true;
+  }
+
   function initCbs(
     cbs: 'submitCbs' | 'validCbs' | 'cancelCbs' | 'editRowCbs',
     handle: Fn
@@ -462,7 +488,7 @@
 
     if (props.record) {
       initCbs('submitCbs', handleSubmit);
-      // initCbs('validCbs', handleSubmiRule);
+      initCbs('validCbs', handleSubmitRule);
       initCbs('cancelCbs', handleCancel);
 
       if (props.column?.prop) {

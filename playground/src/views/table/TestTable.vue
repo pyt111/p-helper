@@ -286,21 +286,25 @@
       minWidth: 380,
       editButtonsProps: () => {
         return [
-          // {
-          //   buttonName: 'save',
-          //   onClick: (obj) => {
-          //     // obj.record.onEditRowSave().then(() => {
-          //     //   console.log('obj >--->', obj.row.ds2);
-          //     // });
-          //
-          //     // tableFieldInfo_update({
-          //     //   id: obj.row?.id,
-          //     // }).then((res) => {
-          //     //   updateTableDataRecord(obj.row.key, res.data || {});
-          //     //   obj.record.onEditRow();
-          //     // });
-          //   },
-          // },
+          {
+            buttonName: 'save',
+            onClick: async ({ record }) => {
+              const pass = await record.onValid();
+              console.log('pass >--->', pass);
+              if (pass) {
+                record.onEdit(false, true);
+              }
+              // obj.record.onEditRowSave().then(() => {
+              //   console.log('obj >--->', obj.row.ds2);
+              // });
+              // tableFieldInfo_update({
+              //   id: obj.row?.id,
+              // }).then((res) => {
+              //   updateTableDataRecord(obj.row.key, res.data || {});
+              //   obj.record.onEditRow();
+              // });
+            },
+          },
         ];
       },
       allActions: () => [
@@ -608,10 +612,11 @@
     console.log('onSelect >--->', v);
   };
   const onAdd = () => {
-    setTableData([{}, ...getDataSource()]);
-    const data = getDataSource();
+    // setTableData([{}, ...getDataSource()]);
+    const d = insertTableDataRecord({}, 0);
+    // const data = getDataSource();
     nextTick(() => {
-      const record = getCellRecord(data[0].key);
+      const record = getCellRecord(d[0].key);
       record.onEdit(true);
     });
     // const d = insertTableDataRecord({}, 0);
@@ -622,8 +627,8 @@
   };
 
   const onEdit = () => {
-    const { onEditRow } = getEditRowRecord();
-    onEditRow([0, 2], true);
+    // const { onEditRow } = getEditRowRecord();
+    // onEditRow([0, 2], true);
   };
 
   const onOk = (_, val) => {
