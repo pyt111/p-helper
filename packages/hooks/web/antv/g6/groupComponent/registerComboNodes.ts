@@ -28,7 +28,8 @@ export function registerComboNodes(options?: ComboNodesOptions) {
         const self = this as ShapeOptions;
         cfg.padding = cfg.padding || [20, 0, 20, 0];
         const comboWidth = itemWidth; // innerWidth
-        const comboHeight = showContainerHeight ?? itemHeight * children.length;
+        const comboHeight =
+          showContainerHeight ?? itemHeight * (children?.length ?? 2);
         // 固定高度
         // cfg.fixSize = [comboWidth, comboHeight];
 
