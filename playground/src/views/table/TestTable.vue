@@ -21,7 +21,7 @@
 </template>
 
 <script lang="tsx" setup>
-  import { computed, h, nextTick, ref } from 'vue';
+  import { computed, h, nextTick, ref, toRaw, toRefs, unref } from 'vue';
   import {
     BasicForm,
     BasicModal,
@@ -293,6 +293,8 @@
               console.log('pass >--->', pass);
               if (pass) {
                 record.onEdit(false, true);
+                const data = record.editValueRefs;
+                console.log('data >--->', unref(data));
               }
               // obj.record.onEditRowSave().then(() => {
               //   console.log('obj >--->', obj.row.ds2);

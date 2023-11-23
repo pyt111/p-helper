@@ -2,21 +2,22 @@ import { nextTick, onUnmounted, ref, unref, watch } from 'vue';
 import { isProdMode } from '@p-helper/utils/env';
 import { error } from '@p-helper/utils/log';
 import { getDynamicProps } from '@p-helper/utils';
+import type { X6Props } from '../types/props';
+import type { UseX6ReturnTypes, X6Methods } from '../types/hooks';
 import type { FormProps } from '../../../Form';
-import type { X6Methods, X6Props } from '../typing';
 
 type Props = Partial<DynamicProps<FormProps>>;
 
-export const useX6 = (props: Props) => {
+export const useX6x = (props: Props): UseX6ReturnTypes => {
   const basicX6Instance = ref<Nullable<X6Methods>>(null);
   const loaded = ref<Boolean>(false);
   async function getX6Instance() {
-    const form = unref(basicX6Instance);
-    if (!form) {
+    const x6Instance = unref(basicX6Instance);
+    if (!x6Instance) {
       error('尚未获取x6实例!');
     }
     await nextTick();
-    return form as X6Methods;
+    return x6Instance as X6Methods;
   }
   function register(instance: X6Methods, uuid: number | string) {
     isProdMode() &&
@@ -45,6 +46,9 @@ export const useX6 = (props: Props) => {
     setProps: async (x6Props: Partial<X6Props>) => {
       const instance = await getX6Instance();
       instance.setProps(x6Props);
+    },
+    getGraphInstance: () => {
+      return unref(basicX6Instance)?.getGraphInstance()!;
     },
   };
   return [register, methods];

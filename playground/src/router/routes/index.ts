@@ -21,4 +21,8 @@ export const playRoutes: Partial<RouteRecordRaw>[] = [
     path: '/test-drawer',
     component: () => import('@/views/drawer/TestDrawer.vue'),
   },
+  {
+    path: '/test-x6',
+    component: () => import('@/views/x6-test/X6Test.vue'),
+  },
 ];
