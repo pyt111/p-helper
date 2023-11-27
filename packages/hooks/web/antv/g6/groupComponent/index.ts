@@ -1,5 +1,5 @@
-import { Util, registerBehavior, registerEdge, registerNode } from '@antv/g6';
-import type { IEdge } from '@antv/g6';
+import { Util, registerBehavior, registerEdge, registerNode } from '@antv/g6/es';
+import type { IEdge } from '@antv/g6/es';
 import type { IAbstractGraph } from '@antv/g6-core/lib/interface/graph';
 export * from './registerComboNodes';
 
