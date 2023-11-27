@@ -3,7 +3,13 @@ import type { IEdge } from '@antv/g6';
 import type { IAbstractGraph } from '@antv/g6-core/lib/interface/graph';
 export * from './registerComboNodes';
 
-export function registerGroupNode() {
+export interface GroupNodeOptionType {
+  itemCount?: number;
+  autoHeight?: boolean;
+  itemHeight?: number;
+  paddingHeight?: number;
+}
+export function registerGroupNode(options?: GroupNodeOptionType) {
   const isInBBox = (point, bbox) => {
     const { x, y } = point;
     const { minX, minY, maxX, maxY } = bbox;
@@ -11,32 +17,34 @@ export function registerGroupNode() {
     return x < maxX && x > minX && y > minY && y < maxY;
   };
 
-  const itemHeight = 30;
+  const paddingHeight = options?.paddingHeight ?? 10;
+  const itemHeight = options?.itemHeight ?? 50;
   const titleHeight = 30;
-  const itemCount = 3;
+  let itemCount = options?.itemCount ?? 10;
+  const autoHeight = options?.autoHeight;
 
   // 展开/收起高度
   const expandHeight = 15;
-  const showContainerHeight = itemHeight * itemCount;
-  const barHeight = showContainerHeight;
-  const height = showContainerHeight + expandHeight + titleHeight;
+  let showContainerHeight = itemHeight * itemCount;
+  let height = showContainerHeight + expandHeight + titleHeight;
   registerBehavior('dice-er-scroll', {
     getDefaultCfg() {
       return {
         multiple: true,
+        onNode: false,
       };
     },
     getEvents() {
       return {
         // itemHeight,
-        wheel: 'scorll',
+        wheel: 'scroll',
         click: 'onClick',
         'node:mousemove': 'move',
         'node:mousedown': 'mousedown',
         'node:mouseup': 'mouseup',
       };
     },
-    scorll(e) {
+    scroll(e) {
       e.preventDefault();
       const graph = this.graph as IAbstractGraph;
       const nodes = graph.getNodes().filter((n) => {
@@ -44,11 +52,20 @@ export function registerGroupNode() {
 
         return isInBBox(graph.getPointByClient(e.clientX, e.clientY), bbox);
       });
-
       const x = e.deltaX || e.movementX;
       let y = e.deltaY || e.movementY;
       if (!y && navigator.userAgent.indexOf('Firefox') > -1)
         y = (-e.wheelDelta * 125) / 3;
+
+      const direction = !nodes.length;
+      // 解决scroll-canvas冲突
+      graph.updateBehavior(
+        'scroll-canvas',
+        {
+          direction: direction ? 'both' : 'x',
+        },
+        'default'
+      );
 
       if (nodes) {
         const edgesToUpdate = new Set<IEdge>();
@@ -134,7 +151,6 @@ export function registerGroupNode() {
       const edge = group.cfg.item;
       const sourceNode = edge.getSource().getModel();
       const targetNode = edge.getTarget().getModel();
-
       const sourceIndex = sourceNode.attrs.findIndex(
         (e) => e.key === cfg.sourceKey
       );
@@ -143,9 +159,14 @@ export function registerGroupNode() {
 
       let sourceY = titleHeight;
       if (!sourceNode.collapsed && sourceIndex >= sourceStartIndex - 0.5) {
+        const nodeConfig = sourceNode.nodeConfig;
         sourceY =
-          titleHeight + (sourceIndex - sourceStartIndex + 0.5) * itemHeight;
-        sourceY = Math.min(sourceY, height - expandHeight);
+          titleHeight +
+          (sourceIndex - sourceStartIndex + 0.5) * nodeConfig.itemHeight;
+        sourceY = Math.min(
+          sourceY,
+          nodeConfig.height - nodeConfig.expandHeight
+        );
       }
 
       const targetIndex = targetNode.attrs.findIndex(
@@ -157,9 +178,14 @@ export function registerGroupNode() {
       let targetY = titleHeight;
 
       if (!targetNode.collapsed && targetIndex > targetStartIndex - 0.5) {
+        const nodeConfig = sourceNode.nodeConfig;
         targetY =
-          (targetIndex - targetStartIndex + 0.5) * itemHeight + titleHeight;
-        targetY = Math.min(targetY, height - expandHeight);
+          (targetIndex - targetStartIndex + 0.5) * nodeConfig.itemHeight +
+          nodeConfig.titleHeight;
+        targetY = Math.min(
+          targetY,
+          nodeConfig.height - nodeConfig.expandHeight
+        );
       }
 
       const startPoint = {
@@ -256,14 +282,33 @@ export function registerGroupNode() {
         stroke: '#096DD9',
         radius: 4,
       };
-
       const { selectedIndex, collapsed, icon } = cfg as any;
       const startIndex = (cfg.startIndex || 0) as number;
       const list = (cfg.attrs || []) as Record<string, any>[];
-      const afterList = list.slice(
-        Math.floor(startIndex),
-        Math.floor(startIndex + itemCount + 1)
-      );
+
+      let afterList = list;
+      if (autoHeight) {
+        itemCount = list.length ?? 2;
+        // autoHeight状态下不用管 edge的height
+        showContainerHeight = itemCount * itemHeight;
+        height = showContainerHeight + expandHeight + titleHeight;
+      } else {
+        afterList = list.slice(
+          Math.floor(startIndex),
+          Math.floor(startIndex + itemCount + 1)
+        );
+      }
+
+      // 在其他地方使用
+      cfg.nodeConfig = {
+        height,
+        itemHeight,
+        itemCount,
+        showContainerHeight,
+        expandHeight,
+        titleHeight,
+      };
+      const barHeight = showContainerHeight;
       const offsetY = (0.5 - (startIndex % 1)) * itemHeight + 30;
 
       group.addShape('rect', {
@@ -419,6 +464,8 @@ export function registerGroupNode() {
           }
           const label = key.length > 26 ? `${key.slice(0, 24)}...` : key;
 
+          const itemContentHeight = itemHeight - paddingHeight;
+
           listContainer.addShape('rect', {
             attrs: {
               x: 1,
@@ -460,6 +507,18 @@ export function registerGroupNode() {
             });
           }
 
+          listContainer.addShape('rect', {
+            attrs: {
+              lineWidth: 1,
+              stroke: '#000',
+              x: 3,
+              y: i * itemHeight - itemHeight / 2 + offsetY + paddingHeight / 2,
+              width: width - 6,
+              height: itemHeight - paddingHeight,
+              radius: 2,
+            },
+          });
+
           listContainer.addShape('text', {
             attrs: {
               x: 12,
@@ -488,4 +547,13 @@ export function registerGroupNode() {
       ];
     },
   });
+
+  return {
+    height,
+    itemHeight,
+    itemCount,
+    showContainerHeight,
+    expandHeight,
+    titleHeight,
+  };
 }

@@ -552,17 +552,21 @@
         field: 'ssd',
         label: '测试-FormRadioGroup',
         component: 'RadioGroup',
-        componentProps: {
-          options: [
-            {
-              label: '444',
-              content: '选项1',
-            },
-            {
-              label: '123',
-              content: '选项2',
-            },
-          ],
+        componentProps: (obj, aaa) => {
+          console.log('obj >--->', aaa);
+          return {
+            disabled: !!obj.formModel.asd,
+            options: [
+              {
+                label: '444',
+                content: '选项1',
+              },
+              {
+                label: '123',
+                content: '选项2',
+              },
+            ],
+          }
         },
       },
       {

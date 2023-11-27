@@ -12,24 +12,29 @@ export function registerComboNodes(options?: ComboNodesOptions) {
   const itemHeight = options?.node?.itemHeight ?? 0;
   const itemWidth = options?.node?.itemWidth ?? 0;
   const titleHeight = 30;
-  const itemCount = options?.node?.showCount;
 
   // 展开/收起高度
   const expandHeight = 15;
-  const showContainerHeight = itemCount ? itemHeight * itemCount : void 0;
-  const barHeight = showContainerHeight;
+  // const barHeight = showContainerHeight;
   // const height = showContainerHeight + expandHeight + titleHeight;
 
   registerCombo(
     'dice-er-combo',
     {
       drawShape(cfg = {}, group) {
+        const itemCount = options?.node?.showCount;
+        cfg.padding = cfg.padding || [0, 0, 0, 0];
+        const clintItemHeight = itemHeight ? itemHeight + 18 : itemHeight;
         const children = cfg!.children as any[];
+
+        const showContainerHeight = itemCount
+          ? clintItemHeight * itemCount
+          : clintItemHeight * (children?.length ?? 2) -
+            ((children?.length ?? 1) - 1) * 2;
+
         const self = this as ShapeOptions;
-        cfg.padding = cfg.padding || [20, 0, 20, 0];
         const comboWidth = itemWidth; // innerWidth
-        const comboHeight =
-          showContainerHeight ?? itemHeight * (children?.length ?? 2);
+        const comboHeight = showContainerHeight;
         // 固定高度
         // cfg.fixSize = [comboWidth, comboHeight];
 

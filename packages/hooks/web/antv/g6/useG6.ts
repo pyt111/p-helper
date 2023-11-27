@@ -11,61 +11,67 @@ export function useG6(
 ) {
   const graphInstance = ref<Graph>();
 
-  function initG6() {
-    graphInstance.value = new G6.Graph(
+  function initG6(): Graph {
+    const graph = new G6.Graph(
       Object.assign(
         {
           container: elRef.value,
           fitView: true,
-          // fitCenter: true,
-          // fitViewPadding: [50, 100, 50, 100],
+          fitCenter: false,
+          fitViewPadding: 50,
           defaultNode: {
             // size: [300, 200],
             // type: 'dice-er-box',
-            type: 'rect',
+            // type: 'rect',
             color: '#5B8FF9',
-            // style: {
-            //   fill: '#9EC9FF',
-            //   lineWidth: 3,
-            // },
+            style: {
+              fill: '#9EC9FF',
+              lineWidth: 3,
+            },
             labelCfg: {
               style: {
                 fill: 'black',
                 fontSize: 30,
               },
             },
-            linkPoints: {
-              right: true,
-              left: true,
-              /* linkPoints' size, 8 by default */
-              //   size: 5,
-              /* linkPoints' style */
-              //   fill: '#ccc',
-              //   stroke: '#333',
-              //   lineWidth: 2,
+            // linkPoints: {
+            //   right: true,
+            //   left: true,
+            //   /* linkPoints' size, 8 by default */
+            //   //   size: 5,
+            //   /* linkPoints' style */
+            //   //   fill: '#ccc',
+            //   //   stroke: '#333',
+            //   //   lineWidth: 2,
+            // },
+          },
+          defaultEdge: {
+            // type: 'dice-er-edge',
+            style: {
+              stroke: '#e2e2e2',
+              lineWidth: 4,
+              endArrow: true,
             },
           },
-          // defaultEdge: {
-          //   type: 'dice-er-edge',
-          //   style: {
-          //     stroke: '#e2e2e2',
-          //     lineWidth: 4,
-          //     endArrow: true,
-          //   },
+          // defaultCombo: {
+          //   type: 'rect',
+          //   // padding: [10, 10, 10, 10],
+          //   // size: [0, 0],
           // },
-          defaultCombo: {
-            type: 'rect',
-            // padding: [10, 10, 10, 10],
-            // size: [0, 0],
-          },
-          modes: {
-            default: [
-              'dice-er-scroll',
-              'drag-canvas',
-              'collapse-expand-combo',
-              'zoom-canvas',
-            ],
-          },
+          // modes: {
+          //   default: [
+          //     'dice-er-scroll',
+          //     {
+          //       type: 'scroll-canvas',
+          //     },
+          //     {
+          //       type: 'drag-canvas',
+          //     },
+          //     'drag-canvas',
+          //     'drag-node',
+          //     'collapse-expand-combo',
+          //   ],
+          // },
           // layout: {
           //   type: 'dagre',
           //   rankdir: 'LR',
@@ -75,20 +81,22 @@ export function useG6(
           //   ranksepFunc: () => 0.2,
           // },
           //
-          groupByTypes: false,
+          // groupByTypes: false,
 
-          minZoom: 0.00000001,
+          minZoom: 0.1,
 
-          animate: true,
+          // animate: true,
         },
         options
       )
     );
+    graphInstance.value = graph;
+    return graph;
   }
 
   function getGraphInstance() {
     if (!graphInstance.value) {
-      initG6();
+      return initG6();
     }
     return graphInstance.value!;
   }
