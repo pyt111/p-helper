@@ -202,7 +202,7 @@ export function registerGroupNode(options?: GroupNodeOptionType) {
       if (sourceNode.id !== targetNode.id) {
         shape = group.addShape('path', {
           attrs: {
-            stroke: 'red',
+            stroke: '#434141',
             path: [
               ['M', startPoint.x, startPoint.y],
               [
@@ -226,7 +226,7 @@ export function registerGroupNode(options?: GroupNodeOptionType) {
         }
         shape = group.addShape('path', {
           attrs: {
-            stroke: 'yellow',
+            stroke: '#615e5e',
             path: [
               ['M', startPoint.x, startPoint.y],
               [

@@ -20,9 +20,7 @@ export function useG6(
           fitCenter: false,
           fitViewPadding: 50,
           defaultNode: {
-            // size: [300, 200],
-            // type: 'dice-er-box',
-            // type: 'rect',
+            type: 'rect',
             color: '#5B8FF9',
             style: {
               fill: '#9EC9FF',
@@ -34,16 +32,6 @@ export function useG6(
                 fontSize: 30,
               },
             },
-            // linkPoints: {
-            //   right: true,
-            //   left: true,
-            //   /* linkPoints' size, 8 by default */
-            //   //   size: 5,
-            //   /* linkPoints' style */
-            //   //   fill: '#ccc',
-            //   //   stroke: '#333',
-            //   //   lineWidth: 2,
-            // },
           },
           defaultEdge: {
             // type: 'dice-er-edge',
@@ -53,39 +41,10 @@ export function useG6(
               endArrow: true,
             },
           },
-          // defaultCombo: {
-          //   type: 'rect',
-          //   // padding: [10, 10, 10, 10],
-          //   // size: [0, 0],
-          // },
-          // modes: {
-          //   default: [
-          //     'dice-er-scroll',
-          //     {
-          //       type: 'scroll-canvas',
-          //     },
-          //     {
-          //       type: 'drag-canvas',
-          //     },
-          //     'drag-canvas',
-          //     'drag-node',
-          //     'collapse-expand-combo',
-          //   ],
-          // },
-          // layout: {
-          //   type: 'dagre',
-          //   rankdir: 'LR',
-          //   align: 'UL',
-          //   controlPoints: true,
-          //   nodesepFunc: () => 0.2,
-          //   ranksepFunc: () => 0.2,
-          // },
-          //
-          // groupByTypes: false,
 
           minZoom: 0.1,
 
-          // animate: true,
+          animate: true,
         },
         options
       )

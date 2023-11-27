@@ -352,37 +352,30 @@
     },
     layout: {
       type: 'dagre',
-      // rankdir: 'LR',
-      // align: 'UL',
+      rankdir: 'LR',
+      align: 'UL',
       controlPoints: true,
-      // nodesep: 50,
+      nodesep: 150,
       // nodesepFunc: (cfg) => {
       //   console.log('arg   >--->', cfg.nodeConfig.height);
       //   return 20;
       // },
-      // ranksepFunc: () => 2,
+      // ranksepFunc: () => 50,
     },
   });
   const { itemHeight } = registerGroupNode({
-    autoHeight: true,
-    // itemCount: 10,
+    // autoHeight: true,
+    itemCount: 10,
   });
   // const [register, { setProps, getGraphInstance }] = useX6x({});
   onMounted(() => {
     const instance = getGraphInstance();
-    instance.updateLayout({
-      rankdir: 'LR',
-      // ranksepFunc: () => 260,
-      // nodesepFunc: (cfg) => {
-      //   return cfg.nodeConfig.height * 0.2;
-      // },
-    });
 
     const data = dataTransform(rawData);
     console.log('data >--->', data);
     instance.data(data);
     instance.render();
-    instance.moveTo(-100, 0, true);
+    instance.moveTo(-200, 0, true);
   });
 </script>
 
