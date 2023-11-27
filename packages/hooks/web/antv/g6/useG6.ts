@@ -1,10 +1,9 @@
 import { ref } from 'vue';
 import G6 from '@antv/g6';
-import { registerComboNodes, registerGroupNode } from './groupComponent';
+import { registerGroupNode } from './groupComponent';
 import type { GraphOptions } from '@antv/g6-core';
 import type { Ref } from 'vue';
 import type { Graph } from '@antv/g6';
-export * from './groupComponent';
 export function useG6(
   elRef: Ref<HTMLDivElement>,
   options: Partial<GraphOptions> = {}
@@ -64,4 +63,4 @@ export function useG6(
   };
 }
 
-export { registerGroupNode, registerComboNodes };
+export { registerGroupNode };
