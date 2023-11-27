@@ -34,7 +34,6 @@
     "lib/components/*/style/*"
   ],
   "peerDependencies": {
-    "@antv/g6": "^4.8.21",
     "element-plus": "^2.3.0",
     "vue": "^3.3.4"
   },
