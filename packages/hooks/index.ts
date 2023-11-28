@@ -1,6 +1,7 @@
 import { computed, getCurrentInstance, ref } from 'vue';
 import type { AppConfig, ComponentCustomProperties } from 'vue';
 export * from './use-namespace';
+export * from './web/antv';
 
 export const ensureGlobalProperties = (): AppConfig['globalProperties'] &
   ComponentCustomProperties => {

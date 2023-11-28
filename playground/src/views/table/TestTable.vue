@@ -170,7 +170,7 @@
       {
         prop: 'd',
         label: 'd',
-        editRow: true,
+        // editRow: true,
         component: 'BadgeActionCell',
         componentProps: {
           // label: 'sssddd',
