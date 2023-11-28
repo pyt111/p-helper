@@ -3,7 +3,7 @@ import G6 from '@antv/g6/es';
 import { registerGroupNode } from './groupComponent';
 import type { GraphOptions } from '@antv/g6-core';
 import type { Ref } from 'vue';
-import type { Graph } from '@antv/g6/es';
+import type { Graph } from '@antv/g6';
 export function useG6(
   elRef: Ref<HTMLDivElement>,
   options: Partial<GraphOptions> = {}
