@@ -92,7 +92,7 @@
       function handleChange(urls: string[], fileListValue) {
         fileList.value = [...unref(fileList), ...(urls || [])];
         emit('update:value', fileList.value);
-        emit('change', fileList.value, fileListValue.value);
+        emit('change', fileList.value, fileListValue);
       }
 
       // 预览modal保存操作

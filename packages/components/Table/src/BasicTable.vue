@@ -204,11 +204,9 @@
         // 是否撑满
         if (getProps.value.fullHeight) {
           const bottomHeight = getBindValues.value?.noPage ? 0 : 52;
-          propsData.style = {
-            height: bottomHeight
+          propsData.height = bottomHeight
               ? `calc(100% - ${bottomHeight + 10}px)`
-              : '100%',
-          };
+              : '100%';
         }
 
         return propsData;

@@ -25,6 +25,7 @@
   "dependencies": {
     "@antv/g6": "^4.8.23",
     "@antv/x6": "^2.15.6",
+    "@antv/x6-plugin-scroller": "^2.0.10",
     "@antv/x6-vue-shape": "^2.1.1",
     "@element-plus/icons-vue": "^2.1.0",
     "@p-helper/build-constants": "workspace:*",
