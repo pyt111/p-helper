@@ -1,4 +1,3 @@
-import type { CascaderProps } from 'element-plus/es/components/cascader-panel/src/node';
 import type ElTree from 'element-plus/es/components/tree';
 import type ElSelect from 'element-plus/es/components/select';
 import type {
@@ -30,6 +29,7 @@ import type { ColEx, ComponentType } from './index';
 import type { TableActionType } from '@p-helper/components/Table/src/types/table';
 import type { RowProps } from 'element-plus/es/components/row';
 import type { OptionType } from 'element-plus/es/components/select-v2/src/select.types';
+import type { FileItem } from '../../../Upload/src/typing';
 
 export declare type InternalNamePath = (string | number)[];
 export declare type NamePath = string | number | InternalNamePath;
@@ -178,7 +178,10 @@ export type UploadProps = Partial<
     fileListProps: Partial<UploadFileListProps>;
     previewProps: Partial<UploadPreviewProps>;
   }
-> & { api: UploadBasicProps['api'] };
+> & {
+  api: UploadBasicProps['api'];
+  onChange: (urls: string[], fileList: FileItem[]) => void;
+};
 
 export interface InputComponentSchema {
   component: 'Input';
