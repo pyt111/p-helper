@@ -36,7 +36,7 @@ $detail-header-height: 40px;
 .basic-drawer__detail {
   position: absolute;
 
-  .ant-drawer-header {
+  .el-drawer__header {
     box-sizing: border-box;
     width: 100%;
     height: $detail-header-height;
@@ -44,11 +44,7 @@ $detail-header-height: 40px;
     border-top: 1px solid var(--el-border-color);
   }
 
-  .ant-drawer-title {
-    height: 100%;
-  }
-
-  .ant-drawer-close {
+  .el-drawer__close {
     height: $detail-header-height;
     line-height: $detail-header-height;
   }
@@ -72,6 +68,7 @@ $detail-header-height: 40px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    font-size: 20px;
 
     &:hover {
       color: var(--el-color-primary);

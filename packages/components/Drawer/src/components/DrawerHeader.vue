@@ -4,14 +4,14 @@
     {{ !$slots.title ? title : '' }}
   </BasicTitle>
 
-  <div v-else :class="['el-drawer__title', prefixCls, `${prefixCls}--detail`]">
+  <div v-else :class="['basic-title', prefixCls, `${prefixCls}--detail`]">
     <span :class="`${prefixCls}__twrap`">
       <span
         v-if="showDetailBack"
         :class="`${prefixCls}__back`"
         @click="handleClose"
       >
-        <el-icon size="20">
+        <el-icon>
           <Back />
         </el-icon>
       </span>
