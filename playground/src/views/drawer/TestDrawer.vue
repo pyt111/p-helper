@@ -3,9 +3,9 @@
     <div class="test-drawer-inner-wrapper-1">
       <BasicDrawer
         class="test-drawer"
-        :show-close="false"
         title="头部"
         in-container
+        :is-detail="true"
         :modal="false"
         @register="register"
       >
