@@ -43,7 +43,6 @@
   const prop = defineProps({
     t: VueTypes.number,
   });
-  console.log('prop >--->', prop, prop.t);
 
   const uploadApi = async () => {
     return {
@@ -277,6 +276,8 @@
       },
     ],
     useSearchForm: true,
+    // height: '500px',
+    fullHeight: true,
     // rowKey: 'id',
     // columnDefaultAlign: 'center',
     dropDownButtonText: '更多',
@@ -477,7 +478,19 @@
           component: 'Cascader',
           componentProps: () => ({
             props: {},
-            options: [{ label: '', value: '' }],
+            options: [{ label: '1', value: '1' }],
+          }),
+        },
+        {
+          field: 'asd',
+          label: 'select',
+          component: 'Select',
+          componentProps: () => ({
+            props: {
+              value: 'id',
+              label: 'name',
+            },
+            options: [{ name: '1', id: '1' }],
           }),
         },
         {
@@ -566,8 +579,20 @@
                 content: '选项2',
               },
             ],
-          }
+          };
         },
+      },
+      {
+        field: 'asd',
+        label: 'select',
+        component: 'Select',
+        componentProps: () => ({
+          props: {
+            value: 'id',
+            label: 'name',
+          },
+          options: [{ name: '1', id: '1' }],
+        }),
       },
       {
         field: 'bb',
