@@ -42,9 +42,11 @@ $detail-header-height: 40px;
     height: $detail-header-height;
     padding: 0;
     border-top: 1px solid var(--el-border-color);
+    margin-bottom: 0;
   }
 
   .el-drawer__close {
+    width: $detail-header-height;
     height: $detail-header-height;
     line-height: $detail-header-height;
   }
