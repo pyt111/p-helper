@@ -10,6 +10,7 @@ pnpm build
 
 cd dist/p-helper
 npm publish
+cnpm sync p-helper
 cd -
 
 #cd internal/eslint-config
