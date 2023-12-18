@@ -30,7 +30,14 @@
       @register="registerUploadModal"
       @change="handleChange"
       @delete="handleDelete"
-    />
+    >
+      <template #top>
+        <slot name="modalTop" />
+      </template>
+      <template #bottom>
+        <slot name="modalBottom" />
+      </template>
+    </UploadModal>
 
     <UploadPreviewModal
       :value="fileList"

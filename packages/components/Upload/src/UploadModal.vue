@@ -26,6 +26,7 @@
       </el-button>
     </template>
 
+    <slot name="top" />
     <div class="upload-modal-toolbar">
       <ElAlert
         :description="getHelpText"
@@ -51,6 +52,7 @@
       :columns="columns"
       :action-column="actionColumn"
     />
+    <slot name="bottom" />
   </BasicModal>
 </template>
 <script lang="ts">
