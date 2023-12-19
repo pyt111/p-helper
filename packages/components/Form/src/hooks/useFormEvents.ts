@@ -186,7 +186,7 @@ export function useFormEvents({
         });
       }
     });
-    validateFields(validKeys).catch((_) => {});
+    validateField(validKeys).catch((_) => {});
   }
   /**
    * @description: Delete based on field name
@@ -325,8 +325,8 @@ export function useFormEvents({
     });
   }
 
-  async function validateFields(nameList?: NamePath[] | undefined) {
-    return unref(formElRef)?.validateFields(nameList);
+  async function validateField(nameList?: NamePath[] | undefined) {
+    return unref(formElRef)?.validateField(nameList);
   }
 
   async function validate(...args) {
@@ -373,7 +373,7 @@ export function useFormEvents({
     handleSubmit,
     clearValidate,
     validate,
-    validateFields,
+    validateField,
     getFieldsValue,
     updateSchema,
     resetSchema,

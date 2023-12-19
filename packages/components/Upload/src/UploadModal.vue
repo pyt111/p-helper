@@ -57,9 +57,9 @@
 </template>
 <script lang="ts">
   import { computed, defineComponent, reactive, ref, toRefs, unref } from 'vue';
+  import { isPromise } from '@vue/shared';
   import { ElAlert, ElButton, ElMessage, ElUpload } from 'element-plus';
   import { BasicModal, useModalInner } from '@p-helper/components/Modal';
-  //   import { BasicTable, useTable } from '/@/components/Table';
   // hooks
   //   types
   import { buildUUID } from '@p-helper/utils/uuid';
@@ -259,8 +259,19 @@
           throw e;
         }
       }
+      const s = async () => {};
 
-      const handleStartUpload = async () => {
+      const handleStartUpload = async (file) => {
+        if (props.beforeUpload) {
+          let pass;
+          pass = props.beforeUpload(file, fileListRef.value);
+
+          if (isPromise(pass)) {
+            pass = await pass.catch(noop);
+          }
+
+          if (!pass) return false;
+        }
         await startUpload().catch(noop);
       };
 

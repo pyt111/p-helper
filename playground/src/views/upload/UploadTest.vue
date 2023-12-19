@@ -1,6 +1,5 @@
 <template>
   <div class="upload-test-wrapper">
-    <BasicForm @register="registerForm" @submit="onSubmit" />
     <BasicUpload
       :accept="['image/*', '.xlsx']"
       :api="api"
@@ -8,8 +7,13 @@
       show-preview
       empty-hide-preview
       upload-button-text="asd"
+      destroy-on-close
+      :before-upload="beforeUpload"
+      @opened="onOpened"
     >
-      <template #modalTop> 333 </template>
+      <template #modalTop>
+        <BasicForm @register="registerForm" @submit="onSubmit" />
+      </template>
       <template #modalBottom> 222 </template>
     </BasicUpload>
   </div>
@@ -30,23 +34,43 @@
       },
     };
   };
-  const [registerForm, { getFieldsValue }] = useForm({
-    schemas: [
-      {
-        label: 'Krb5 File',
-        field: 'uploadSrc',
-        component: 'Upload',
-        componentProps: {
-          api,
-          showPreview: true,
-          onChange(urls, fileList) {
-            console.log('val >--->', urls, fileList);
-          },
+  const [registerForm, { getFieldsValue, setFieldsValue, validateField }] =
+    useForm({
+      schemas: [
+        // {
+        //   label: 'Krb5 File',
+        //   field: 'uploadSrc',
+        //   component: 'Upload',
+        //   componentProps: {
+        //     api,
+        //     showPreview: true,
+        //     onChange(urls, fileList) {
+        //       console.log('val >--->', urls, fileList);
+        //     },
+        //   },
+        // },
+        {
+          label: '测试异步设置',
+          field: 'ft',
+          component: 'Input',
+          required: true,
         },
-      },
-    ],
-  });
+      ],
+    });
 
+  const onOpened = () => {
+    // setFieldsValue({
+    //   ft: '',
+    // });
+  };
+
+  const beforeUpload = async (file) => {
+    const verification = await validateField(['ft']).catch(() => {
+      console.log('dddd >--->');
+    });
+    console.log('verification >--->', verification);
+    return verification;
+  };
   const onSubmit = () => {
     console.log('getFieldsValue >--->', getFieldsValue());
   };

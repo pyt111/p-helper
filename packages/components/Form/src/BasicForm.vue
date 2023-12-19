@@ -211,7 +211,7 @@
         setFieldsValue,
         clearValidate,
         validate,
-        validateFields,
+        validateField,
         getFieldsValue,
         updateSchema,
         resetSchema,
@@ -288,7 +288,7 @@
         formModel[key] = value;
         emit('field-value-change', key, value);
         if (schema && schema.itemProps && !schema.itemProps.autoLink) {
-          validateFields([key]).catch((_) => {});
+          validateField([key]).catch((_) => {});
         }
       }
 
@@ -329,7 +329,7 @@
         removeSchemaByFiled,
         appendSchemaByField,
         clearValidate,
-        validateFields,
+        validateField,
         validate,
         submit: handleSubmit,
         scrollToField,

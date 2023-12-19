@@ -6,7 +6,7 @@
         type="primary"
         class="basic-upload-upload-button"
         :icon="Upload"
-        @click="openUploadModal(true)"
+        @click="onOpenUploadModal"
       >
         {{ uploadButtonText }}
       </el-button>
@@ -62,7 +62,7 @@
     // eslint-disable-next-line vue/no-unused-components
     components: { UploadModal, UploadPreviewModal },
     props: uploadContainerProps,
-    emits: ['change', 'delete', 'preview-delete', 'update:value'],
+    emits: ['opened', 'change', 'delete', 'preview-delete', 'update:value'],
 
     setup(props, { emit, attrs }) {
       // 上传modal
@@ -117,6 +117,12 @@
         emit('preview-delete', url);
       }
 
+      const onOpenUploadModal = () => {
+        openUploadModal(true).then(() => {
+          emit('opened');
+        });
+      };
+
       return {
         registerUploadModal,
         openUploadModal,
@@ -131,6 +137,7 @@
         handlePreviewDelete,
         View,
         Upload,
+        onOpenUploadModal,
       };
     },
   });

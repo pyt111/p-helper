@@ -1,5 +1,5 @@
+import type { FileBasicColumn, FileItem } from './typing';
 import type { PromiseFn } from '@p-helper/types/utils';
-import type { FileBasicColumn } from './typing';
 import type { ExtractPropTypes, PropType } from 'vue';
 
 export const basicProps = {
@@ -42,6 +42,10 @@ export const basicProps = {
   filename: {
     type: String as PropType<string>,
     default: null,
+  },
+  beforeUpload: {
+    type: Function as PropType<Function>,
+    default: (file: File, fileList: FileItem[]) => true,
   },
 };
 

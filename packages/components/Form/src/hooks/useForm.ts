@@ -124,9 +124,9 @@ export function useForm(props?: Props): UseFormReturnType {
       return form.validate(fn);
     },
 
-    validateFields: async (nameList?: NamePath[]): Promise<Recordable> => {
+    validateField: async (nameList?: NamePath[]): Promise<Recordable> => {
       const form = await getForm();
-      return form.validateFields(nameList);
+      return form.validateField(nameList);
     },
   };
 
