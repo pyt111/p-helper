@@ -1,0 +1,21 @@
+{
+  "name": "@p-helper/ts-config",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "base.json",
+    "node.json",
+    "vue-app.json",
+    "packages.json",
+    "node-server.json"
+  ],
+  "dependencies": {
+    "@types/node": "^20.4.0",
+    "vite": "^4.4.0"
+  }
+}

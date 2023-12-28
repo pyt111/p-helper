@@ -1,0 +1,10 @@
+{
+  "extends": "./base.json",
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "noEmit": true,
+    "baseUrl": "./"
+  }
+}

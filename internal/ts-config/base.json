@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig", // webstrom 插件中有，不需要
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "noImplicitOverride": true,
     "useUnknownInCatchVariables": false,
@@ -23,6 +23,7 @@
     "types": [],
     "paths": {
       "@p-helper/*": ["packages/*"]
-    },
+    }
   },
+  "exclude": ["**/node_modules/**", "**/dist/**"]
 }

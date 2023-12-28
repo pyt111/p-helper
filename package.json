@@ -49,6 +49,7 @@
     "@p-helper/build": "workspace:*",
     "@p-helper/build-utils": "workspace:*",
     "@p-helper/eslint-config": "workspace:^",
+    "@p-helper/ts-config": "workspace:^",
     "@p-helper/types": "workspace:*",
     "@pnpm/find-workspace-packages": "^6.0.9",
     "@pnpm/logger": "^5.0.0",
