@@ -84,13 +84,14 @@
 
       const bindValue = computed(() => {
         const value = { ...attrs, ...props };
-        return omit(value, 'onChange');
+        // 表单不设置 valueField = value,会有modelValue
+        return omit(value, ['onChange', 'modelValue', 'value']);
       });
 
       watch(
         () => props.value,
         (value = []) => {
-          fileList.value = isArray(value) ? value : [];
+          fileList.value = isArray(value) ? value : [value];
         },
         { immediate: true }
       );

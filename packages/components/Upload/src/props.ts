@@ -59,7 +59,7 @@ export const uploadContainerProps = {
     default: '上传',
   },
   value: {
-    type: Array as PropType<string[]>,
+    type: [Array, String] as PropType<string[] | string>,
     default: () => [],
   },
   ...basicProps,

@@ -37,18 +37,19 @@
   const [registerForm, { getFieldsValue, setFieldsValue, validateField }] =
     useForm({
       schemas: [
-        // {
-        //   label: 'Krb5 File',
-        //   field: 'uploadSrc',
-        //   component: 'Upload',
-        //   componentProps: {
-        //     api,
-        //     showPreview: true,
-        //     onChange(urls, fileList) {
-        //       console.log('val >--->', urls, fileList);
-        //     },
-        //   },
-        // },
+        {
+          label: 'Krb5 File',
+          field: 'uploadSrc',
+          valueField: 'value',
+          component: 'Upload',
+          componentProps: {
+            api,
+            showPreview: true,
+            onChange(urls, fileList) {
+              console.log('val >--->', urls, fileList);
+            },
+          },
+        },
         {
           label: '测试异步设置',
           field: 'ft',
@@ -59,9 +60,9 @@
     });
 
   const onOpened = () => {
-    // setFieldsValue({
-    //   ft: '',
-    // });
+    setFieldsValue({
+      uploadSrc: 'https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15',
+    });
   };
 
   const beforeUpload = async (file) => {
