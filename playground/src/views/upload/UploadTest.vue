@@ -45,6 +45,12 @@
           componentProps: {
             api,
             showPreview: true,
+            previewProps: {
+              showActionColumn: false,
+            },
+            // fileListProps: {
+            //   actionColumn: null,
+            // },
             onChange(urls, fileList) {
               console.log('val >--->', urls, fileList);
             },

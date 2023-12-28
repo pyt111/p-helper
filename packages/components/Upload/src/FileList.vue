@@ -21,7 +21,7 @@
       );
       return () => {
         const { columns, actionColumn, dataSource } = props;
-        const columnList = [...columns, actionColumn];
+        const columnList = [...columns, actionColumn].filter((item) => !!item);
         return (
           <table class="file-table">
             <colgroup>

@@ -41,6 +41,7 @@
 
     <UploadPreviewModal
       :value="fileList"
+      v-bind="$attrs.previewProps"
       @register="registerPreviewModal"
       @list-change="handlePreviewChange"
       @delete="handlePreviewDelete"
@@ -53,7 +54,7 @@
   import { omit } from 'lodash-es';
   import { isArray } from '@p-helper/utils/is';
   import { Upload, View } from '@element-plus/icons-vue';
-  import { uploadContainerProps } from './props';
+  import { previewProps, uploadContainerProps } from './props';
   import UploadModal from './UploadModal.vue';
   import UploadPreviewModal from './UploadPreviewModal.vue';
 
@@ -140,6 +141,11 @@
         Upload,
         onOpenUploadModal,
       };
+    },
+    computed: {
+      previewProps() {
+        return previewProps;
+      },
     },
   });
 </script>
