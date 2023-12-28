@@ -26,7 +26,7 @@
           <table class="file-table">
             <colgroup>
               {columnList.map((item) => {
-                const { width = 0, prop } = item;
+                const { width = 0, prop } = item!;
                 const style: CSSProperties = {
                   width: `${width}px`,
                   minWidth: `${width}px`,
@@ -37,7 +37,7 @@
             <thead>
               <tr class="file-table-tr">
                 {columnList.map((item) => {
-                  const { label = '', align = 'center', prop } = item;
+                  const { label = '', align = 'center', prop } = item!;
                   return (
                     <th class={['file-table-th', align]} key={prop}>
                       {label}
@@ -58,7 +58,7 @@
                         prop = '',
                         customRender,
                         align = 'center',
-                      } = item;
+                      } = item!;
                       const render = customRender && isFunction(customRender);
                       return (
                         <td class={['file-table-td', align]} key={prop}>
