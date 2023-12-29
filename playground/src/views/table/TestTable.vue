@@ -1,22 +1,22 @@
 <template>
   <div class="test-table-wrapper">
-    <el-button @click="openModal(true)">asd</el-button>
-    <el-button @click="onAdd">新增</el-button>
-    <el-button @click="onEdit">编辑行</el-button>
+<!--    <el-button @click="openModal(true)">asd</el-button>-->
+<!--    <el-button @click="onAdd">新增</el-button>-->
+<!--    <el-button @click="onEdit">编辑行</el-button>-->
     <BasicTable @register="register" @select="onSelect">
       <template #form-formLeft>
         <el-button>ddd</el-button>
       </template>
     </BasicTable>
 
-    <BasicModal
-      :ok-button-props="{ disabled: true }"
-      @register="registerModal"
-      @ok="onOk"
-    >
-      <BasicForm @register="registerForm" />
-    </BasicModal>
-    <BasicUpload :api="uploadApi" />
+    <!--    <BasicModal-->
+    <!--      :ok-button-props="{ disabled: true }"-->
+    <!--      @register="registerModal"-->
+    <!--      @ok="onOk"-->
+    <!--    >-->
+    <!--      <BasicForm @register="registerForm" />-->
+    <!--    </BasicModal>-->
+    <!--    <BasicUpload :api="uploadApi" />-->
   </div>
 </template>
 
@@ -68,6 +68,8 @@
     },
   ] = useTable({
     // fullHeight: true,
+    autoMaxFullHeight: true,
+    offlinePaging: true,
     beforeFetch: (params) => {
       params.catalogDataId = 1;
       return params;
@@ -101,6 +103,104 @@
             a: '555',
             badgeValue: 6,
           },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
         ],
       };
     },
@@ -124,13 +224,13 @@
           {
             prop: 'ds1',
             label: 'ds1',
-            editRow: true,
+            // editRow: true,
             align: 'right',
           },
           {
             prop: 'ds2',
             label: 'ds2',
-            editRow: true,
+            // editRow: true,
           },
         ],
       },
@@ -171,7 +271,7 @@
         prop: 'd',
         label: 'd',
         // editRow: true,
-        component: 'BadgeActionCell',
+        // component: 'BadgeActionCell',
         componentProps: {
           // label: 'sssddd',
           elIcon: 'Share',
@@ -199,7 +299,7 @@
       {
         prop: 'c',
         label: 'c',
-        editRow: true,
+        // editRow: true,
         // editable: true,
         // editFilterShow: (obj) => {
         //   console.log(' editFilterShow>--->', obj);
@@ -230,7 +330,7 @@
       {
         prop: 'a',
         label: 'cca',
-        edit: true,
+        // edit: true,
       },
       {
         prop: 'a',
@@ -280,115 +380,115 @@
     // rowKey: 'id',
     // columnDefaultAlign: 'center',
     dropDownButtonText: '更多',
-    actionColumn: {
-      label: '操作',
-      editRow: true,
-      minWidth: 380,
-      editButtonsProps: () => {
-        return [
-          {
-            buttonName: 'save',
-            onClick: async ({ record }) => {
-              const pass = await record.onValid();
-              console.log('pass >--->', pass);
-              if (pass) {
-                record.onEdit(false, true);
-                const data = record.editValueRefs;
-                console.log('data >--->', unref(data));
-              }
-              // obj.record.onEditRowSave().then(() => {
-              //   console.log('obj >--->', obj.row.ds2);
-              // });
-              // tableFieldInfo_update({
-              //   id: obj.row?.id,
-              // }).then((res) => {
-              //   updateTableDataRecord(obj.row.key, res.data || {});
-              //   obj.record.onEditRow();
-              // });
-            },
-          },
-        ];
-      },
-      allActions: () => [
-        {
-          label: '删除1',
-          // ifShow: (action, { row, record }) => {
-          //   return !record.isEditableRow();
-          // },
-          elIcon: 'Share',
-          // dynamicLoading: ({ row, index, record }) => {
-          //   return record.loading;
-          // },
-          popConfirm: {
-            title: '删除提醒',
-            confirm: (obj) => {
-              const { index, row, record, elColumn } = obj;
-              // console.log('删除提醒 >--->', elColumn);
-              // record.setLoading(true, record);
-              // record.loading = true;
-              // record.updateTableActionUi();
-            },
-          },
-          badge: {
-            value: '31',
-            isDot: true,
-          },
-          icon: 'code|svg',
-          // onClick: (obj) => {
-          //   const { index, row, record } = obj;
-          //   console.log('row.id >--->', row.id, row);
-          //   deleteTableDataRecord(row.id || row.key);
-          //   record.onEditRow(record.getIsRowEditCacheRowKeys());
-          // },
-        },
-        {
-          label: '删除2',
-          preIcon: View,
-          suffixIcon: 'code',
-          suffixIconProps: {
-            color: 'blue',
-            disabled: true,
-          },
-          type: 'danger',
-          badge: {
-            value: '31',
-            isDot: true,
-          },
-          popConfirm: {
-            title: '提醒',
-            confirm: (obj) => {
-              console.log('obj >--->', obj);
-            },
-          },
-          // onClick: (obj) => {
-          //   const { index, row, record } = obj;
-          //   deleteTableDataRecord(row.id || row.key);
-          //   record.onEditRow(record.getIsRowEditCacheRowKeys());
-          // },
-        },
-        {
-          label: '删除3',
-          ifShow: (action, { row, record }) => {
-            // console.log('record >--->', record);
-            return !record.isEditableRow?.();
-          },
-          onClick: (obj) => {
-            const { index, row, record } = obj;
-            console.log(' 删除3>--->');
-            // deleteTableDataRecord(row.id || row.key);
-            // record.onEditRow(record.getIsRowEditCacheRowKeys());
-          },
-        },
-        {
-          label: '删除4',
-          onClick: (obj) => {
-            const { index, row, record } = obj;
-            deleteTableDataRecord(row.key);
-            // record.onEditRow(record.getIsRowEditCacheRowKeys());
-          },
-        },
-      ],
-    },
+    // actionColumn: {
+    //   label: '操作',
+    //   editRow: true,
+    //   minWidth: 380,
+    //   editButtonsProps: () => {
+    //     return [
+    //       {
+    //         buttonName: 'save',
+    //         onClick: async ({ record }) => {
+    //           const pass = await record.onValid();
+    //           console.log('pass >--->', pass);
+    //           if (pass) {
+    //             record.onEdit(false, true);
+    //             const data = record.editValueRefs;
+    //             console.log('data >--->', unref(data));
+    //           }
+    //           // obj.record.onEditRowSave().then(() => {
+    //           //   console.log('obj >--->', obj.row.ds2);
+    //           // });
+    //           // tableFieldInfo_update({
+    //           //   id: obj.row?.id,
+    //           // }).then((res) => {
+    //           //   updateTableDataRecord(obj.row.key, res.data || {});
+    //           //   obj.record.onEditRow();
+    //           // });
+    //         },
+    //       },
+    //     ];
+    //   },
+    //   allActions: () => [
+    //     {
+    //       label: '删除1',
+    //       // ifShow: (action, { row, record }) => {
+    //       //   return !record.isEditableRow();
+    //       // },
+    //       elIcon: 'Share',
+    //       // dynamicLoading: ({ row, index, record }) => {
+    //       //   return record.loading;
+    //       // },
+    //       popConfirm: {
+    //         title: '删除提醒',
+    //         confirm: (obj) => {
+    //           const { index, row, record, elColumn } = obj;
+    //           // console.log('删除提醒 >--->', elColumn);
+    //           // record.setLoading(true, record);
+    //           // record.loading = true;
+    //           // record.updateTableActionUi();
+    //         },
+    //       },
+    //       badge: {
+    //         value: '31',
+    //         isDot: true,
+    //       },
+    //       icon: 'code|svg',
+    //       // onClick: (obj) => {
+    //       //   const { index, row, record } = obj;
+    //       //   console.log('row.id >--->', row.id, row);
+    //       //   deleteTableDataRecord(row.id || row.key);
+    //       //   record.onEditRow(record.getIsRowEditCacheRowKeys());
+    //       // },
+    //     },
+    //     {
+    //       label: '删除2',
+    //       preIcon: View,
+    //       suffixIcon: 'code',
+    //       suffixIconProps: {
+    //         color: 'blue',
+    //         disabled: true,
+    //       },
+    //       type: 'danger',
+    //       badge: {
+    //         value: '31',
+    //         isDot: true,
+    //       },
+    //       popConfirm: {
+    //         title: '提醒',
+    //         confirm: (obj) => {
+    //           console.log('obj >--->', obj);
+    //         },
+    //       },
+    //       // onClick: (obj) => {
+    //       //   const { index, row, record } = obj;
+    //       //   deleteTableDataRecord(row.id || row.key);
+    //       //   record.onEditRow(record.getIsRowEditCacheRowKeys());
+    //       // },
+    //     },
+    //     {
+    //       label: '删除3',
+    //       ifShow: (action, { row, record }) => {
+    //         // console.log('record >--->', record);
+    //         return !record.isEditableRow?.();
+    //       },
+    //       onClick: (obj) => {
+    //         const { index, row, record } = obj;
+    //         console.log(' 删除3>--->');
+    //         // deleteTableDataRecord(row.id || row.key);
+    //         // record.onEditRow(record.getIsRowEditCacheRowKeys());
+    //       },
+    //     },
+    //     {
+    //       label: '删除4',
+    //       onClick: (obj) => {
+    //         const { index, row, record } = obj;
+    //         deleteTableDataRecord(row.key);
+    //         // record.onEditRow(record.getIsRowEditCacheRowKeys());
+    //       },
+    //     },
+    //   ],
+    // },
     actions: [
       {
         label: '编辑1',
@@ -566,7 +666,7 @@
                 content: '选项2',
               },
             ],
-          }
+          };
         },
       },
       {
@@ -646,6 +746,6 @@
 
 <style scoped>
   .test-table-wrapper {
-    height: 100%;
+    height: 100vh;
   }
 </style>
