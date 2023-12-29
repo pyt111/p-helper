@@ -1,6 +1,5 @@
 import { unref } from 'vue';
 import { isObject } from '@p-helper/utils/is';
-import componentSetting from '@p-helper/constants/settings/componentSetting';
 
 export * from './vue';
 export * from './tasksQueue';
@@ -42,14 +41,11 @@ export function openWindow(
 
 // dynamic use hook props
 export function getDynamicProps<T extends Record<string, unknown>, U>(
-  dynamicProps: T
+  props: T
 ): Partial<U> {
   const ret: Recordable = {};
 
-  const defaultProps = componentSetting.table.defaultProps;
-  const props = deepMerge(defaultProps, dynamicProps);
-
-  Object.keys(props).forEach((key) => {
+  Object.keys(props).map((key) => {
     ret[key] = unref((props as Recordable)[key]);
   });
 

@@ -1,8 +1,9 @@
 import { onUnmounted, ref, toRaw, unref } from 'vue';
 import { debouncedWatch } from '@vueuse/core';
-import { getDynamicProps } from '@p-helper/utils';
+import { deepMerge, getDynamicProps } from '@p-helper/utils';
 import { error } from '@p-helper/utils/log';
 import { isProdMode } from '@p-helper/utils/env';
+import componentSetting from '@p-helper/constants/settings/componentSetting';
 import type { DynamicProps } from '@p-helper/types/utils';
 import type { WatchStopHandle } from 'vue';
 import type { FormActionType } from '@p-helper/components/Form';
@@ -41,10 +42,15 @@ export function useTable(
 
     if (unref(loadedRef) && isProdMode() && instance === unref(tableRef))
       return;
-
     tableRef.value = instance;
     formRef.value = formInstance;
-    tableProps && instance.setProps(getDynamicProps(tableProps));
+    tableProps &&
+      instance.setProps(
+        deepMerge(
+          { ...componentSetting.table.defaultProps },
+          getDynamicProps(tableProps)
+        )
+      );
     loadedRef.value = true;
 
     stopWatch?.();
@@ -52,7 +58,13 @@ export function useTable(
     stopWatch = debouncedWatch(
       () => tableProps,
       () => {
-        tableProps && instance.setProps(getDynamicProps(tableProps));
+        tableProps &&
+          instance.setProps(
+            deepMerge(
+              { ...componentSetting.table.defaultProps },
+              getDynamicProps(tableProps)
+            )
+          );
       },
       {
         immediate: true,
