@@ -257,11 +257,29 @@ export function useColumns(
     }
   }
 
+  // 合并多层级
+  const mergeColumn = (defaultColumn, column) => {
+    if (column.children?.length) {
+      column.children = column.children.map((item) => {
+        return mergeColumn(defaultColumn, item);
+      });
+    }
+
+    return {
+      ...defaultColumn,
+      ...column,
+      align:
+        column.align ??
+        propsRef.value.columnDefaultAlign ??
+        componentSetting.table.column.align,
+    };
+  };
+
   watch(
     () => unref(propsRef).columns,
     (columns) => {
-      columnsRef.value = columns;
-      columns.forEach((item, i) => {
+      const defaultColumn = componentSetting.table.column;
+      const cls = columns.map((item, i) => {
         if (item.type) {
           if (['index', 'selection', 'expand', 'setting'].includes(item.type)) {
             item.showOverflowTooltip = false;
@@ -271,15 +289,11 @@ export function useColumns(
             item.width = item.width ?? 60;
           }
         }
-        // 设置一些全局默认属性
-        Object.assign(item, {
-          ...componentSetting.table.column,
-          align:
-            item.align ??
-            propsRef.value.columnDefaultAlign ??
-            componentSetting.table.column.align,
-        });
+
+        return mergeColumn(defaultColumn, item);
+        // console.log('mergeColumn item >--->', item);
       });
+      columnsRef.value = cls;
     }
   );
 
