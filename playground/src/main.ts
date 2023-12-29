@@ -16,6 +16,9 @@ setSetting({
     column: {
       align: 'center',
     },
+    defaultProps: {
+      autoMaxFullHeight: true,
+    },
   },
 });
 

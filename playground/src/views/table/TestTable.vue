@@ -68,8 +68,8 @@
     },
   ] = useTable({
     // fullHeight: true,
-    autoMaxFullHeight: true,
-    offlinePaging: true,
+    // autoMaxFullHeight: true,
+    // offlinePaging: true,
     beforeFetch: (params) => {
       params.catalogDataId = 1;
       return params;
