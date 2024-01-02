@@ -1,6 +1,10 @@
 // Used to configure the general configuration of some components without modifying the components
 
-import type { BasicColumn, SorterResult } from '@p-helper/components/Table';
+import type {
+  BasicColumn,
+  SorterResult,
+  TableProps,
+} from '@p-helper/components/Table';
 
 export default {
   // basic-table setting
@@ -44,6 +48,8 @@ export default {
     column: {
       align: 'center',
     } as BasicColumn,
+
+    defaultProps: {} as TableProps,
   },
   vxeTable: {
     table: {

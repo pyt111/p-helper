@@ -15,6 +15,13 @@ setSetting({
   table: {
     column: {
       align: 'center',
+
+      formatter: (_row, _style, val: string) => {
+        return val ? val : '--';
+      },
+    },
+    defaultProps: {
+      autoMaxFullHeight: true,
     },
   },
 });

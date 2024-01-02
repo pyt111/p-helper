@@ -127,6 +127,8 @@ export const basicProps = {
   },
   // 是否根据父节点撑满高度
   fullHeight: propTypes.bool,
+  // 流体高度，最大高度为撑满当前设定的块的高度
+  autoMaxFullHeight: propTypes.bool,
   height: {
     type: [Number, String],
   },

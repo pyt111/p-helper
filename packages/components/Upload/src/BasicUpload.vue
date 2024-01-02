@@ -41,6 +41,7 @@
 
     <UploadPreviewModal
       :value="fileList"
+      v-bind="$attrs.previewProps"
       @register="registerPreviewModal"
       @list-change="handlePreviewChange"
       @delete="handlePreviewDelete"
@@ -53,7 +54,7 @@
   import { omit } from 'lodash-es';
   import { isArray } from '@p-helper/utils/is';
   import { Upload, View } from '@element-plus/icons-vue';
-  import { uploadContainerProps } from './props';
+  import { previewProps, uploadContainerProps } from './props';
   import UploadModal from './UploadModal.vue';
   import UploadPreviewModal from './UploadPreviewModal.vue';
 
@@ -84,13 +85,14 @@
 
       const bindValue = computed(() => {
         const value = { ...attrs, ...props };
-        return omit(value, 'onChange');
+        // 表单不设置 valueField = value,会有modelValue
+        return omit(value, ['onChange', 'modelValue', 'value']);
       });
 
       watch(
         () => props.value,
         (value = []) => {
-          fileList.value = isArray(value) ? value : [];
+          fileList.value = isArray(value) ? value : [value];
         },
         { immediate: true }
       );
@@ -139,6 +141,11 @@
         Upload,
         onOpenUploadModal,
       };
+    },
+    computed: {
+      previewProps() {
+        return previewProps;
+      },
     },
   });
 </script>

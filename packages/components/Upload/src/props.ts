@@ -59,7 +59,7 @@ export const uploadContainerProps = {
     default: '上传',
   },
   value: {
-    type: Array as PropType<string[]>,
+    type: [Array, String] as PropType<string[] | string>,
     default: () => [],
   },
   ...basicProps,
@@ -78,6 +78,10 @@ export const uploadContainerProps = {
 };
 
 export const previewProps = {
+  showActionColumn: {
+    type: Boolean,
+    default: true,
+  },
   value: {
     type: Array as PropType<string[]>,
     default: () => [],
@@ -90,7 +94,7 @@ export const fileListProps = {
     default: null,
   },
   actionColumn: {
-    type: Object as PropType<FileBasicColumn>,
+    type: Object as PropType<FileBasicColumn | null>,
     default: null,
   },
   dataSource: {

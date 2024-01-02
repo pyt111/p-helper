@@ -15,7 +15,7 @@
   </BasicModal>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue';
+  import { computed, defineComponent, ref, watch } from 'vue';
   //   import { BasicTable, useTable } from '/@/components/Table';
   import { BasicModal, useModalInner } from '@p-helper/components/Modal';
   import { downloadByUrl } from '@p-helper/utils/file/download';
@@ -79,15 +79,21 @@
         downloadByUrl({ url });
       }
 
+      const actionColumn = computed(() => {
+        return props.showActionColumn
+          ? createPreviewActionColumn({
+              handleRemove,
+              handleDownload,
+            })
+          : null;
+      });
+
       return {
         register,
         closeModal,
         fileListRef,
         columns: createPreviewColumns(),
-        actionColumn: createPreviewActionColumn({
-          handleRemove,
-          handleDownload,
-        }),
+        actionColumn,
       };
     },
   });
