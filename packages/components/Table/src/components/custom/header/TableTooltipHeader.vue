@@ -12,6 +12,9 @@
         <ElIcon :class="ns.e('icon')"><QuestionFilled /></ElIcon>
       </slot>
     </span>
+    <template v-for="item in Object.keys($slots)" #[item]="data">
+      <slot :name="item" v-bind="data || {}" />
+    </template>
   </el-tooltip>
 </template>
 

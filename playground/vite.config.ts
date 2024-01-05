@@ -50,12 +50,12 @@ export default defineConfig(() => {
           ],
         },
       }),
-      Components({
-        include: `${__dirname}/**`,
-        dirs: ['../packages/components'],
-        // dts: 'src/components.d.ts',
-        dts: false,
-      }),
+      // Components({
+      //   include: `${__dirname}/**`,
+      //   dirs: ['../packages/components'],
+      //   // dts: 'src/components.d.ts',
+      //   dts: false,
+      // }),
     ],
     server: {
       host: true, // 开发时打开 Network

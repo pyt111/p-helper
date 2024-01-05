@@ -19,6 +19,7 @@
     "vite-plugin-svg-icons": "^2.0.1"
   },
   "dependencies": {
+    "@p-helper/components": "workspace:*",
     "@element-plus/icons-vue": "^2.1.0",
     "@vitejs/plugin-legacy": "^4.1.1",
     "axios": "^0.27.2",
