@@ -1,0 +1,16 @@
+{
+  "extends": "@p-helper/ts-config/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": false,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "types": [
+      "vite/client",
+    ]
+  },
+  "include": [
+    "vite.config.ts"
+  ],
+}

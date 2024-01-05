@@ -7,7 +7,7 @@ export {};
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ProvideTest: typeof import('./src/components/provide-test/index.vue')['default'];
+    // ProvideTest: typeof import('./src/components/provide-test/index.vue')['default'];
     RouterLink: typeof import('vue-router')['RouterLink'];
     RouterView: typeof import('vue-router')['RouterView'];
   }

@@ -1,14 +1,14 @@
 <template>
   <div class="test-table-wrapper">
-<!--    <el-button @click="openModal(true)">asd</el-button>-->
-<!--    <el-button @click="onAdd">新增</el-button>-->
-<!--    <el-button @click="onEdit">编辑行</el-button>-->
+    <!--    <el-button @click="openModal(true)">asd</el-button>-->
+    <!--    <el-button @click="onAdd">新增</el-button>-->
+    <!--    <el-button @click="onEdit">编辑行</el-button>-->
     <BasicTable @register="register" @select="onSelect">
       <template #form-formLeft>
         <el-button>ddd</el-button>
       </template>
     </BasicTable>
-
+    <Cs />
     <!--    <BasicModal-->
     <!--      :ok-button-props="{ disabled: true }"-->
     <!--      @register="registerModal"-->
@@ -36,14 +36,16 @@
   import { ElText } from 'element-plus';
   import VueTypes from 'vue-types';
   import { View } from '@element-plus/icons-vue';
-  import type { BasicColumn } from '@p-helper/components';
+  import Cs from './Cs.vue';
 
   // TestTable
+  defineOptions({
+    name: 'TestTable',
+  });
 
   const prop = defineProps({
     t: VueTypes.number,
   });
-  console.log('prop >--->', prop, prop.t);
 
   const uploadApi = async () => {
     return {

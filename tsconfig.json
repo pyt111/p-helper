@@ -1,10 +1,8 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.web.json" },
-    { "path": "./tsconfig.playground.json"},
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.vite-config.json" },
-    { "path": "./tsconfig.vitest.json" }
-  ]
+  "extends": "@p-helper/ts-config/base.json",
+  "include": [
+    "types/**/*.d.ts",
+    "types/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist", "**/*.js"]
 }

@@ -1,4 +1,4 @@
-import type { vShow, defineProps } from 'vue';
+import type { defineProps, vShow } from 'vue';
 import type { INSTALLED_KEY } from '@p-helper/constants';
 // export const INSTALLED_KEY = Symbol('INSTALLED_KEY')
 

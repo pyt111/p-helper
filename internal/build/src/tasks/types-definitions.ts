@@ -16,7 +16,10 @@ import {
 import { pathRewriter } from '../utils';
 import type { CompilerOptions, SourceFile } from 'ts-morph';
 
-const TSCONFIG_PATH = path.resolve(projRoot, 'tsconfig.web.json');
+const TSCONFIG_PATH = path.resolve(
+  projRoot,
+  'internal/ts-config/packages.json'
+);
 const outDir = path.resolve(buildOutput, 'types');
 
 /**
@@ -29,6 +32,7 @@ export const generateTypesDefinitions = async () => {
     noUnusedLocals: false,
     outDir,
     baseUrl: projRoot,
+    rootDir: projRoot,
     preserveSymlinks: true,
     skipLibCheck: true,
     noImplicitAny: false,

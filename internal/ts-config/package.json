@@ -11,8 +11,7 @@
     "base.json",
     "node.json",
     "vue-app.json",
-    "packages.json",
-    "node-server.json"
+    "packages.json"
   ],
   "dependencies": {
     "@types/node": "^20.4.0",

@@ -11,4 +11,3 @@ export const BasicTable = withInstall(basicTable, {
   TableTooltipHeader,
   TableIconCell,
 });
-

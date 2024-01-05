@@ -4,7 +4,22 @@
   "extends": "./base.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": ["ESNext", "DOM"],
-    "noImplicitAny": false
-  }
+    "noImplicitAny": false,
+    "composite": true,
+    "lib": ["ES2018", "DOM", "DOM.Iterable"],
+    "types": ["unplugin-vue-define-options/macros-global"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "../../packages"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/dist",
+    "**/__tests__/**/*",
+    "**/gulpfile.ts",
+    "**/test-helper",
+    "packages/test-utils",
+    "**/*.md"
+  ]
 }

@@ -44,7 +44,8 @@
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.3",
     "vue": "^3.3.4",
-    "vue-types": "^5.1.0"
+    "vue-types": "^5.1.0",
+    "@p-helper/vite-config": "workspace:*"
   },
   "web-types": "web-types.json",
   "browserslist": [
