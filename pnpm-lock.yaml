@@ -121,8 +121,8 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3
       element-plus:
-        specifier: ^2.3.9
-        version: 2.4.3(vue@3.3.9)
+        specifier: ^2.5.6
+        version: 2.5.6(vue@3.3.9)
       eslint:
         specifier: ^8.47.0
         version: 8.54.0
@@ -602,7 +602,7 @@ packages:
     dependencies:
       '@antv/x6': 2.16.1
       vue: 3.3.9(typescript@5.3.2)
-      vue-demi: 0.14.6(vue@3.3.9)
+      vue-demi: 0.14.7(vue@3.3.9)
     dev: false
 
   /@antv/x6@2.16.1:
@@ -4262,7 +4262,7 @@ packages:
       '@babel/core': 7.23.3
       '@babel/plugin-transform-typescript': 7.23.4(@babel/core@7.23.3)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.23.3)
-      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)
+      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)(terser@5.24.0)
       vue: 3.3.9(typescript@5.3.2)
     transitivePeerDependencies:
       - supports-color
@@ -4285,7 +4285,7 @@ packages:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)
+      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)(terser@5.24.0)
       vue: 3.3.9(typescript@5.3.2)
 
   /@volar/language-core@1.10.10:
@@ -4494,7 +4494,7 @@ packages:
         optional: true
     dependencies:
       sirv: 2.0.3
-      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)
+      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)(terser@5.24.0)
       vue: 3.3.9(typescript@5.3.2)
     transitivePeerDependencies:
       - typescript
@@ -6671,6 +6671,32 @@ packages:
       vue: 3.3.9(typescript@5.3.2)
     transitivePeerDependencies:
       - '@vue/composition-api'
+    dev: false
+
+  /element-plus@2.5.6(vue@3.3.9):
+    resolution: {integrity: sha512-zctKTiyIDmcnMp3K5WG1hglgraW9EbiCLiIDVtaMCS5mPMl2fRKdS0vOFGnECIq9taFoxnyoDwxHD81nv0B4RA==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@ctrl/tinycolor': 3.6.1
+      '@element-plus/icons-vue': 2.3.1(vue@3.3.9)
+      '@floating-ui/dom': 1.5.3
+      '@popperjs/core': /@sxzz/popperjs-es@2.11.7
+      '@types/lodash': 4.14.202
+      '@types/lodash-es': 4.17.12
+      '@vueuse/core': 9.13.0(vue@3.3.9)
+      async-validator: 4.2.5
+      dayjs: 1.11.10
+      escape-html: 1.0.3
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      lodash-unified: 1.0.3(@types/lodash-es@4.17.12)(lodash-es@4.17.21)(lodash@4.17.21)
+      memoize-one: 6.0.0
+      normalize-wheel-es: 1.2.0
+      vue: 3.3.9(typescript@5.3.2)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+    dev: true
 
   /emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -12613,7 +12639,7 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.6
       unplugin: 1.5.1
-      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)
+      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)(terser@5.24.0)
     dev: false
 
   /unplugin-icons@0.14.15:
@@ -12940,7 +12966,7 @@ packages:
       debug: 4.3.4
       kolorist: 1.8.0
       typescript: 5.3.2
-      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)
+      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)(terser@5.24.0)
       vue-tsc: 1.8.22(typescript@5.3.2)
     transitivePeerDependencies:
       - '@types/node'
@@ -13000,42 +13026,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
-
-  /vite@4.5.0(@types/node@20.10.0)(sass@1.69.5):
-    resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 20.10.0
-      esbuild: 0.18.20
-      postcss: 8.4.31
-      rollup: 3.29.4
-      sass: 1.69.5
-    optionalDependencies:
-      fsevents: 2.3.3
 
   /vite@4.5.0(@types/node@20.10.0)(sass@1.69.5)(terser@5.24.0):
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
@@ -13125,6 +13115,21 @@ packages:
         optional: true
     dependencies:
       vue: 3.3.9(typescript@5.3.2)
+
+  /vue-demi@0.14.7(vue@3.3.9):
+    resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.3.9(typescript@5.3.2)
+    dev: false
 
   /vue-eslint-parser@9.3.2(eslint@8.54.0):
     resolution: {integrity: sha512-q7tWyCVaV9f8iQyIA5Mkj/S6AoJ9KBN8IeUSf3XEmBrOtxOZnfTg5s4KClbZBCK3GtnT/+RyCLZyDHuZwTuBjg==}
