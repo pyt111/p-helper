@@ -49,7 +49,8 @@ export default {
       align: 'center',
     } as BasicColumn,
 
-    defaultProps: {} as TableProps,
+    defaultProps: {
+    } as Partial<Omit<TableProps, 'columns'>>,
   },
   vxeTable: {
     table: {
