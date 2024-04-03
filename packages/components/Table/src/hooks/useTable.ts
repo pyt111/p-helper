@@ -23,16 +23,16 @@ export type UseTableMethod = TableActionType & {
 export function useTable(
   tableProps?: TableProps
 ): [
-  (instance: TableActionType, formInstance: FormActionType) => void,
+  (instance: TableActionType, formInstance: UseTableMethod) => void,
   UseTableMethod
 ] {
   const tableRef = ref<Nullable<TableActionType>>(null);
-  const formRef = ref<Nullable<FormActionType>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
+  const formRef = ref<Nullable<UseTableMethod>>(null);
 
   let stopWatch: WatchStopHandle;
 
-  function register(instance: TableActionType, formInstance: FormActionType) {
+  function register(instance: TableActionType, formInstance: UseTableMethod) {
     isProdMode() &&
       onUnmounted(() => {
         tableRef.value = null;
@@ -41,16 +41,10 @@ export function useTable(
 
     if (unref(loadedRef) && isProdMode() && instance === unref(tableRef))
       return;
+
     tableRef.value = instance;
     formRef.value = formInstance;
-    tableProps &&
-      instance.setProps(
-        // @ts-ignore
-        deepMerge(
-          { ...componentSetting.table.defaultProps },
-          getDynamicProps(tableProps)
-        )
-      );
+    tableProps && instance.setProps(getDynamicProps(tableProps));
     loadedRef.value = true;
 
     stopWatch?.();
@@ -58,14 +52,7 @@ export function useTable(
     stopWatch = watch(
       () => tableProps,
       () => {
-        tableProps &&
-          instance.setProps(
-            // @ts-ignore
-            deepMerge(
-              { ...componentSetting.table.defaultProps },
-              getDynamicProps(tableProps)
-            )
-          );
+        tableProps && instance.setProps(getDynamicProps(tableProps));
       },
       {
         immediate: true,
@@ -151,7 +138,7 @@ export function useTable(
       return toRaw(getTableInstance().getShowPagination());
     },
     getForm: () => {
-      return unref(formRef) as FormActionType;
+      return unref(formRef) as unknown as FormActionType;
     },
     // 不想在外部监听Selection事件的，直接通过这个方法取
     getSelectionData: <T = Recordable>(): T[] => {
