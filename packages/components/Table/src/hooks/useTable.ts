@@ -1,5 +1,4 @@
-import { onUnmounted, ref, toRaw, unref } from 'vue';
-import { debouncedWatch } from '@vueuse/core';
+import { onUnmounted, ref, toRaw, unref, watch } from 'vue';
 import { deepMerge, getDynamicProps } from '@p-helper/utils';
 import { error } from '@p-helper/utils/log';
 import { isProdMode } from '@p-helper/utils/env';
@@ -55,7 +54,7 @@ export function useTable(
 
     stopWatch?.();
 
-    stopWatch = debouncedWatch(
+    stopWatch = watch(
       () => tableProps,
       () => {
         tableProps &&
@@ -69,7 +68,6 @@ export function useTable(
       {
         immediate: true,
         deep: true,
-        debounce: 100,
       }
     );
   }
