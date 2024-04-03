@@ -41,7 +41,7 @@
     "mathjs": "^11.9.1",
     "type-fest": "^4.2.0",
     "unplugin-vue-macros": "^2.4.6",
-    "vue": "^3.3.4",
+    "vue": "^3.4.21",
     "vue-types": "^5.1.1"
   },
   "devDependencies": {

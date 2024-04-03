@@ -18,7 +18,6 @@
 
   .table-card {
     flex: 1;
-    height: 0;
     display: flex;
     flex-direction: column;
     border: none;
@@ -34,7 +33,7 @@
     }
 
     .el-card__body {
-      padding-top: 0;
+      padding: 0;
       max-height: 100%;
     }
 
