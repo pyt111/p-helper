@@ -50,7 +50,7 @@ export default {
     } as BasicColumn,
 
     defaultProps: {
-    } as Partial<Omit<TableProps, 'columns'>>,
+    } as TableProps,
   },
   vxeTable: {
     table: {

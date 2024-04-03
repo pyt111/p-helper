@@ -45,6 +45,7 @@ export function useTable(
     formRef.value = formInstance;
     tableProps &&
       instance.setProps(
+        // @ts-ignore
         deepMerge(
           { ...componentSetting.table.defaultProps },
           getDynamicProps(tableProps)
@@ -59,6 +60,7 @@ export function useTable(
       () => {
         tableProps &&
           instance.setProps(
+            // @ts-ignore
             deepMerge(
               { ...componentSetting.table.defaultProps },
               getDynamicProps(tableProps)
