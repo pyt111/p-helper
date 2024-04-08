@@ -54,15 +54,15 @@ export function useDataSource(
 
   watchEffect(() => {
     tableData.value = unref(dataSourceRef);
-    // dataSourceRef.value.forEach((item) => {
-    //   const targetKeyName = getTargetKeyName(item);
-    //   if (item[targetKeyName]) {
-    //     recordCache[item[targetKeyName]] = Object.assign(
-    //       { ...item },
-    //       recordCache[item[targetKeyName]] || {}
-    //     );
-    //   }
-    // });
+    dataSourceRef.value.forEach((item) => {
+      const targetKeyName = getTargetKeyName(item);
+      if (item[targetKeyName]) {
+        recordCache[item[targetKeyName]] = Object.assign(
+          { ...item },
+          recordCache[item[targetKeyName]] || {}
+        );
+      }
+    });
   });
 
   watch(
