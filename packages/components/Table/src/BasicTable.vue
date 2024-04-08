@@ -201,12 +201,15 @@
           height: unref(getProps).height,
           data: dataSource,
         };
+        const bottomHeight = propsData.noPage ? 0 : 52;
+        const maxHeight = `calc(100% - ${bottomHeight}px)`;
         // 是否撑满
         if (getProps.value.fullHeight) {
-          const bottomHeight = getBindValues.value?.noPage ? 0 : 52;
-          propsData.height = bottomHeight
-            ? `calc(100% - ${bottomHeight + 10}px)`
-            : '100%';
+          propsData.style.height = maxHeight;
+          propsData.height = '100%';
+        } else if (getProps.value.autoMaxFullHeight) {
+          propsData.maxHeight = maxHeight;
+          propsData.height = '100%';
         }
 
         return propsData;
