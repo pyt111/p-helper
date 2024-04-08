@@ -38,6 +38,7 @@
         <template v-for="col in getViewColumns" :key="col.prop">
           <BasicColumnComponent
             :column="col"
+            :record-cache="recordCache"
             :get-row-key-name="getRowKeyName"
           />
         </template>
@@ -160,6 +161,7 @@
         reload,
         updateTableData,
         getRowDataByRowIndex,
+        recordCache,
         getCellRecord,
       } = useDataSource(
         getProps,
@@ -178,6 +180,7 @@
         getRowDataByRowIndex,
         findTableDataRecord,
         getPaginationInfo,
+        recordCache,
       });
 
       const paginationAlign = computed(
@@ -198,15 +201,12 @@
           height: unref(getProps).height,
           data: dataSource,
         };
-        const bottomHeight = getBindValues.value?.noPage ? 0 : 52;
-        const maxHeight = `calc(100% - ${bottomHeight}px)`;
         // 是否撑满
         if (getProps.value.fullHeight) {
-          propsData.style.height = maxHeight;
-          propsData.height = '100%';
-        } else if (getProps.value.autoMaxFullHeight) {
-          propsData.maxHeight = maxHeight;
-          propsData.height = '100%';
+          const bottomHeight = getBindValues.value?.noPage ? 0 : 52;
+          propsData.height = bottomHeight
+            ? `calc(100% - ${bottomHeight + 10}px)`
+            : '100%';
         }
 
         return propsData;
@@ -312,6 +312,7 @@
         getRowKey,
         getRowKeyName,
         elTablePropsKeys,
+        recordCache,
 
         setSelectRows,
         onSelect,
