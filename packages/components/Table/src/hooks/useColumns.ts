@@ -41,7 +41,7 @@ export type useColumnsOptions = {
   >['getRowDataByRowIndex'];
   findTableDataRecord: ReturnType<typeof useDataSource>['findTableDataRecord'];
   getPaginationInfo: ReturnType<typeof usePagination>['getPaginationInfo'];
-  recordCache: Recordable;
+  recordCache?: Recordable;
 };
 
 // 这里为了生成默认的操作列，并做一些处理
@@ -84,7 +84,7 @@ export function useColumns(
     getRowDataByRowIndex,
     getPaginationInfo,
     getDataSource,
-    recordCache,
+    recordCache = {},
   }: useColumnsOptions
 ) {
   const columnsRef = ref(unref(propsRef).columns) as unknown as Ref<
@@ -256,7 +256,7 @@ export function useColumns(
         fixed: 'right',
         // customRender: renderEditCell(actionColumn),
         customRender: ({ row, index, record: rec, elColumn }) => {
-          const record = recordCache[row[getRowKeyName()]];
+          const record = recordCache[row[getRowKeyName()]] || {};
           return genActionsColumn({ row, index, record, elColumn });
         },
         ...actionColumn,

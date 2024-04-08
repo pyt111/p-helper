@@ -127,6 +127,7 @@ BasicColumnComponent.props = {
   },
   recordCache: {
     type: Object as PropType<Recordable & EditRecordRow>,
+    default: () => ({}),
   },
   getRowKeyName: {
     type: Function,

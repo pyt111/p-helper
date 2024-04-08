@@ -38,7 +38,6 @@
         <template v-for="col in getViewColumns" :key="col.prop">
           <BasicColumnComponent
             :column="col"
-            :record-cache="recordCache"
             :get-row-key-name="getRowKeyName"
           />
         </template>
@@ -161,7 +160,6 @@
         reload,
         updateTableData,
         getRowDataByRowIndex,
-        recordCache,
         getCellRecord,
       } = useDataSource(
         getProps,
@@ -180,7 +178,6 @@
         getRowDataByRowIndex,
         findTableDataRecord,
         getPaginationInfo,
-        recordCache,
       });
 
       const paginationAlign = computed(
@@ -315,7 +312,6 @@
         getRowKey,
         getRowKeyName,
         elTablePropsKeys,
-        recordCache,
 
         setSelectRows,
         onSelect,
