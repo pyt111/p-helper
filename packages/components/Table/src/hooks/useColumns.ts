@@ -1,4 +1,13 @@
-import { computed, h, ref, shallowRef, toRaw, unref, watch } from 'vue';
+import {
+  computed,
+  h,
+  reactive,
+  ref,
+  shallowRef,
+  toRaw,
+  unref,
+  watch,
+} from 'vue';
 import { isBoolean, isFunction } from '@p-helper/utils/is';
 import { cloneDeep } from 'lodash-es';
 import componentSetting from '@p-helper/constants/settings/componentSetting';
@@ -25,7 +34,7 @@ import type { ComputedRef, Ref } from 'vue';
 export type EditRowKey = string | number | (string | number)[];
 
 export type useColumnsOptions = {
-  getRowKey: Ref<string>;
+  getRowKeyName: Function;
   getDataSource: ReturnType<typeof useDataSource>['getDataSource'];
   getRowDataByRowIndex: ReturnType<
     typeof useDataSource
@@ -71,7 +80,7 @@ const handelIndexColumn = (
 export function useColumns(
   propsRef: ComputedRef<BasicTableProps>,
   {
-    getRowKey,
+    getRowKeyName,
     getRowDataByRowIndex,
     getPaginationInfo,
     getDataSource,
@@ -85,12 +94,11 @@ export function useColumns(
   const getColumnsRef = computed(() => {
     const columns = cloneDeep(unref(columnsRef));
 
+    handelIndexColumn(propsRef, getPaginationInfo, columns);
+    handleActionColumn(propsRef, columns);
     if (!columns) {
       return [];
     }
-
-    handelIndexColumn(propsRef, getPaginationInfo, columns);
-    handleActionColumn(propsRef, columns);
     return columns;
   });
   // 缓存当前行编辑状态，便于外部获取
@@ -248,7 +256,7 @@ export function useColumns(
         fixed: 'right',
         // customRender: renderEditCell(actionColumn),
         customRender: ({ row, index, record: rec, elColumn }) => {
-          const record = recordCache[row[unref(getRowKey)]];
+          const record = recordCache[row[getRowKeyName()]];
           return genActionsColumn({ row, index, record, elColumn });
         },
         ...actionColumn,
@@ -311,38 +319,39 @@ export function useColumns(
     return isIfShow;
   }
 
-  // 处理column
-  const doCreateColumn = (column: BasicColumn) => {
-    // 创建一个栈，用于存放当前列
-    const stack = [column];
-
-    // 当栈长度为0时，表示当前列已经遍历完毕
-    while (stack.length > 0) {
-      // 获取当前列
-      const currentColumn = stack.pop()!;
-
-      // 获取当前列的编辑、编辑行、标志、子列、对齐方式
-      const { edit, editRow, flag, children, align } = currentColumn;
-      // 判断当前列是否为默认操作
-      const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(
-        flag!
-      );
-
-      // 如果子列存在，则遍历子列
-      if (children && children.length) {
-        for (const childColumn of children) {
-          // 将子列添加到栈中
-          stack.push(childColumn);
-        }
-      }
-
-      // 如果当前列的编辑或编辑行存在，且不是默认操作，则渲染编辑单元格
-      if ((edit || editRow) && !isDefaultAction) {
-        // 渲染编辑单元格
-        currentColumn.customRender = renderEditCell(currentColumn);
-      }
-    }
-  };
+  // // 处理column
+  // const doCreateColumn = (column: BasicColumn) => {
+  //   // 创建一个栈，用于存放当前列
+  //   const stack = [column];
+  //
+  //   // 当栈长度为0时，表示当前列已经遍历完毕
+  //   while (stack.length > 0) {
+  //     // 获取当前列
+  //     const currentColumn = stack.pop()!;
+  //     console.log('currentColumn >--->', currentColumn);
+  //
+  //     // 获取当前列的编辑、编辑行、标志、子列、对齐方式
+  //     const { edit, editRow, flag, children, align } = currentColumn;
+  //     // 判断当前列是否为默认操作
+  //     const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(
+  //       flag!
+  //     );
+  //
+  //     // 如果子列存在，则遍历子列
+  //     if (children && children.length) {
+  //       for (const childColumn of children) {
+  //         // 将子列添加到栈中
+  //         stack.push(childColumn);
+  //       }
+  //     }
+  //
+  //     // 如果当前列的编辑或编辑行存在，且不是默认操作，则渲染编辑单元格
+  //     if ((edit || editRow) && !isDefaultAction) {
+  //       // 渲染编辑单元格
+  //       currentColumn.customRender = renderEditCell(currentColumn);
+  //     }
+  //   }
+  // };
 
   // const recordMap = new WeakMap();
 
@@ -350,6 +359,26 @@ export function useColumns(
     // console.log('getViewColumns >--->', getViewColumns.value);
     // 获取视图列
     const viewColumns = unref(getColumnsRef);
+
+    const mapFn = (column) => {
+      const { slots, edit, editRow, flag, record } = column;
+      if (!record) {
+        column.record = {};
+      }
+
+      if (!slots || !slots?.title) {
+        column.customTitle = column.title;
+      }
+      const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(
+        flag!
+      );
+
+      // edit table
+      if ((edit || editRow) && !isDefaultAction) {
+        column.customRender = renderEditCell(column);
+      }
+      return reactive(column);
+    };
 
     // 克隆视图列
     const columns = cloneDeep(viewColumns);
@@ -361,8 +390,10 @@ export function useColumns(
       })
       .map((column) => {
         // 创建列
-        doCreateColumn(column);
-        return column;
+        if (column.children?.length) {
+          column.children = column.children.map(mapFn);
+        }
+        return mapFn(column);
       });
   });
 

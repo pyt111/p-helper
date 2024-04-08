@@ -39,7 +39,7 @@
           <BasicColumnComponent
             :column="col"
             :record-cache="recordCache"
-            :get-row-key="getRowKey"
+            :get-row-key-name="getRowKeyName"
           />
         </template>
 
@@ -157,6 +157,7 @@
         findTableDataRecord,
         fetch,
         getRowKey,
+        getRowKeyName,
         reload,
         updateTableData,
         getRowDataByRowIndex,
@@ -174,7 +175,7 @@
         emit
       );
       const { getViewColumns, getColumns } = useColumns(getProps, {
-        getRowKey: getRowKey as any,
+        getRowKeyName,
         getDataSource,
         getRowDataByRowIndex,
         findTableDataRecord,
@@ -198,7 +199,6 @@
           style: {},
           ...attrs,
           height: unref(getProps).height,
-          currentRowKey: unref(getRowKey),
           data: dataSource,
         };
         const bottomHeight = getBindValues.value?.noPage ? 0 : 52;
@@ -313,6 +313,7 @@
         pick,
         getProps,
         getRowKey,
+        getRowKeyName,
         elTablePropsKeys,
         recordCache,
 

@@ -440,6 +440,10 @@ export function useDataSource(
     return recordCache[targetKeyName];
   }
 
+  function getRowKeyName() {
+    return getRowKey.value;
+  }
+
   onMounted(() => {
     useTimeoutFn(() => {
       unref(propsRef).immediate && fetch();
@@ -464,5 +468,6 @@ export function useDataSource(
     handleTableChange,
     recordCache,
     getCellRecord,
+    getRowKeyName,
   };
 }

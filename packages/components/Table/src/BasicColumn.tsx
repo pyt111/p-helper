@@ -7,7 +7,7 @@ import type { PropType } from 'vue';
 
 type FComponentProps = {
   recordCache: Object;
-  getRowKey: string | ((record: Recordable) => string);
+  getRowKeyName: () => string;
 };
 
 type BasicFComponentProps = {
@@ -63,9 +63,7 @@ const BasicColumnComponent = (
         });
       };
     }
-    const rowKey = isFunction(props.getRowKey)
-      ? props.getRowKey(row)
-      : props.getRowKey;
+    const rowKey = props.getRowKeyName();
     // console.log('elColumn+++++ >--->', elColumn, props.column.prop);
     const record = props.recordCache[row[rowKey]] || {};
     return props.column.customRender!({
@@ -86,7 +84,7 @@ const BasicColumnComponent = (
             return props.column.children?.map((item) => {
               return BasicColumnComponent({
                 column: item,
-                getRowKey: props.getRowKey,
+                getRowKeyName: props.getRowKeyName,
                 recordCache: props.recordCache,
               });
             });
@@ -130,8 +128,8 @@ BasicColumnComponent.props = {
   recordCache: {
     type: Object as PropType<Recordable & EditRecordRow>,
   },
-  getRowKey: {
-    type: [String, Function],
+  getRowKeyName: {
+    type: Function,
   },
 };
 

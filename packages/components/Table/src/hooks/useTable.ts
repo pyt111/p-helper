@@ -44,7 +44,14 @@ export function useTable(
 
     tableRef.value = instance;
     formRef.value = formInstance;
-    tableProps && instance.setProps(getDynamicProps(tableProps));
+    tableProps &&
+      instance.setProps(
+        // @ts-ignore
+        deepMerge(
+          { ...componentSetting.table.defaultProps },
+          getDynamicProps(tableProps)
+        )
+      );
     loadedRef.value = true;
 
     stopWatch?.();
@@ -52,7 +59,14 @@ export function useTable(
     stopWatch = watch(
       () => tableProps,
       () => {
-        tableProps && instance.setProps(getDynamicProps(tableProps));
+        tableProps &&
+          instance.setProps(
+            // @ts-ignore
+            deepMerge(
+              { ...componentSetting.table.defaultProps },
+              getDynamicProps(tableProps)
+            )
+          );
       },
       {
         immediate: true,
