@@ -4,6 +4,7 @@
     <!--    <el-button @click="onAdd">新增</el-button>-->
     <!--    <el-button @click="onEdit">编辑行</el-button>-->
     <BasicTable @register="register" @select="onSelect">
+      <template #card-header> 1asdasd </template>
       <template #form-formLeft>
         <el-button>ddd</el-button>
       </template>
@@ -14,9 +15,10 @@
       @register="registerModal"
       @ok="onOk"
     >
+      <template #header> 2222 </template>
       <BasicForm @register="registerForm" />
     </BasicModal>
-    <BasicUpload :api="uploadApi" />
+    <!--    <BasicUpload :api="uploadApi" />-->
   </div>
 </template>
 
@@ -67,7 +69,7 @@
     },
   ] = useTable({
     // fullHeight: true,
-    // autoMaxFullHeight: true,
+    autoMaxFullHeight: true,
     // offlinePaging: true,
     beforeFetch: (params) => {
       params.catalogDataId = 1;
@@ -224,7 +226,7 @@
           {
             prop: 'ds1',
             label: 'ds1',
-            // editRow: true,
+            editRow: true,
             align: 'right',
           },
           {
@@ -516,6 +518,7 @@
         // },
         onClick: (obj) => {
           const { index, row, record } = obj;
+          console.log('record >--->', record);
           // console.log('row.id >--->', row.id, row);
           deleteTableDataRecord(row.key);
           // record.onEditRow(record.getIsRowEditCacheRowKeys());
@@ -723,8 +726,8 @@
     const d = insertTableDataRecord({}, 0);
     // const data = getDataSource();
     nextTick(() => {
-      const record = getCellRecord(d[0].key);
-      record.onEdit(true);
+      // const record = getCellRecord(d[0].key);
+      // record.onEdit(true);
     });
     // const d = insertTableDataRecord({}, 0);
     // const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
