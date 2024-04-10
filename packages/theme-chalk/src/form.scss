@@ -16,6 +16,23 @@
       flex-wrap: nowrap;
     }
   }
+  .el-form-item {
+    &.suffix-item {
+      .el-form-item__content {
+        display: flex;
+        & > :nth-child(1) {
+          flex: 1;
+        }
+      }
+      .suffix {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 1px;
+        padding-left: 6px;
+        line-height: 1;
+      }
+    }
+  }
 }
 
 .el-dialog {

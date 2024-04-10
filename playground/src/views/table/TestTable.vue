@@ -574,6 +574,7 @@
           label: 'ssss',
           component: 'Input',
           componentProps: {},
+          suffix: '112233',
         },
         {
           field: 'asd',
@@ -609,6 +610,7 @@
 
   const [registerModal, { openModal, closeModal }] = useModal();
   const [registerForm, { submit, getFieldsValue }] = useForm({
+    // isCol: false,
     // rules: {
     //   asd: [{ message: '请输入11', required: true, trigger: 'blur' }],
     //   // bb: [
@@ -672,6 +674,7 @@
             ],
           };
         },
+        suffix: '333',
       },
       {
         field: 'bb',
@@ -680,6 +683,7 @@
         itemProps: {
           // rules: [{ required: true, message: '请输入' }],
         },
+        suffix: '1111',
         rules: [
           { required: true, message: '不允许为空', trigger: 'blur' },
           {
@@ -696,6 +700,7 @@
         componentProps: {
           placeholder: '请输入任务名称',
         },
+        suffix: '2222',
         rules: [{ required: true, message: '不允许为空' }],
       },
       // 任务code, 数据源类型,kafka数据源地址,kafka的topic,数据源【下拉框】,数据库【下拉框】
@@ -706,6 +711,12 @@
         componentProps: {
           placeholder: '请输入英文名，允许中文数字字母或下划线',
         },
+        renderComponentContent: () => {
+          return {
+            suffix: () => 'asd',
+          };
+        },
+        suffix: 'tttt',
         required: true,
         rules: [
           { required: true, message: '不允许为空' },

@@ -47,6 +47,11 @@ export interface RenderCallbackParams {
   field: string;
 }
 
+export type RenderOpts = {
+  disabled: boolean;
+  [key: string]: any;
+};
+
 export interface ButtonProps extends AntdButtonProps {
   label: string;
   link?: boolean;
@@ -481,12 +486,14 @@ export interface BaseFormSchema {
 
   // Render the content in the form-item tag
   render?: (
-    renderCallbackParams: RenderCallbackParams
+    renderCallbackParams: RenderCallbackParams,
+    opts: RenderOpts
   ) => VNode | VNode[] | string;
 
   // Rendering col content requires outer wrapper form-item
   renderColContent?: (
-    renderCallbackParams: RenderCallbackParams
+    renderCallbackParams: RenderCallbackParams,
+    opts: RenderOpts
   ) => VNode | VNode[] | string;
 
   renderComponentContent?:

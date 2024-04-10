@@ -357,6 +357,7 @@
           props.schema;
         // const { labelCol, wrapperCol } = unref(itemLabelWidthProp);
         // const { colon } = props.formProps;
+        const opts = { disabled: unref(getDisable) };
 
         if (component === 'Divider') {
           return (
@@ -367,9 +368,9 @@
         } else {
           const getContent = () => {
             return slot
-              ? getSlot(slots, slot, unref(getValues))
+              ? getSlot(slots, slot, unref(getValues), opts)
               : render
-              ? render(unref(getValues))
+              ? render(unref(getValues), opts)
               : renderComponent();
           };
 
@@ -416,12 +417,13 @@
         const realColProps = { ...baseColProps, ...colProps };
         const { isIfShow, isShow } = getShow();
         const values = unref(getValues);
+        const opts = { disabled: unref(getDisable) };
 
         const getContent = () => {
           return colSlot
-            ? getSlot(slots, colSlot, values)
+            ? getSlot(slots, colSlot, values, opts)
             : renderColContent
-            ? renderColContent(values)
+            ? renderColContent(values, opts)
             : renderItem();
         };
 
