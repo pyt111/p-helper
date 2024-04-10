@@ -1,5 +1,8 @@
 <template>
   <div class="test-table-wrapper">
+    <BasicForm :disabled="activeStep !== 1" @register="registerForm" />
+    <el-button @click="activeStep += 1">activeStep + </el-button>
+    <el-button @click="activeStep -= 1">activeStep - </el-button>
     <el-button @click="openModal(true)">asd</el-button>
     <!--    <el-button @click="onAdd">新增</el-button>-->
     <!--    <el-button @click="onEdit">编辑行</el-button>-->
@@ -16,7 +19,6 @@
       @ok="onOk"
     >
       <template #header> 2222 </template>
-      <BasicForm @register="registerForm" />
     </BasicModal>
     <!--    <BasicUpload :api="uploadApi" />-->
   </div>
@@ -55,6 +57,7 @@
       msg: 'sss',
     };
   };
+  const activeStep = ref(1);
   const [
     register,
     {

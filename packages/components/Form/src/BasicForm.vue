@@ -244,7 +244,6 @@
         },
         {
           immediate: true,
-          deep: true,
         }
       );
 
