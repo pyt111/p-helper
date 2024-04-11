@@ -134,11 +134,22 @@ export type ColumnTypes = {
   >;
   editValueMap?: (value: any) => string; // 对应单元格值枚举
   editRule?: boolean | ((text: string, record: Recordable) => Promise<string>);
-  editComponentProps?: Record<string, any> & {
-    options?: LabelValueOptions;
-    onChange?: (config: CurrencyParams, ...value: any) => void;
-    beforeEditSubmit?: BasePropsType['beforeEditSubmit'];
-  }; // 对应编辑组件的 props
+  editComponentProps?:
+    | (Record<string, any> & {
+        options?: LabelValueOptions;
+        onChange?: (config: CurrencyParams, ...value: any) => void;
+        beforeEditSubmit?: BasePropsType['beforeEditSubmit'];
+      })
+    | ((opt: {
+        value: string | number | boolean | Recordable;
+        record: Recordable;
+        column: BasicColumn;
+        index: number;
+      }) => Record<string, any> & {
+        options?: LabelValueOptions;
+        onChange?: (config: CurrencyParams, ...value: any) => void;
+        beforeEditSubmit?: BasePropsType['beforeEditSubmit'];
+      }); // 对应编辑组件的 props
   record?: EditRecordRow;
   editComponent?: ComponentType; // 编辑组件
   editFilterShow?: boolean | ((obj: CurrencyParams) => boolean); // 过滤当前列 哪些不编辑 返回true是编辑 false不可编辑

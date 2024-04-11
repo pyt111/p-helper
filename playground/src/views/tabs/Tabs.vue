@@ -1,25 +1,73 @@
 <template>
   <div class="test-table-wrapper">
+    <el-tabs
+      v-model="activeName"
+      type="border-card"
+      class="wrapper-card"
+      @tab-click="handleClick"
+    >
+      <el-tab-pane label="告警配置" name="config">
+        <el-tabs v-model="activeName2" class="config-tab-wrapper">
+          <el-tab-pane label="API" name="api">
+            <BasicTable @register="register" @select="onSelect">
+              <!--      <template #card-header> 1asdasd </template>-->
+              <template #form-formLeft>
+                <el-button>ddd</el-button>
+              </template>
+            </BasicTable>
+          </el-tab-pane>
+          <el-tab-pane label="CMD" name="cmd" lazy>
+            <BasicTable @register="register1" @select="onSelect">
+              <!--      <template #card-header> 1asdasd </template>-->
+              <template #form-formLeft>
+                <el-button>ddd</el-button>
+              </template>
+            </BasicTable>
+          </el-tab-pane>
+          <el-tab-pane label="作业" name="task" lazy>
+            <BasicTable @register="register2" @select="onSelect">
+              <!--      <template #card-header> 1asdasd </template>-->
+              <template #form-formLeft>
+                <el-button>ddd</el-button>
+              </template>
+            </BasicTable>
+          </el-tab-pane>
+        </el-tabs>
+      </el-tab-pane>
+      <el-tab-pane label="告警列表" name="list">
+        <el-tabs v-model="activeName2" class="config-tab-wrapper">
+          <el-tab-pane label="API" name="api">
+            <BasicTable @register="register3" @select="onSelect">
+              <!--      <template #card-header> 1asdasd </template>-->
+              <template #form-formLeft>
+                <el-button>ddd</el-button>
+              </template>
+            </BasicTable>
+          </el-tab-pane>
+          <el-tab-pane label="CMD" name="cmd" lazy>
+            <BasicTable @register="register4" @select="onSelect">
+              <!--      <template #card-header> 1asdasd </template>-->
+              <template #form-formLeft>
+                <el-button>ddd</el-button>
+              </template>
+            </BasicTable>
+          </el-tab-pane>
+          <el-tab-pane label="作业" name="task" lazy>
+            <BasicTable @register="register5" @select="onSelect">
+              <!--      <template #card-header> 1asdasd </template>-->
+              <template #form-formLeft>
+                <el-button>ddd</el-button>
+              </template>
+            </BasicTable>
+          </el-tab-pane>
+        </el-tabs>
+      </el-tab-pane>
+    </el-tabs>
     <el-button @click="activeStep += 1">activeStep + </el-button>
     <el-button @click="activeStep -= 1">activeStep - </el-button>
     <el-button @click="openModal(true)">asd</el-button>
     <!--    <el-button @click="onAdd">新增</el-button>-->
     <!--    <el-button @click="onEdit">编辑行</el-button>-->
-    <BasicTable @register="register" @select="onSelect">
-      <!--      <template #card-header> 1asdasd </template>-->
-      <template #form-formLeft>
-        <el-button>ddd</el-button>
-      </template>
-    </BasicTable>
-
-    <BasicModal
-      :ok-button-props="{ disabled: true }"
-      @register="registerModal"
-      @ok="onOk"
-    >
-      <template #header> 2222 </template>
-      <BasicForm :disabled="activeStep !== 1" @register="registerForm" />
-    </BasicModal>
     <!--    <BasicUpload :api="uploadApi" />-->
   </div>
 </template>
@@ -58,19 +106,9 @@
     };
   };
   const activeStep = ref(1);
-  const [
-    register,
-    {
-      deleteTableDataRecord,
-      getColumns,
-      insertTableDataRecord,
-      getCellRecord,
-      getDataSource,
-      setTableData,
-      setProps,
-      getSelectionData,
-    },
-  ] = useTable({
+  const activeName = ref();
+  const activeName2 = ref();
+  const config = {
     // fullHeight: true,
     autoMaxFullHeight: true,
     // offlinePaging: true,
@@ -90,7 +128,6 @@
             ds1: 555,
             ds2: 666,
             badgeValue: 2,
-            alarmEnable: 0,
           },
           {
             id: 15,
@@ -100,7 +137,6 @@
             ds1: 777,
             ds2: 888,
             badgeValue: 10,
-            alarmEnable: 1,
           },
           {
             id: 1002,
@@ -109,106 +145,105 @@
             a: '555',
             ds1: '',
             badgeValue: 6,
-            alarmEnable: 1,
           },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
-          // {
-          //   id: 1002,
-          //   d: 52,
-          //   c: 62,
-          //   a: '555',
-          //   badgeValue: 6,
-          // },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
+          {
+            id: 1002,
+            d: 52,
+            c: 62,
+            a: '555',
+            badgeValue: 6,
+          },
         ],
       };
     },
@@ -342,35 +377,6 @@
         // edit: true,
       },
       {
-        label: '多选',
-        prop: 'updateTime',
-        editRow: true,
-        editComponent: 'Checkbox',
-        editComponentProps: {
-          trueValue: '1',
-          falseValue: '0',
-        },
-      },
-      {
-        label: '启用',
-        prop: 'alarmEnable',
-        edit: true,
-        editIsUpdateOnChange: true,
-        alwaysBright: true,
-        editComponent: 'Switch',
-        editComponentProps: {
-          activeValue: '1',
-          inactiveValue: '0',
-          onChange: (...args) => {
-            console.log('args >--->', args);
-          },
-        },
-      },
-      {
-        label: '启用',
-        prop: 'alarmEnable',
-      },
-      {
         prop: 'a',
         label: 'ccas',
         component: 'TableIconCell',
@@ -402,16 +408,7 @@
           elText: {
             type: 'success',
           },
-          // size: '12',
-          // suffixIcon: 'code',
-          // class: 'asd',
-          // color: 'red',
         }),
-        // customRender: ({ row, record, index }) => {
-        //   return () => {
-        //     return <TableIconCell icon="code" cellText={row.a} size="12" />;
-        //   };
-        // },
       },
     ],
     useSearchForm: true,
@@ -434,168 +431,16 @@
                 const data = record.editValueRefs;
                 console.log('data >--->', unref(data));
               }
-              // obj.record.onEditRowSave().then(() => {
-              //   console.log('obj >--->', obj.row.ds2);
-              // });
-              // tableFieldInfo_update({
-              //   id: obj.row?.id,
-              // }).then((res) => {
-              //   updateTableDataRecord(obj.row.key, res.data || {});
-              //   obj.record.onEditRow();
-              // });
             },
           },
         ];
       },
-      //   allActions: () => [
-      //     {
-      //       label: '删除1',
-      //       // ifShow: (action, { row, record }) => {
-      //       //   return !record.isEditableRow();
-      //       // },
-      //       elIcon: 'Share',
-      //       // dynamicLoading: ({ row, index, record }) => {
-      //       //   return record.loading;
-      //       // },
-      //       popConfirm: {
-      //         title: '删除提醒',
-      //         confirm: (obj) => {
-      //           const { index, row, record, elColumn } = obj;
-      //           // console.log('删除提醒 >--->', elColumn);
-      //           // record.setLoading(true, record);
-      //           // record.loading = true;
-      //           // record.updateTableActionUi();
-      //         },
-      //       },
-      //       badge: {
-      //         value: '31',
-      //         isDot: true,
-      //       },
-      //       icon: 'code|svg',
-      //       // onClick: (obj) => {
-      //       //   const { index, row, record } = obj;
-      //       //   console.log('row.id >--->', row.id, row);
-      //       //   deleteTableDataRecord(row.id || row.key);
-      //       //   record.onEditRow(record.getIsRowEditCacheRowKeys());
-      //       // },
-      //     },
-      //     {
-      //       label: '删除2',
-      //       preIcon: View,
-      //       suffixIcon: 'code',
-      //       suffixIconProps: {
-      //         color: 'blue',
-      //         disabled: true,
-      //       },
-      //       type: 'danger',
-      //       badge: {
-      //         value: '31',
-      //         isDot: true,
-      //       },
-      //       popConfirm: {
-      //         title: '提醒',
-      //         confirm: (obj) => {
-      //           console.log('obj >--->', obj);
-      //         },
-      //       },
-      //       // onClick: (obj) => {
-      //       //   const { index, row, record } = obj;
-      //       //   deleteTableDataRecord(row.id || row.key);
-      //       //   record.onEditRow(record.getIsRowEditCacheRowKeys());
-      //       // },
-      //     },
-      //     {
-      //       label: '删除3',
-      //       ifShow: (action, { row, record }) => {
-      //         // console.log('record >--->', record);
-      //         return !record.isEditableRow?.();
-      //       },
-      //       onClick: (obj) => {
-      //         const { index, row, record } = obj;
-      //         console.log(' 删除3>--->');
-      //         // deleteTableDataRecord(row.id || row.key);
-      //         // record.onEditRow(record.getIsRowEditCacheRowKeys());
-      //       },
-      //     },
-      //     {
-      //       label: '删除4',
-      //       onClick: (obj) => {
-      //         const { index, row, record } = obj;
-      //         deleteTableDataRecord(row.key);
-      //         // record.onEditRow(record.getIsRowEditCacheRowKeys());
-      //       },
-      //     },
-      //   ],
     },
     actions: [
       {
         label: '编辑1',
         onClick: ({ record }) => {
           record.onEdit(true);
-        },
-      },
-      {
-        label: '删除',
-        ifShow: (action, { row, record }) => {
-          return !record.isEditableRow?.();
-        },
-        // icon: 'code|svg',
-        elIcon: View,
-        suffixIcon: 'bar',
-        suffixIconProps: {
-          color: 'red',
-          disabled: true,
-        },
-        preIcon: 'code',
-        // disabled: true,
-        // preIconProps: {
-        //   disabled: true,
-        // },
-        onClick: (obj) => {
-          const { index, row, record } = obj;
-          console.log('record >--->', record);
-          // console.log('row.id >--->', row.id, row);
-          deleteTableDataRecord(row.key);
-          // record.onEditRow(record.getIsRowEditCacheRowKeys());
-        },
-      },
-      // {
-      //   label: '保存',
-      //   ifShow: (action, { row, record }) => {
-      //     return record.isEditableRow();
-      //   },
-      //   onClick: ({ row, record, index }) => {
-      //     record.onEditRowSave(index, true);
-      //     console.log('保存 cacheEditRows >--->', record.cacheEditRows);
-      //   },
-      // },
-      // {
-      //   label: '取消',
-      //   ifShow: (action, { row, record }) => {
-      //     return record.isEditableRow();
-      //   },
-      //   onClick: ({ row, record, index }) => {
-      //     // console.log('index >--->', index, row, record);
-      //     record.onEditRowCancel(row.id || row.key);
-      //     console.log('取消 cacheEditRows >--->', record.cacheEditRows);
-      //   },
-      // },
-    ],
-    dropDownActions: [
-      {
-        label: '删除7',
-        ifShow: (action, { row, record }) => {
-          return !record.isEditableRow?.();
-        },
-        type: 'primary',
-        elIcon: 'Share',
-        // preIcon: View,
-        // suffixIcon: 'code',
-        onClick: (obj) => {
-          const { index, row, record } = obj;
-          console.log('row.id >--->', row.id);
-          deleteTableDataRecord(row.id || row.key);
-          record.onEditRow(record.getIsRowEditCacheRowKeys());
         },
       },
     ],
@@ -641,7 +486,7 @@
         },
       ],
     },
-  });
+  };
 
   const [registerModal, { openModal, closeModal }] = useModal();
   const [registerForm, { submit, getFieldsValue }] = useForm({
@@ -773,34 +618,15 @@
       },
     ],
   });
+  const [register, { insertTableDataRecord }] = useTable(config);
+  const [register1] = useTable({...config});
+  const [register2] = useTable({...config});
+  const [register3] = useTable({...config});
+  const [register4] = useTable({...config});
+  const [register5] = useTable({...config});
 
   const onSelect = (v) => {
     console.log('onSelect >--->', v);
-  };
-  const onAdd = () => {
-    // setTableData([{}, ...getDataSource()]);
-    const d = insertTableDataRecord({}, 0);
-    // const data = getDataSource();
-    nextTick(() => {
-      // const record = getCellRecord(d[0].key);
-      // record.onEdit(true);
-    });
-    // const d = insertTableDataRecord({}, 0);
-    // const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
-    // const keys = getIsRowEditCacheRowKeys();
-    // onEditRow([0, ...keys], true);
-    // console.log('d >--->', d);
-  };
-
-  const onEdit = () => {
-    // const { onEditRow } = getEditRowRecord();
-    // onEditRow([0, 2], true);
-  };
-
-  const onOk = (_, val) => {
-    submit();
-    console.log('onOk >--->', getFieldsValue());
-    // closeModal();
   };
 </script>
 

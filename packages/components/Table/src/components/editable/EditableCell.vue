@@ -77,6 +77,7 @@
     isFunction,
     isNumber,
     isObject,
+    isString,
   } from '@p-helper/utils/is';
   import { useDesign } from '@p-helper/hooks/web/useDesign';
   // import { treeToList } from '@p-helper/utils/helper/treeHelper';
@@ -213,16 +214,29 @@
     return isNumber(val) && isBoolean(val) ? val : !!val;
   };
 
+  const getEditComponentProps = computed(() => {
+    const value = unref(currentValueRef);
+    let compProps = props.column?.editComponentProps ?? ({} as any);
+
+    const { record, column, index } = props;
+
+    if (isFunction(compProps)) {
+      compProps = compProps({ value, record, column, index }) ?? {};
+    }
+    return compProps;
+  });
+
   const getComponentProps = computed(() => {
-    const compProps = props.column?.editComponentProps ?? {};
-
     const { editSlots } = props.column;
-    const isCheckValue = unref(getIsCheckComp);
-
     const valueField = 'modelValue';
     const val = unref(currentValueRef);
+    const compProps = unref(getEditComponentProps);
 
-    const value = isCheckValue ? transformBoolean(val) : val;
+    // 用临时变量存储 onChange方法 用于 handleChange方法 获取，并删除原始onChange, 防止存在两个 onChange
+    if (compProps.onChange) {
+      compProps.onChangeTemp = compProps.onChange;
+      delete compProps.onChange;
+    }
 
     return {
       size: 'small',
@@ -230,19 +244,15 @@
       placeholder: createPlaceholderMessage(unref(getComponent)),
       'onUpdate:modelValue': (value) => {
         currentValueRef.value = value;
-        // 这里为了保存编辑行状态下编辑的数据
-        if (getRowEditable.value) {
-          props.saveEditableValue?.(value);
-        }
       },
       editSlots,
-      ...omit(compProps, 'onChange'),
-      [valueField]: value,
+      ...compProps,
+      [valueField]: val,
     };
   });
 
   const getValues = computed(() => {
-    const { editComponentProps, editValueMap } = props.column;
+    const { editValueMap } = props.column;
 
     const value = unref(currentValueRef);
 
@@ -255,8 +265,9 @@
       return value;
     }
 
+    const compProps = unref(getEditComponentProps);
     const options: LabelValueOptions =
-      editComponentProps?.options ?? (unref(optionsRef) || []);
+      compProps?.options ?? (unref(optionsRef) || []);
     const option = options.find((item) => `${item.value}` === `${value}`);
 
     return option?.label ?? value;
@@ -296,15 +307,26 @@
   }
 
   const onChangeEmit = (config: CurrencyParams, ...args) => {
-    const { onChange } = props.column?.editComponentProps || {};
-    if (onChange && isFunction(onChange)) {
-      onChange(config, ...args);
-    }
+    const onChange = unref(getComponentProps)?.onChangeTemp;
+    if (onChange && isFunction(onChange)) onChange(config, ...args);
   };
 
-  async function handleChange(...args) {
-    const isCheckValue = unref(getIsCheckComp);
+  async function handleChange(e, ...args) {
+    const component = unref(getComponent);
+    if (!e) {
+      currentValueRef.value = e;
+    } else if (component === 'Switch') {
+      currentValueRef.value = e;
+    } else if (isString(e) || isBoolean(e) || isNumber(e) || isArray(e)) {
+      currentValueRef.value = e;
+    }
+
     const { alwaysBright, editIsUpdateOnChange } = props.column;
+
+    // 这里为了保存编辑行状态下编辑的数据
+    if (getRowEditable.value) {
+      props.saveEditableValue?.(currentValueRef.value);
+    }
 
     // 常亮编辑 并且同步数据
     if (
@@ -313,16 +335,12 @@
     ) {
       try {
         await handleSubmit();
-        onChangeEmit(unref(getEmitParams), ...args);
+        onChangeEmit(unref(getEmitParams), e, ...args);
       } catch (err) {
-        // 选框累的需要恢复初始值
-        if (isCheckValue) {
-          currentValueRef.value = defaultValueRef.value;
-        }
         return;
       }
     } else {
-      onChangeEmit(unref(getEmitParams), ...args);
+      onChangeEmit(unref(getEmitParams), e, ...args);
     }
 
     table.emit?.('edit-change', {
@@ -365,10 +383,11 @@
       const { getBindValues } = table;
 
       const bindValues = unref(getBindValues);
+      const compProps = unref(getEditComponentProps);
 
       const { columns } = bindValues;
       // 默认使用editComponentProps的配置
-      let beforeEditSubmit = props.column.editComponentProps?.beforeEditSubmit;
+      let beforeEditSubmit = compProps?.beforeEditSubmit;
 
       if (!beforeEditSubmit) {
         beforeEditSubmit = bindValues.beforeEditSubmit;

@@ -45,6 +45,7 @@ export const useTableCellVNode = () => {
       },
       // ...componentProps,
       onChange: (value) => {
+        // @ts-ignore
         if (typeof editComponentProps.onChange === 'function') {
           // @ts-ignore
           editComponentProps.onChange.call(null, value, row, col);

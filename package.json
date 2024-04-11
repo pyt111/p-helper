@@ -62,7 +62,7 @@
     "chalk": "^5.3.0",
     "concurrently": "^8.2.0",
     "consola": "^3.2.3",
-    "element-plus": "^2.5.6",
+    "element-plus": "^2.6.3",
     "eslint": "^8.47.0",
     "gulp-typescript": "6.0.0-alpha.1",
     "prettier": "^3.0.2",
