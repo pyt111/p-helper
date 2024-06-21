@@ -12,3 +12,4 @@ export const BasicTable = withInstall(basicTable, {
   TableIconCell,
 });
 
+export default BasicTable;

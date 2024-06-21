@@ -76,7 +76,11 @@
   } from 'vue';
   import { ElCard, ElTable, ElTableColumn } from 'element-plus';
   import { cloneDeep, pick } from 'lodash-es';
-  import { BasicForm, useForm } from '@p-helper/components/Form';
+  import {
+    BasicForm,
+    type FormActionType,
+    useForm,
+  } from '@p-helper/components/Form';
   import { isBoolean } from '@p-helper/utils/is';
   import { updateTableCellStatusKey } from './useTableCellVNode';
   import { useDataSource } from './hooks/useDataSource';
@@ -89,13 +93,25 @@
   import { basicProps, basicTableEmits } from './props';
   // import { CustomCellComponent } from './components/custom/CustomCellComponent';
   import BasicColumnComponent from './BasicColumn';
+  import type { TableEditParams } from './props';
   import type { BasicTableProps, TableActionType } from './types/table';
 
   defineOptions({
     name: 'BasicTable',
   });
   const props = defineProps(basicProps);
-  const emit = defineEmits(basicTableEmits);
+  const emit = defineEmits<{
+    selectionChange: [rows: Recordable];
+    register: [instance: TableActionType, formInstance: FormActionType];
+    'edit-end': [obj: TableEditParams];
+    'edit-cancel': [obj: TableEditParams];
+    'edit-change': [obj: TableEditParams];
+    'edit-row-end': [obj: TableEditParams];
+    change: [obj: TableEditParams];
+    'fetch-success': [items: any, total: any];
+    'fetch-error': [error: any];
+    'expand-change': [row: any, expandedRows: any];
+  }>();
   const slots = useSlots();
   const attrs = useAttrs();
 
