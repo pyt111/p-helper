@@ -49,8 +49,7 @@ export default {
       align: 'center',
     } as BasicColumn,
 
-    defaultProps: {
-    } as TableProps,
+    defaultProps: {} as TableProps,
   },
   vxeTable: {
     table: {

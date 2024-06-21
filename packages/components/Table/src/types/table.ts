@@ -50,6 +50,10 @@ export interface GetColumnsParams {
 
 export interface TableActionType {
   reload: <T = any>(opt?: FetchParams) => Promise<T>;
+  expandRows: (keys: (string | number)[]) => void;
+  collapseRows: (keys: (string | number)[]) => void;
+  collapseAll: () => void;
+  expandAll: () => void;
   getRawDataSource: <T = Recordable>() => T;
   getDataSource: <T = Recordable>() => T[];
   setLoading: (loading: boolean) => void;

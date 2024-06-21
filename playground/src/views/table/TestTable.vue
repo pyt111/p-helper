@@ -69,6 +69,9 @@
       setTableData,
       setProps,
       getSelectionData,
+      expandRows,
+      collapseRows,
+      expandAll,
     },
   ] = useTable({
     // fullHeight: true,
@@ -101,6 +104,19 @@
             ds2: 888,
             badgeValue: 10,
             alarmEnable: 1,
+            children: [
+              {
+                ds1: 111555,
+                id: 100001,
+                c: 22123,
+                a: '123',
+              },
+              {
+                id: 100002,
+                c: 22123,
+                a: '123',
+              },
+            ],
           },
           {
             id: 1002,
@@ -225,15 +241,25 @@
         totalIndex: true,
       },
       {
+        label: '',
+        prop: 'expand',
+        type: 'expand',
+        columnSlots: {
+          default: ({ row }) => {
+            return 'asd';
+          },
+        },
+      },
+      {
         prop: 'ds',
         label: 'ds',
-        align: 'center',
+        // align: 'center',
         children: [
           {
             prop: 'ds1',
             label: 'ds1',
             editRow: true,
-            align: 'right',
+            // align: 'right',
           },
           {
             prop: 'ds2',
@@ -243,9 +269,14 @@
         ],
       },
       {
-        label: '浏览量',
+        label: '浏览量1',
         prop: 'ds2',
         editRow: true,
+        editComponentProps: {
+          onChange: (...args) => {
+            console.log('args >--->', args);
+          },
+        },
         // edit: true,
         // editComponent: 'Input',
         columnSlots: {
@@ -361,8 +392,8 @@
         editComponentProps: {
           activeValue: '1',
           inactiveValue: '0',
-          onChange: (...args) => {
-            console.log('args >--->', args);
+          onChange: (_, val) => {
+            console.log('args >--->', val);
           },
         },
       },
@@ -529,6 +560,14 @@
     },
     actions: [
       {
+        label: '展开',
+        onClick: ({ record, row }) => {
+          console.log('action >--->', record, row);
+          expandRows([row.key]);
+          // record.onEdit(true);
+        },
+      },
+      {
         label: '编辑1',
         onClick: ({ record }) => {
           record.onEdit(true);
@@ -582,6 +621,14 @@
       // },
     ],
     dropDownActions: [
+      {
+        label: '关闭',
+        onClick: ({ record, row }) => {
+          console.log('action >--->', record, row);
+          collapseRows([row.key]);
+          // record.onEdit(true);
+        },
+      },
       {
         label: '删除7',
         ifShow: (action, { row, record }) => {

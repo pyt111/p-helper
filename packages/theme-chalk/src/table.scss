@@ -167,6 +167,17 @@
       margin-left: 5px;
     }
   }
+
+  // 树形结构样式修复
+  .el-table__expand-icon + .editable-cell {
+    display: inline-flex;
+  }
+
+  [class*=--level]:not([class*=--level-0]) {
+    .el-table__cell:first-child .cell {
+      display: flex;
+    }
+  }
 }
 .basic-table-action-pop-confirm {
  .trigger-item {

@@ -26,6 +26,7 @@
         <slot name="card-header" />
       </template>
       <el-table
+        ref="tableElRef"
         v-loading="getLoading"
         empty-text="暂无数据"
         :header-cell-style="{ color: 'rgb(51, 51, 51)', fontSize: '15px' }"
@@ -84,6 +85,7 @@
   import { useColumns } from './hooks/useColumns';
   import { createTableContext } from './hooks/useTableContext';
   import { useTableForm } from './hooks/useTableForm';
+  import { useTableExpand } from './hooks/useTableExpand';
   import { basicProps, basicTableEmits } from './props';
   import { CustomCellComponent } from './components/custom/CustomCellComponent';
   import BasicColumnComponent from './BasicColumn';
@@ -104,6 +106,7 @@
     emits: basicTableEmits,
 
     setup(props, { emit, attrs, slots }) {
+      const tableElRef = ref(null);
       const wrapRef = ref(null);
       const formRef = ref<any>(null);
       const bottomCardRef = ref(null);
@@ -183,6 +186,15 @@
         recordCache,
       });
 
+      const {
+        getExpandOption,
+        expandAll,
+        expandRows,
+        collapseAll,
+        collapseRows,
+        onExpandChange,
+      } = useTableExpand(getProps, tableData, emit);
+
       const paginationAlign = computed(
         () =>
           (!isBoolean(getPaginationInfo.value) &&
@@ -200,6 +212,7 @@
           ...attrs,
           height: unref(getProps).height,
           data: dataSource,
+          ...unref(getExpandOption),
         };
         const bottomHeight = propsData.noPage ? 0 : 52;
         const maxHeight = `calc(100% - ${bottomHeight}px)`;
@@ -217,8 +230,13 @@
 
       const getTableProps = computed(() => {
         return {
+          ...unref(getExpandOption),
           headerCellClassName: 'table-header-background', // 头部默认背景色
-          ...pick(unref(getBindValues), elTablePropsKeys),
+          ...pick(unref(getBindValues), [
+            ...elTablePropsKeys,
+            'onExpandChange',
+          ]),
+          onExpandChange,
           ...attrs,
         };
       });
@@ -262,7 +280,10 @@
         getPaginationRef: getPagination,
         setPagination,
         redoHeight: () => {},
-
+        expandRows,
+        collapseRows,
+        expandAll,
+        collapseAll,
         getTableData: () => {
           return unref(tableData);
         },
@@ -310,7 +331,6 @@
         getTableProps,
         getDataSourceRef,
         getViewColumns,
-        pick,
         getProps,
         getRowKey,
         getRowKeyName,
@@ -327,6 +347,7 @@
 
         getLoading,
         wrapRef,
+        tableElRef,
         formRef,
         paginationElRef,
         bottomCardRef,

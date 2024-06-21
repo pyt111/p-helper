@@ -23,16 +23,16 @@ export type UseTableMethod = TableActionType & {
 export function useTable(
   tableProps?: TableProps
 ): [
-  (instance: TableActionType, formInstance: UseTableMethod) => void,
+  (instance: TableActionType, formInstance: FormActionType) => void,
   UseTableMethod
 ] {
   const tableRef = ref<Nullable<TableActionType>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
-  const formRef = ref<Nullable<UseTableMethod>>(null);
+  const formRef = ref<Nullable<FormActionType>>(null);
 
   let stopWatch: WatchStopHandle;
 
-  function register(instance: TableActionType, formInstance: UseTableMethod) {
+  function register(instance: TableActionType, formInstance: FormActionType) {
     isProdMode() &&
       onUnmounted(() => {
         tableRef.value = null;
@@ -152,7 +152,7 @@ export function useTable(
       return toRaw(getTableInstance().getShowPagination());
     },
     getForm: () => {
-      return unref(formRef) as unknown as FormActionType;
+      return unref(formRef) as FormActionType;
     },
     // 不想在外部监听Selection事件的，直接通过这个方法取
     getSelectionData: <T = Recordable>(): T[] => {
@@ -169,6 +169,18 @@ export function useTable(
     },
     getCellRecord: (row: Recordable | string) => {
       return getTableInstance().getCellRecord(row);
+    },
+    expandAll: () => {
+      getTableInstance().expandAll();
+    },
+    expandRows: (keys: (string | number)[]) => {
+      getTableInstance().expandRows(keys);
+    },
+    collapseRows: (keys: (string | number)[]) => {
+      getTableInstance().collapseRows(keys);
+    },
+    collapseAll: () => {
+      getTableInstance().collapseAll();
     },
   };
   return [register, methods];

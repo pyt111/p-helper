@@ -12,7 +12,7 @@ import type {
   TableActionType,
 } from '@p-helper/components/Table/src/types/table';
 import type { FormActionType, FormProps } from '@p-helper/components/Form';
-import type { PropType, Ref } from 'vue';
+import type { PropType } from 'vue';
 import type {
   EditRecordRow,
   Params,
@@ -210,4 +210,5 @@ export const basicTableEmits = {
   change: (obj: TableEditParams) => [obj],
   'fetch-success': (items, total) => [items, total],
   'fetch-error': (error) => [error],
+  'expand-change': (row: any, expandedRows: any[]) => [row, expandedRows],
 };
