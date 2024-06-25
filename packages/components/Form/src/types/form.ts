@@ -195,7 +195,7 @@ export interface InputComponentSchema {
   component: 'Input';
   componentProps?:
     | ComponentProps
-    | (Partial<InputProps> &
+    | (Partial<InputProps & HTMLTextAreaElement> &
         Partial<{
           onChange: ((...args: any[]) => any) | undefined;
           maxlength: string | number;
