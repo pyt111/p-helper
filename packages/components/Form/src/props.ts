@@ -39,7 +39,7 @@ export const basicProps = {
     default: () => [],
   },
   defaultSchema: {
-    type: Object as PropType<FormSchema>,
+    type: Object as PropType<Partial<FormSchema>>,
     default: () => ({}),
   },
   mergeDynamicData: {
