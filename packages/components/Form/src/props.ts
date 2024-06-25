@@ -38,6 +38,10 @@ export const basicProps = {
     type: [Array] as PropType<FormSchema[]>,
     default: () => [],
   },
+  defaultSchema: {
+    type: Object as PropType<FormSchema>,
+    default: () => ({}),
+  },
   mergeDynamicData: {
     type: Object as PropType<Recordable>,
     default: null,

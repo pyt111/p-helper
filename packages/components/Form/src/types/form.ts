@@ -115,6 +115,9 @@ export type FormProps = ElFormProps & {
 
   // Form configuration rules
   schemas?: FormSchema[];
+
+  // 默认表单配置规则配置
+  defaultSchema?: FormSchema;
   // Function values used to merge into dynamic control form items
   mergeDynamicData?: Recordable;
   // Compact mode for search forms

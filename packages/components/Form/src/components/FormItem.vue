@@ -332,7 +332,10 @@
       }
 
       function renderLabelHelpMessage() {
-        const { label, helpMessage, subLabel } = props.schema;
+        const { label, helpMessage, subLabel } = {
+          ...props.formProps.defaultSchema,
+          ...props.schema,
+        };
         const renderLabel = subLabel ? (
           <span>
             {label} <span class="text-secondary">{subLabel}</span>
@@ -384,11 +387,15 @@
               prop={field}
               class={{ 'suffix-item': showSuffix }}
               {...(itemProps as Recordable)}
-              label={renderLabelHelpMessage()}
               rules={handleRules()}
             >
-              {getContent()}
-              {showSuffix && <span class="suffix">{getSuffix}</span>}
+              {{
+                label: () => renderLabelHelpMessage(),
+                default: () => [
+                  getContent(),
+                  showSuffix && <span class="suffix">{getSuffix}</span>,
+                ],
+              }}
             </el-form-item>
           );
         }

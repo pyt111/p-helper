@@ -703,6 +703,9 @@
     //   //   },
     //   // ],
     // },
+    defaultSchema: {
+      subLabel: ':',
+    },
     schemas: [
       {
         label: ' ',
@@ -750,20 +753,24 @@
         field: 'ssd',
         label: '测试-FormRadioGroup',
         component: 'RadioGroup',
-        componentProps: (obj, aaa) => {
-          console.log('obj >--->', aaa);
+        componentProps: (obj) => {
+          console.log('obj >--->', obj);
           return {
             disabled: !!obj.formModel.asd,
             options: [
               {
-                label: '444',
+                value: '444',
                 content: '选项1',
               },
               {
-                label: '123',
+                value: '123',
                 content: '选项2',
               },
             ],
+
+            onChange: (value) => {
+              console.log('RadioGroup value >--->', value);
+            },
           };
         },
         suffix: '333',
