@@ -371,10 +371,24 @@
         prop: 'a',
         label: 'cca',
         edit: true,
+        width: 200,
         // alwaysBright: true,
         editDecisionButtonShow: false,
         // editable: true,
         // edit: true,
+        editComponent: 'Select',
+        editComponentProps: {
+          options: [
+            {
+              label: 'string',
+              value: 'string',
+            },
+            {
+              label: 'int',
+              value: 'int',
+            },
+          ],
+        },
       },
       {
         label: '多选',

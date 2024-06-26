@@ -88,10 +88,8 @@
   import { useTableContext } from '../../hooks/useTableContext';
   import { createPlaceholderMessage } from './helper';
   import { CellComponent } from './CellComponent';
-  import type { EditRowKey } from '../../hooks/useColumns';
   import type { BasicColumn } from '@p-helper/components/Table/src/types/table';
   import type { CurrencyParams } from '@p-helper/components/Table/src/props';
-  import type { EditRecordRow } from '@p-helper/components/Table/src/components/editable';
   import type { CSSProperties, PropType } from 'vue';
 
   const vClickOutside = ClickOutside;
@@ -174,7 +172,8 @@
   });
 
   const editDecisionButtonShow = computed(() => {
-    const { editDecisionButtonShow } = props.column;
+    const { editDecisionButtonShow, label } = props.column;
+    console.log('editDecisionButtonShow >--->', label, editDecisionButtonShow);
     if (isFunction(editDecisionButtonShow)) {
       return editDecisionButtonShow(unref(getEmitParams));
     } else if (isBoolean(editDecisionButtonShow)) {
@@ -276,7 +275,12 @@
   });
 
   const getWrapperStyle = computed((): CSSProperties => {
-    if (unref(getIsCheckComp) || unref(getRowEditable)) {
+    console.log('editDecisionButtonShow >--->', editDecisionButtonShow.value);
+    if (
+      unref(getIsCheckComp) ||
+      unref(getRowEditable) ||
+      !unref(editDecisionButtonShow)
+    ) {
       return {};
     }
     return {
