@@ -370,6 +370,10 @@
       {
         prop: 'a',
         label: 'cca',
+        edit: true,
+        // alwaysBright: true,
+        editDecisionButtonShow: false,
+        // editable: true,
         // edit: true,
       },
       {
@@ -386,7 +390,7 @@
         label: '启用',
         prop: 'alarmEnable',
         edit: true,
-        editIsUpdateOnChange: true,
+        // editIsUpdateOnChange: true,
         alwaysBright: true,
         editComponent: 'Switch',
         editComponentProps: {

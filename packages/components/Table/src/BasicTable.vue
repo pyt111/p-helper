@@ -100,18 +100,7 @@
     name: 'BasicTable',
   });
   const props = defineProps(basicProps);
-  const emit = defineEmits<{
-    selectionChange: [rows: Recordable];
-    register: [instance: TableActionType, formInstance: FormActionType];
-    'edit-end': [obj: TableEditParams];
-    'edit-cancel': [obj: TableEditParams];
-    'edit-change': [obj: TableEditParams];
-    'edit-row-end': [obj: TableEditParams];
-    change: [obj: TableEditParams];
-    'fetch-success': [items: any, total: any];
-    'fetch-error': [error: any];
-    'expand-change': [row: any, expandedRows: any];
-  }>();
+  const emit = defineEmits(basicTableEmits);
   const slots = useSlots();
   const attrs = useAttrs();
 

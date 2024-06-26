@@ -129,7 +129,7 @@ export type ColumnTypes = {
   editable?: boolean; // 是否处于编辑状态
   editAlwaysShow?: boolean; // 是否长亮编辑按钮
   editDecisionButtonShow?: boolean | ((obj: CurrencyParams) => boolean); // 是否显示编辑状态下的提交与取消按钮
-  editIsUpdateOnChange?: boolean; // 是否在编辑状态下实时更新数据
+  editIsUpdateOnChange?: boolean; // [废弃：是否在编辑状态下实时更新数据]，使用[alwaysBright]替代
   editSlots?: Record<
     string,
     | VNodeChild

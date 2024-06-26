@@ -42,7 +42,7 @@
           @options-change="handleOptionsChange"
         />
         <div
-          v-if="!getRowEditable && !isAlwaysBright && editDecisionButtonShow"
+          v-if="!getRowEditable && !isUpdateOnChange && editDecisionButtonShow"
           :class="`${prefixCls}__action`"
         >
           <el-icon
@@ -174,8 +174,7 @@
   });
 
   const editDecisionButtonShow = computed(() => {
-    const { editDecisionButtonShow, editIsUpdateOnChange } = props.column;
-    if (editIsUpdateOnChange) return false;
+    const { editDecisionButtonShow } = props.column;
     if (isFunction(editDecisionButtonShow)) {
       return editDecisionButtonShow(unref(getEmitParams));
     } else if (isBoolean(editDecisionButtonShow)) {
@@ -184,7 +183,7 @@
     return true;
   });
 
-  const isAlwaysBright = computed(() => {
+  const isUpdateOnChange = computed(() => {
     const { alwaysBright } = props.column;
     if (isFunction(alwaysBright)) {
       return alwaysBright(unref(getEmitParams));
@@ -194,13 +193,11 @@
     return false;
   });
 
-  const isEditRow = ref(false);
-
   watchEffect(() => {
-    const { editable } = props.column;
+    const { editable, label } = props.column;
     if (isBoolean(editable) || isBoolean(unref(getRowEditable))) {
       isEdit.value =
-        (!!editable || unref(getRowEditable) || unref(isAlwaysBright)) &&
+        (!!editable || unref(getRowEditable) || unref(isUpdateOnChange)) &&
         editButtonShow.value;
     }
   });
@@ -321,18 +318,13 @@
       currentValueRef.value = e;
     }
 
-    const { alwaysBright, editIsUpdateOnChange } = props.column;
-
     // 这里为了保存编辑行状态下编辑的数据
     if (getRowEditable.value) {
       props.saveEditableValue?.(currentValueRef.value);
     }
 
     // 常亮编辑 并且同步数据
-    if (
-      alwaysBright ||
-      editIsUpdateOnChange // 是否实时更新
-    ) {
+    if (isUpdateOnChange.value) {
       try {
         await handleSubmit();
         onChangeEmit(unref(getEmitParams), e, ...args);
@@ -426,11 +418,11 @@
     // const record = await table.updateTableData(index, prop, value);
     innerValue.value[prop] = value; // 更新数据
     needEmit && table.emit?.('edit-end', unref(getEmitParams));
-    isEdit.value = unref(getRowEditable) || unref(isAlwaysBright);
+    isEdit.value = unref(getRowEditable) || unref(isUpdateOnChange);
   }
 
   async function handleEnter() {
-    if (props.column?.editRow || props.column?.alwaysBright) {
+    if (props.column?.editRow || isUpdateOnChange.value) {
       return;
     }
     handleSubmit();
@@ -450,7 +442,11 @@
   }
 
   function onClickOutside() {
-    if (props.column?.editable || unref(getRowEditable) || isEditRow.value) {
+    if (
+      props.column?.editable ||
+      unref(getRowEditable) ||
+      unref(isUpdateOnChange)
+    ) {
       return;
     }
     const component = unref(getComponent);
