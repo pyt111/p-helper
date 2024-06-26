@@ -93,6 +93,13 @@
     &__wrapper {
       display: flex;
       align-items: center;
+
+      &.is-error {
+        color: var(--el-color-danger);
+        [class*=__wrapper] {
+          box-shadow: 0 0 0 1px var(--el-color-danger) inset;
+        }
+      }
     }
     &__icon {
       cursor: pointer;

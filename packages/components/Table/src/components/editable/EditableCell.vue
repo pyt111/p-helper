@@ -30,13 +30,34 @@
     </div>
 
     <div v-if="isEdit && editButtonShow" v-loading="isLoading">
-      <div v-click-outside="onClickOutside" :class="`${prefixCls}__wrapper`">
+      <div
+        v-click-outside="onClickOutside"
+        :class="[`${prefixCls}__wrapper`, { 'is-error': !!ruleMessage }]"
+      >
+        <ElPopover v-if="ruleMessage" class="is-error__icon" placement="top">
+          <template #reference>
+            <el-button type="danger" :icon="Warning" link />
+          </template>
+          <el-text type="danger" size="small">
+            {{ ruleMessage }}
+          </el-text>
+          <!--          <el-alert-->
+          <!--            title="警告"-->
+          <!--            :description="ruleMessage"-->
+          <!--            type="error"-->
+          <!--            center-->
+          <!--            show-icon-->
+          <!--            :closable="false"-->
+          <!--            popper-style="padding: 0"-->
+          <!--          />-->
+        </ElPopover>
         <CellComponent
           v-bind="getComponentProps"
           ref="elRef"
           :class="getWrapperClass"
           :component="getComponent"
           :style="getWrapperStyle"
+          :rule="getRule"
           @change="handleChange"
           @keyup.enter="handleEnter"
           @options-change="handleOptionsChange"
@@ -65,7 +86,6 @@
     computed,
     nextTick,
     ref,
-    shallowRef,
     unref,
     watch,
     watchEffect,
@@ -76,7 +96,6 @@
     isBoolean,
     isFunction,
     isNumber,
-    isObject,
     isString,
   } from '@p-helper/utils/is';
   import { useDesign } from '@p-helper/hooks/web/useDesign';
@@ -84,7 +103,8 @@
   import ClickOutside from '@p-helper/utils/directives/clickOutside';
   import { syncProp } from '@p-helper/hooks';
   import VNodeRenderer from '@p-helper/components/VNodeRenderer';
-  import { Check, Close, Edit } from '@element-plus/icons-vue';
+  import { ElPopover } from 'element-plus';
+  import { Check, Close, Edit, Warning } from '@element-plus/icons-vue';
   import { useTableContext } from '../../hooks/useTableContext';
   import { createPlaceholderMessage } from './helper';
   import { CellComponent } from './CellComponent';
@@ -133,6 +153,14 @@
 
   const { prefixCls } = useDesign('editable-cell');
 
+  const getRule = computed(() => {
+    return !!props.column?.editRule;
+  });
+
+  const getRuleVisible = computed(() => {
+    return unref(ruleMessage) && unref(ruleVisible);
+  });
+
   const getComponent = computed(() => props.column?.editComponent || 'Input');
   const getRowEditable = computed(() => {
     const { editable } = props.record || {};
@@ -172,8 +200,7 @@
   });
 
   const editDecisionButtonShow = computed(() => {
-    const { editDecisionButtonShow, label } = props.column;
-    console.log('editDecisionButtonShow >--->', label, editDecisionButtonShow);
+    const { editDecisionButtonShow } = props.column;
     if (isFunction(editDecisionButtonShow)) {
       return editDecisionButtonShow(unref(getEmitParams));
     } else if (isBoolean(editDecisionButtonShow)) {
@@ -241,6 +268,8 @@
       'onUpdate:modelValue': (value) => {
         currentValueRef.value = value;
       },
+      ruleMessage: unref(ruleMessage),
+      popoverVisible: unref(getRuleVisible),
       editSlots,
       ...compProps,
       [valueField]: val,
@@ -275,7 +304,6 @@
   });
 
   const getWrapperStyle = computed((): CSSProperties => {
-    console.log('editDecisionButtonShow >--->', editDecisionButtonShow.value);
     if (
       unref(getIsCheckComp) ||
       unref(getRowEditable) ||
@@ -337,6 +365,7 @@
       }
     } else {
       onChangeEmit(unref(getEmitParams), e, ...args);
+      handleSubmitRule();
     }
 
     table.emit?.('edit-change', {
@@ -368,7 +397,12 @@
     optionsRef.value = options;
   }
 
-  async function handleSubmit(needEmit = true) {
+  async function handleSubmit(needEmit = true, valid = true) {
+    if (valid) {
+      const isPass = await handleSubmitRule();
+      if (!isPass) return false;
+    }
+
     const { column, value: row, record } = props;
     if (!record) return false;
 

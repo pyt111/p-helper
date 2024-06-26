@@ -15,15 +15,18 @@ export interface ComponentProps {
 
 // @ts-ignore
 export const CellComponent: FunctionalComponent = (
-  { component = 'Input', componentRef }: ComponentProps,
+  {
+    component = 'Input',
+    componentRef,
+    rule,
+    ruleMessage,
+    popoverVisible,
+  }: ComponentProps,
   { attrs }
 ) => {
   const Comp = componentMap.get(component) as typeof defineComponent;
-
   const { editSlots } = attrs;
-
-  // @ts-ignore
-  return h(
+  const DefaultComp = h(
     // @ts-ignore
     Comp,
     {
@@ -32,4 +35,23 @@ export const CellComponent: FunctionalComponent = (
     },
     editSlots as BasicColumn['editSlots']
   );
+
+  return DefaultComp;
+  // console.log('props >--->', popoverVisible);
+
+  // return h(DefaultComp, {
+  //   class: 'is-error',
+  // });
+  // @ts-ignore
+  // return h(
+  //   // @ts-ignore
+  //   ElPopover,
+  //   {
+  //     visible: !!popoverVisible,
+  //   },
+  //   {
+  //     reference: () => DefaultComp,
+  //     default: () => ruleMessage,
+  //   }
+  // );
 };

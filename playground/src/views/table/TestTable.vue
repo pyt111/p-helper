@@ -339,7 +339,10 @@
       {
         prop: 'c',
         label: 'c',
-        // editRow: true,
+        width: 200,
+        edit: true,
+        alwaysBright: true,
+        editRule: true,
         // editable: true,
         // editFilterShow: (obj) => {
         //   console.log(' editFilterShow>--->', obj);
@@ -347,9 +350,9 @@
         // },
       },
       {
-        prop: 'a',
+        prop: 'c',
         label: 'a1',
-        component: () => h(ElText),
+        // component: () => h(ElText),
         // componentProps: ({ row }) => {
         //   return {
         //     icon: 'code',
@@ -372,12 +375,16 @@
         label: 'cca',
         edit: true,
         width: 200,
+        editRule: () => {
+          return 'ccccc'
+        },
         // alwaysBright: true,
         editDecisionButtonShow: false,
         // editable: true,
         // edit: true,
         editComponent: 'Select',
         editComponentProps: {
+          clearable: true,
           options: [
             {
               label: 'string',
