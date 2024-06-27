@@ -341,7 +341,7 @@
         label: 'c',
         width: 200,
         edit: true,
-        alwaysBright: true,
+        // alwaysBright: true,
         editRule: true,
         // editable: true,
         // editFilterShow: (obj) => {
@@ -375,8 +375,8 @@
         label: 'cca',
         edit: true,
         width: 200,
-        editRule: () => {
-          return 'ccccc'
+        editRule: (text) => {
+          return !text;
         },
         // alwaysBright: true,
         editDecisionButtonShow: false,

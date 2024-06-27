@@ -63,7 +63,7 @@
           @options-change="handleOptionsChange"
         />
         <div
-          v-if="!getRowEditable && !isUpdateOnChange && editDecisionButtonShow"
+          v-if="!getRowEditable && editDecisionButtonShow"
           :class="`${prefixCls}__action`"
         >
           <el-icon
@@ -206,7 +206,8 @@
     } else if (isBoolean(editDecisionButtonShow)) {
       return editDecisionButtonShow;
     }
-    return true;
+    // 常亮编辑不需要确认按钮
+    return !isUpdateOnChange.value;
   });
 
   const isUpdateOnChange = computed(() => {
