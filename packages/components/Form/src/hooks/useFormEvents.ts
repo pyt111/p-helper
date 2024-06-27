@@ -8,7 +8,7 @@ import {
 } from '@p-helper/utils/is';
 import { deepMerge } from '@p-helper/utils';
 import { dateUtil } from '@p-helper/utils/dateUtil';
-import { cloneDeep, get, set, uniqBy } from 'lodash-es';
+import { cloneDeep, get, isNil, set, uniqBy } from 'lodash-es';
 import { error } from '@p-helper/utils/log';
 import {
   dateItemType,
@@ -79,6 +79,7 @@ function tryConstructObject(
     }
   }
 }
+
 export function useFormEvents({
   emit,
   getProps,
@@ -95,17 +96,19 @@ export function useFormEvents({
 
     const formEl = unref(formElRef);
     if (!formEl) return;
-
+    nextTick(() => unref(formElRef)?.resetFields());
     Object.keys(formModel).forEach((key) => {
       const schema = unref(getSchema).find((item) => item.field === key);
-      const isInput =
-        schema?.component && defaultValueComponents.includes(schema.component);
-      formModel[key] = isInput
-        ? defaultValueRef.value[key] || ''
-        : defaultValueRef.value[key];
+      const defaultValueObj = schema?.defaultValueObj;
+      const fieldKeys = Object.keys(defaultValueObj || {});
+      if (fieldKeys.length) {
+        fieldKeys.forEach((field) => {
+          formModel[field] = defaultValueObj![field];
+        });
+      }
+      formModel[key] = getDefaultValue(schema, defaultValueRef, key);
     });
-    nextTick(() => clearValidate());
-
+    // setTimeout(() => clearValidate(), 0);
     emit('reset', toRaw(formModel));
     submitOnReset && handleSubmit();
   }
@@ -326,6 +329,7 @@ export function useFormEvents({
   }
 
   async function validateField(nameList?: NamePath[] | undefined) {
+    if (!nameList?.length) return true;
     return unref(formElRef)?.validateField(nameList);
   }
 
@@ -383,4 +387,38 @@ export function useFormEvents({
     setFieldsValue,
     scrollToField,
   };
+}
+
+function getDefaultValue(
+  schema: FormSchema | undefined,
+  defaultValueRef: UseFormActionContext['defaultValueRef'],
+  key: string
+) {
+  let defaultValue = cloneDeep(defaultValueRef.value[key]);
+  const isInput = checkIsInput(schema);
+  if (isInput) {
+    return !isNil(defaultValue) ? defaultValue : undefined;
+  }
+  if (!defaultValue && schema && checkIsRangeSlider(schema)) {
+    defaultValue = [0, 0];
+  }
+  if (!defaultValue && schema && schema.component === 'TreeSelect') {
+    defaultValue = [];
+  }
+  return defaultValue;
+}
+
+function checkIsRangeSlider(schema: FormSchema) {
+  // if (
+  //   schema.component === 'Slider' &&
+  //   schema.componentProps &&
+  //   'range' in schema.componentProps
+  // ) {
+  //   return true;
+  // }
+  return false;
+}
+
+function checkIsInput(schema?: FormSchema) {
+  return schema?.component && defaultValueComponents.includes(schema.component);
 }

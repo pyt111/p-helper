@@ -2,7 +2,7 @@
   <div class="test-table-wrapper">
     <el-button @click="activeStep += 1">activeStep + </el-button>
     <el-button @click="activeStep -= 1">activeStep - </el-button>
-    <el-button @click="openModal(true)">asd</el-button>
+    <el-button @click="onOpen">asd</el-button>
     <!--    <el-button @click="onAdd">新增</el-button>-->
     <!--    <el-button @click="onEdit">编辑行</el-button>-->
     <BasicTable @register="register" @select="onSelect">
@@ -716,18 +716,29 @@
   });
 
   const [registerModal, { openModal, closeModal }] = useModal();
-  const [registerForm, { submit, getFieldsValue }] = useForm({
+  const [
+    registerForm,
+    { submit, getFieldsValue, setFieldsValue, clearValidate },
+  ] = useForm({
     // isCol: false,
-    // rules: {
-    //   asd: [{ message: '请输入11', required: true, trigger: 'blur' }],
-    //   // bb: [
-    //   //   { message: '请输入111', required: true, trigger: 'blur' },
-    //   //   {
-    //   //     pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-    //   //     message: '只能以字母开头,含有数字、字母、下划线',
-    //   //   },
-    //   // ],
-    // },
+    rules: {
+      asd: [{ message: '请输入11', required: true, trigger: 'blur' }],
+      // bb: [
+      //   { message: '请输入111', required: true, trigger: 'blur' },
+      //   {
+      //     pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
+      //     message: '只能以字母开头,含有数字、字母、下划线',
+      //   },
+      // ],
+      taskCode: [
+        { required: true, message: '不允许为空' },
+        {
+          required: true,
+          pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
+          message: '只能以字母开头,含有数字、字母、下划线',
+        },
+      ],
+    },
     defaultSchema: {
       subLabel: ':',
     },
@@ -746,8 +757,8 @@
         field: 'asd',
         label: 'ssss',
         component: 'DatePicker',
-        required: true,
-        rules: [{ required: true, message: '请选择日期' }],
+        // required: true,
+        rules: [{ required: true, message: '请选择日期1' }],
       },
       {
         field: 'dst',
@@ -804,6 +815,7 @@
         field: 'bb',
         label: 'aaa2',
         component: 'Input',
+        required: true,
         itemProps: {
           // rules: [{ required: true, message: '请输入' }],
         },
@@ -832,6 +844,7 @@
         label: '任务code',
         field: 'taskCode',
         component: 'Input',
+        defaultValue: 's',
         componentProps: {
           placeholder: '请输入英文名，允许中文数字字母或下划线',
         },
@@ -841,14 +854,15 @@
           };
         },
         suffix: 'tttt',
-        required: true,
-        rules: [
-          { required: true, message: '不允许为空' },
-          {
-            pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-            message: '只能以字母开头,含有数字、字母、下划线',
-          },
-        ],
+        // required: true,
+        // rules: [
+        //   { required: true, message: '不允许为空' },
+        //   {
+        //     required: true,
+        //     pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
+        //     message: '只能以字母开头,含有数字、字母、下划线',
+        //   },
+        // ],
       },
     ],
   });
@@ -880,6 +894,19 @@
     submit();
     console.log('onOk >--->', getFieldsValue());
     // closeModal();
+  };
+
+  const onOpen = () => {
+    openModal(true).then(() => {
+      setFieldsValue({
+        taskCode: '1',
+      }).then(() => {
+        // clearValidate();
+
+        setTimeout(() => {
+        });
+      });
+    });
   };
 </script>
 

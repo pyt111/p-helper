@@ -478,6 +478,10 @@ export interface BaseFormSchema {
 
   // 默认值
   defaultValue?: any;
+
+  // 额外默认值数组对象
+  defaultValueObj?: { [key: string]: any };
+
   isAdvanced?: boolean;
 
   // Matching details components
