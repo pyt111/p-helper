@@ -29,8 +29,8 @@ $detail-header-height: 40px;
   }
 }
 
-.basic-drawer-in-container-modal.el-overlay  {
-  position: absolute;
+.basic-drawer-in-container-modal {
+  position: absolute !important;
 }
 
 .basic-drawer__detail {

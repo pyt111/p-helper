@@ -32,7 +32,6 @@
   .test-drawer-inner-wrapper-1 {
     width: 80vh;
     height: 500px;
-    position: relative;
     background-color: #79bbff;
   }
   .test-drawer-inner-wrapper-2 {

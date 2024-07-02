@@ -104,7 +104,7 @@
       opt.class = wrapClassName ? `${wrapClassName} ${detailCls}` : detailCls;
     }
 
-    if ((isDetail && !modalClass) || inContainer) {
+    if (inContainer) {
       opt.modalClass = `${prefixCls}-in-container-modal`;
     }
     return opt as DrawerProps;

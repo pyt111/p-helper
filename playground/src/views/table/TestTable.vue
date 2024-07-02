@@ -10,7 +10,7 @@
       <template #form-formLeft>
         <el-button>ddd</el-button>
       </template>
-      <template #ds1="{ record, row }"> {{ row.ds1 }} {{ record }} </template>
+      <template #jsonPath="{ record, row }"> {{ row.ds1 }} {{ record }} </template>
     </BasicTable>
 
     <BasicModal
@@ -338,7 +338,7 @@
         // },
       },
       {
-        prop: 'c',
+        prop: 'jsonPath',
         label: 'c',
         width: 200,
         edit: true,
