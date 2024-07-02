@@ -10,6 +10,7 @@
       <template #form-formLeft>
         <el-button>ddd</el-button>
       </template>
+      <template #ds1="{ record, row }"> {{ row.ds1 }} {{ record }} </template>
     </BasicTable>
 
     <BasicModal
@@ -903,8 +904,7 @@
       }).then(() => {
         // clearValidate();
 
-        setTimeout(() => {
-        });
+        setTimeout(() => {});
       });
     });
   };

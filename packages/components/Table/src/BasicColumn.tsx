@@ -8,6 +8,7 @@ import type { PropType } from 'vue';
 type FComponentProps = {
   recordCache: Object;
   getRowKeyName: () => string;
+  slots: any;
 };
 
 type BasicFComponentProps = {
@@ -22,6 +23,7 @@ export const RenderColumn = (
   props: BasicFComponentProps,
   context?
 ): TableComponentTypes | null | undefined | void => {
+  // console.log('context?.slots >--->', context?.slots);
   return (
     <el-table-column
       formatter={props.column.formatter || formatter}
@@ -86,6 +88,7 @@ const BasicColumnComponent = (
                 column: item,
                 getRowKeyName: props.getRowKeyName,
                 recordCache: props.recordCache,
+                slots: props.slots,
               });
             });
           },
@@ -93,6 +96,19 @@ const BasicColumnComponent = (
         },
       }
     );
+  }
+
+  if (props.slots && props.column.prop && props.slots[props.column.prop]) {
+    const rowKey = props.getRowKeyName();
+
+    return RenderColumn(props, {
+      slots: {
+        default: (obj) => {
+          const record = props.recordCache[obj.row[rowKey]] || {};
+          return props.slots[props.column.prop!]({ ...obj, record });
+        },
+      },
+    });
   }
 
   if (props.column.customRender) {
@@ -131,6 +147,9 @@ BasicColumnComponent.props = {
   },
   getRowKeyName: {
     type: Function,
+  },
+  slots: {
+    type: Object as PropType<any>,
   },
 };
 

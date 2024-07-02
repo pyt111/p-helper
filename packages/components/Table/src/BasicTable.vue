@@ -41,7 +41,13 @@
             :column="col"
             :record-cache="recordCache"
             :get-row-key-name="getRowKeyName"
-          />
+            :slots="slots"
+          >
+            <template #default="data">
+              asdasdasd
+              <slot :name="col.prop" v-bind="data" />
+            </template>
+          </BasicColumnComponent>
         </template>
 
         <template #actions="data">
