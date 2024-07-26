@@ -180,9 +180,9 @@
     display: inline-flex;
   }
 
-  [class*=--level]:not([class*=--level-0]) {
-    .el-table__cell:first-child .cell {
-      display: flex;
+  .el-table__row {
+    .el-table__indent ~ .editable-cell {
+      display: inline-block;
     }
   }
 }
