@@ -49,8 +49,8 @@ export function usePagination(
       layout: paginationLayout.value,
       // @ts-ignore
       pageSizes: PAGE_SIZE_OPTIONS,
-      showTotal: (total) => `共${total}条数据`,
-      showQuickJumper: true,
+      // showTotal: (total) => `共${total}条数据`,
+      // showQuickJumper: true,
       ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef),
     };

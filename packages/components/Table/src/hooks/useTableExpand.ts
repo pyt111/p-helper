@@ -40,7 +40,8 @@ export function useTableExpand(
   }
 
   function expandRows(keys: (string | number)[]) {
-    expandRowKeys.value = [...expandRowKeys.value, ...keys];
+    const allKeys = [...expandRowKeys.value, ...keys];
+    expandRowKeys.value = [...new Set(allKeys)];
   }
 
   function collapseRows(keys: (string | number)[]) {

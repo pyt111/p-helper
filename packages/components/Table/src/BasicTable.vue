@@ -58,7 +58,7 @@
       </el-table>
       <component
         :is="renderPagination()"
-        v-if="!getBindValues.noPage"
+        v-if="!getBindValues.noPage && !!getPaginationInfo"
         ref="paginationElRef"
         class="pagination-wrapper"
       />
@@ -217,7 +217,7 @@
       data: dataSource,
       ...unref(getExpandOption),
     };
-    const bottomHeight = propsData.noPage ? 0 : 52;
+    const bottomHeight = propsData.noPage && getPaginationInfo.value ? 0 : 52;
     const maxHeight = `calc(100% - ${bottomHeight}px)`;
     // 是否撑满
     if (getProps.value.fullHeight) {

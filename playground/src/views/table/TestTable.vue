@@ -666,15 +666,17 @@
         // suffixIcon: 'code',
         onClick: (obj) => {
           const { index, row, record } = obj;
-          console.log('row.id >--->', row.id);
+          // console.log('row.id >--->', row.id);
           deleteTableDataRecord(row.id || row.key);
           record.onEditRow(record.getIsRowEditCacheRowKeys());
         },
       },
     ],
-    pagination: {
-      pageSizes: [1, 2],
-    },
+    // pagination: {
+    //   pageSizes: [1, 2],
+    // },
+    // pagination: false,
+    // noPage: true,
     formConfig: {
       schemas: [
         {
