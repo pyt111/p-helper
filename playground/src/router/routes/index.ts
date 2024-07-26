@@ -14,6 +14,10 @@ export const playRoutes: Partial<RouteRecordRaw>[] = [
     component: () => import('@/views/table/TestTable.vue'),
   },
   {
+    path: '/test-table-2',
+    component: () => import('@/views/table/TestTable2.vue'),
+  },
+  {
     path: '/test-upload',
     component: () => import('@/views/upload/UploadTest.vue'),
   },

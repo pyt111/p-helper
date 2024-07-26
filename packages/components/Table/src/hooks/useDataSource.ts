@@ -54,15 +54,7 @@ export function useDataSource(
 
   watchEffect(() => {
     tableData.value = unref(dataSourceRef);
-    dataSourceRef.value.forEach((item) => {
-      const targetKeyName = getTargetKeyName(item);
-      if (item[targetKeyName]) {
-        recordCache[item[targetKeyName]] = Object.assign(
-          { ...item },
-          recordCache[item[targetKeyName]] || {}
-        );
-      }
-    });
+    setRecordCache(dataSourceRef.value);
   });
 
   watch(
@@ -75,6 +67,21 @@ export function useDataSource(
       immediate: true,
     }
   );
+
+  function setRecordCache(data: Recordable[]) {
+    data.forEach((item) => {
+      const targetKeyName = getTargetKeyName(item);
+      if (item[targetKeyName]) {
+        recordCache[item[targetKeyName]] = Object.assign(
+          { ...item },
+          recordCache[item[targetKeyName]] || {}
+        );
+        if (item.children?.length) {
+          setRecordCache(item.children);
+        }
+      }
+    });
+  }
 
   function onOfflinePaging() {
     const { currentPage = 1, pageSize = PAGE_SIZE } = unref(
