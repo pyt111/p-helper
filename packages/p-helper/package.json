@@ -63,6 +63,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@purge-icons/generated": "^0.10.0",
     "@vueuse/core": "^10.2.1",
     "dayjs": "^1.11.8",
     "lodash-es": "^4.17.21",

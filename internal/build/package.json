@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@esbuild-kit/cjs-loader": "^2.3.3",
+    "@esbuild-kit/cjs-loader": "^2.2.1",
     "@rollup/plugin-commonjs": "^22.0.1",
     "gulp": "^4.0.2",
     "rollup": "^2.78.0",

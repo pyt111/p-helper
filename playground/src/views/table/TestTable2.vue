@@ -658,12 +658,7 @@
       msg: 'sss',
     };
   };
-  const [
-    register,
-    {
-      insertTableDataRecord,
-    },
-  ] = useTable({
+  const [register, { insertTableDataRecord }] = useTable({
     api: uploadApi,
     // fullHeight: true,
     // offlinePaging: true,
@@ -717,200 +712,24 @@
         width: 180,
       },
     ],
-  });
 
-  const [registerModal, { openModal, closeModal }] = useModal();
-  const [
-    registerForm,
-    { submit, getFieldsValue, setFieldsValue, clearValidate },
-  ] = useForm({
-    // isCol: false,
-    rules: {
-      asd: [{ message: '请输入11', required: true, trigger: 'blur' }],
-      // bb: [
-      //   { message: '请输入111', required: true, trigger: 'blur' },
-      //   {
-      //     pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-      //     message: '只能以字母开头,含有数字、字母、下划线',
-      //   },
-      // ],
-      taskCode: [
-        { required: true, message: '不允许为空' },
-        {
-          required: true,
-          pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-          message: '只能以字母开头,含有数字、字母、下划线',
-        },
-      ],
+    actionColumn: {
+      width: 180,
+      label: '操作',
+      prop: 'action',
+      // slots: { customRender: 'action' },
+      // fixed: undefined,
     },
-    defaultSchema: {
-      subLabel: ':',
-    },
-    schemas: [
+    actions: [
       {
-        label: ' ',
-        field: '1',
-        component: 'Checkbox',
-        required: true,
-        componentProps: {
-          label: '状态',
-          falseValue: '',
+        label: 'asd',
+        preIcon: 'ep:edit',
+        onClick: ({ row }) => {
+          console.log('row >--->', row)
         },
-      },
-      {
-        field: 'asd',
-        label: 'ssss',
-        component: 'DatePicker',
-        // required: true,
-        rules: [{ required: true, message: '请选择日期1' }],
-      },
-      {
-        field: 'dst',
-        label: '数字',
-        component: 'Render',
-        render: () => {
-          return '数字';
-        },
-      },
-      {
-        field: 'dst',
-        label: '上传',
-        component: 'Upload',
-        componentProps: {
-          api: async () => {
-            return {
-              code: 200,
-              data: {
-                url: 'asd',
-              },
-              msg: 'sss',
-            };
-          },
-          showPreview: true,
-        },
-      },
-      {
-        field: 'ssd',
-        label: '测试-FormRadioGroup',
-        component: 'RadioGroup',
-        componentProps: (obj) => {
-          console.log('obj >--->', obj);
-          return {
-            disabled: !!obj.formModel.asd,
-            options: [
-              {
-                value: '444',
-                content: '选项1',
-              },
-              {
-                value: '123',
-                content: '选项2',
-              },
-            ],
-
-            onChange: (value) => {
-              console.log('RadioGroup value >--->', value);
-            },
-          };
-        },
-        suffix: '333',
-      },
-      {
-        field: 'bb',
-        label: 'aaa2',
-        component: 'Input',
-        required: true,
-        itemProps: {
-          // rules: [{ required: true, message: '请输入' }],
-        },
-        suffix: '1111',
-        rules: [
-          { required: true, message: '不允许为空', trigger: 'blur' },
-          {
-            pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-            message: '只能以字母开头,含有数字、字母、下划线',
-            trigger: 'blur',
-          },
-        ],
-      },
-      {
-        label: '任务名称',
-        field: 'taskName',
-        component: 'Input',
-        componentProps: {
-          placeholder: '请输入任务名称',
-        },
-        suffix: '2222',
-        rules: [{ required: true, message: '不允许为空' }],
-      },
-      // 任务code, 数据源类型,kafka数据源地址,kafka的topic,数据源【下拉框】,数据库【下拉框】
-      {
-        label: '任务code',
-        field: 'taskCode',
-        component: 'Input',
-        defaultValue: 's',
-        componentProps: {
-          placeholder: '请输入英文名，允许中文数字字母或下划线',
-        },
-        renderComponentContent: () => {
-          return {
-            suffix: () => 'asd',
-          };
-        },
-        suffix: 'tttt',
-        // required: true,
-        // rules: [
-        //   { required: true, message: '不允许为空' },
-        //   {
-        //     required: true,
-        //     pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-        //     message: '只能以字母开头,含有数字、字母、下划线',
-        //   },
-        // ],
       },
     ],
   });
-
-  const onSelect = (v) => {
-    console.log('onSelect >--->', v);
-  };
-  const onAdd = () => {
-    // setTableData([{}, ...getDataSource()]);
-    const d = insertTableDataRecord({}, 0);
-    // const data = getDataSource();
-    nextTick(() => {
-      // const record = getCellRecord(d[0].key);
-      // record.onEdit(true);
-    });
-    // const d = insertTableDataRecord({}, 0);
-    // const { onEditRow, getIsRowEditCacheRowKeys } = getEditRowRecord();
-    // const keys = getIsRowEditCacheRowKeys();
-    // onEditRow([0, ...keys], true);
-    // console.log('d >--->', d);
-  };
-
-  const onEdit = () => {
-    // const { onEditRow } = getEditRowRecord();
-    // onEditRow([0, 2], true);
-  };
-
-  const onOk = (_, val) => {
-    submit();
-    console.log('onOk >--->', getFieldsValue());
-    // closeModal();
-  };
-
-  const onOpen = () => {
-    openModal(true).then(() => {
-      setFieldsValue({
-        taskCode: '1',
-      }).then(() => {
-        // clearValidate();
-
-        setTimeout(() => {});
-      });
-    });
-  };
 </script>
 
 <style scoped>

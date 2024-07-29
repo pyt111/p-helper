@@ -27,7 +27,7 @@
     unref,
     watch,
   } from 'vue';
-  // import Iconify from '@purge-icons/generated';
+  import Iconify from '@purge-icons/generated';
   import { isString } from '@p-helper/utils/is';
   import SvgIcon from './SvgIcon.vue';
   import { iconProps } from './props';
@@ -40,7 +40,6 @@
     props: iconProps,
     setup(props) {
       const elRef = ref<any>(null);
-
       const isSvgIcon = computed(() => props.icon?.endsWith(SVG_END_WITH_FLAG));
       const getSvgIcon = computed(() =>
         props.icon?.replace(SVG_END_WITH_FLAG, '')
@@ -59,7 +58,7 @@
         const icon = unref(getIconRef);
         if (!icon) return;
 
-        const svg = '';
+        const svg = Iconify.renderSVG(icon, {});
         if (svg) {
           el.textContent = '';
           el.appendChild(svg);

@@ -10,7 +10,9 @@
       <template #form-formLeft>
         <el-button>ddd</el-button>
       </template>
-      <template #jsonPath="{ record, row }"> {{ row.ds1 }} {{ record }} </template>
+      <template #jsonPath="{ record, row }">
+        {{ row.ds1 }} {{ record }}
+      </template>
     </BasicTable>
 
     <BasicModal
@@ -95,6 +97,19 @@
             ds2: 666,
             badgeValue: 2,
             alarmEnable: 0,
+            children: [
+              {
+                id: 111,
+                d: 222,
+                c: 333,
+                a: '444',
+                ds: 335553,
+                ds1: 555,
+                ds2: 666,
+                badgeValue: 2,
+                alarmEnable: 0,
+              },
+            ],
           },
           {
             id: 15,
@@ -241,16 +256,16 @@
         type: 'index',
         totalIndex: true,
       },
-      {
-        label: '',
-        prop: 'expand',
-        type: 'expand',
-        columnSlots: {
-          default: ({ row }) => {
-            return 'asd';
-          },
-        },
-      },
+      // {
+      //   label: '',
+      //   prop: 'expand',
+      //   type: 'expand',
+      //   columnSlots: {
+      //     default: ({ row }) => {
+      //       return 'asd';
+      //     },
+      //   },
+      // },
       {
         prop: 'ds',
         label: 'ds',

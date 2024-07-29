@@ -18,11 +18,7 @@ export const ActionIcon = (
     if (isObject(icon)) {
       return toRaw(icon);
     }
-    const iconStr = icon;
-    if (iconStr) {
-      return iconStr.endsWith('|svg') ? iconStr : `${iconStr}|svg`;
-    }
-    return '';
+    return icon;
   };
 
   const iconEl = computed(() => normalizeIcon(props.icon));
