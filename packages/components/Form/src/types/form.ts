@@ -1,21 +1,4 @@
-import type ElTree from 'element-plus/es/components/tree';
-import type ElSelect from 'element-plus/es/components/select';
-import type {
-  CascaderInstance,
-  CheckboxProps,
-  DatePickerProps,
-  DividerProps,
-  FormProps as ElFormProps,
-  FormItemRule,
-  ISelectProps,
-  InputNumberProps,
-  InputProps,
-  RadioEmits,
-  RadioGroupProps,
-  RadioProps,
-  SwitchProps,
-  TimePickerDefaultProps,
-} from 'element-plus';
+import type { FormProps as ElFormProps, FormItemRule } from 'element-plus';
 import type { CSSProperties, Ref, Slot, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@p-helper/components/Button';
 import type {
@@ -25,10 +8,9 @@ import type {
   UploadUploadContainerProps,
 } from '@p-helper/components/Upload';
 import type { FormItem } from './formItem';
-import type { ColEx, ComponentType } from './index';
+import type { ColEx, ComponentProps, ComponentType } from './index';
 import type { TableActionType } from '@p-helper/components/Table/src/types/table';
 import type { RowProps } from 'element-plus/es/components/row';
-import type { OptionType } from 'element-plus/es/components/select-v2/src/select.types';
 import type { FileItem } from '../../../Upload/src/typing';
 
 export declare type InternalNamePath = (string | number)[];
@@ -166,14 +148,6 @@ export type FormProps = ElFormProps & {
   transformDateFunc?: (date: any) => string;
   colon?: boolean;
 };
-export type ComponentProps<T = Recordable> =
-  | ((opt: {
-      schema: FormSchema;
-      tableAction: TableActionType;
-      formActionType: FormActionType;
-      formModel: Recordable;
-    }) => T)
-  | object;
 
 export interface SelectOptions<T = any> {
   label: string;
@@ -191,243 +165,112 @@ export type UploadProps = Partial<
   onChange: (urls: string[], fileList: FileItem[]) => void;
 };
 
-export interface InputComponentSchema {
-  component: 'Input';
-  componentProps?:
-    | ComponentProps
-    | (Partial<InputProps & HTMLTextAreaElement> &
-        Partial<{
-          onChange: ((...args: any[]) => any) | undefined;
-          maxlength: string | number;
-          minlength: string | number;
-          max: string | number;
-          min: string | number;
-        }>);
-}
+// export interface InputComponentSchema {
+//   component: 'Input';
+//   componentProps?:
+//     | ComponentProps
+//     | (Partial<InputProps & HTMLTextAreaElement> &
+//         Partial<{
+//           onChange: ((...args: any[]) => any) | undefined;
+//           maxlength: string | number;
+//           minlength: string | number;
+//           max: string | number;
+//           min: string | number;
+//         }>);
+// }
 
-export interface SelectComponentSchema {
-  component: 'Select';
-  componentProps?: (ComponentProps | Partial<Omit<ISelectProps, 'options'>>) &
-    Partial<
-      {
-        options:
-          | (OptionType & SelectOptions)[]
-          | Ref<(OptionType & SelectOptions)[]>;
-      } & {
-        style?: CSSProperties;
-        bbb: string;
-        onChange?: ((...args: any[]) => any) | undefined;
-        'onUpdate:modelValue'?: ((...args: any[]) => any) | undefined;
-        onFocus?: ((...args: any[]) => any) | undefined;
-        onBlur?: ((...args: any[]) => any) | undefined;
-        onClear?: ((...args: any[]) => any) | undefined;
-        onVisibleChange?: ((...args: any[]) => any) | undefined;
-        onRemoveTag?: ((...args: any[]) => any) | undefined;
-      }
-    >;
-}
-
-export interface TreeSelectComponentSchema {
-  component: 'TreeSelect';
-  componentProps?: (
-    | ComponentProps
-    | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
-  ) & {
-    data: any;
-  };
-}
-
-export interface RangePickerComponentSchema {
-  component: 'RangePicker';
-  componentProps?: ComponentProps;
-}
-
-export interface DatePickerComponentSchema {
-  component: 'DatePicker';
-  componentProps?: ComponentProps<DatePickerProps> | Partial<DatePickerProps>;
-}
-
-export interface TimePickerComponentSchema {
-  component: 'TimePicker';
-  componentProps?:
-    | ComponentProps<TimePickerDefaultProps>
-    | Partial<TimePickerDefaultProps>;
-}
-
-export interface RenderComponentSchema {
-  component: 'Render';
-  componentProps?: ComponentProps;
-}
-
-export interface CheckboxComponentSchema {
-  component: 'Checkbox';
-  componentProps?: (ComponentProps<CheckboxProps> | Partial<CheckboxProps>) & {
-    onChange?: ((...args: any[]) => any) | undefined;
-  };
-}
-
-export interface SwitchComponentSchema {
-  component: 'Switch';
-  componentProps?: (ComponentProps | Partial<SwitchProps>) & {
-    onChange?: ((...args: any[]) => any) | undefined;
-  };
-}
-
-export interface DividerComponentSchema {
-  component: 'Divider';
-  componentProps?: ComponentProps | Partial<DividerProps>;
-}
-
-export interface InputNumberComponentSchema {
-  component: 'InputNumber';
-  componentProps?: ComponentProps | Partial<InputNumberProps>;
-}
-
-export interface CascaderComponentSchema {
-  component: 'Cascader';
-  componentProps?:
-    | ComponentProps<CascaderInstance['$props']>
-    | Partial<CascaderInstance['$props']>;
-}
-
-export interface UploadComponentSchema {
-  component: 'Upload';
-  componentProps?: ComponentProps<UploadProps> | UploadProps;
-}
-
-export interface RadioGroupComponentSchema {
-  component: 'RadioGroup';
-  componentProps?:
-    | ComponentProps
-    | (Partial<RadioGroupProps> & {
-        onChange?: (value: string | number | boolean) => void;
-        options: Partial<
-          RadioProps &
-            RadioEmits & {
-              slot: null | VNode | VNode[] | (() => VNode | VNode[]);
-              content: Slot | string;
-            }
-        >[];
-      });
-}
-export type FormSchemaExpand =
-  | InputComponentSchema
-  | SelectComponentSchema
-  | TreeSelectComponentSchema
-  | RangePickerComponentSchema
-  | DatePickerComponentSchema
-  | RenderComponentSchema
-  | CheckboxComponentSchema
-  | SwitchComponentSchema
-  | DividerComponentSchema
-  | InputNumberComponentSchema
-  | UploadComponentSchema
-  | RadioGroupComponentSchema
-  | TimePickerComponentSchema
-  | CascaderComponentSchema;
-
-// export type FormSchemaExpand = Readonly<
-//   {
-//     componentProps?: {
-//       style?: CSSProperties;
-//     };
-//   } & (
-//     | {
-//         component: 'Input';
-//         componentProps?:
-//           | ComponentProps
-//           | (Partial<InputProps> &
-//               Partial<{
-//                 onChange: ((...args: any[]) => any) | undefined;
-//                 maxlength: string | number;
-//                 minlength: string | number;
-//                 max: string | number;
-//                 min: string | number;
-//               }> &
-//               Recordable);
+// export interface SelectComponentSchema {
+//   component: 'Select';
+//   componentProps?: (ComponentProps | Partial<Omit<ISelectProps, 'options'>>) &
+//     Partial<
+//       {
+//         options:
+//           | (OptionType & SelectOptions)[]
+//           | Ref<(OptionType & SelectOptions)[]>;
+//       } & {
+//         style?: CSSProperties;
+//         bbb: string;
+//         onChange?: ((...args: any[]) => any) | undefined;
+//         'onUpdate:modelValue'?: ((...args: any[]) => any) | undefined;
+//         onFocus?: ((...args: any[]) => any) | undefined;
+//         onBlur?: ((...args: any[]) => any) | undefined;
+//         onClear?: ((...args: any[]) => any) | undefined;
+//         onVisibleChange?: ((...args: any[]) => any) | undefined;
+//         onRemoveTag?: ((...args: any[]) => any) | undefined;
 //       }
-//     | {
-//         component: 'Select';
-//         componentProps?: (
-//           | ComponentProps
-//           | Partial<Omit<ISelectProps, 'options'>>
-//         ) & {
-//           options:
-//             | (OptionType & SelectOptions)[]
-//             | Ref<(OptionType & SelectOptions)[]>;
-//         } & {
-//           style?: CSSProperties;
-//           onChange?: ((...args: any[]) => any) | undefined;
-//           'onUpdate:modelValue'?: ((...args: any[]) => any) | undefined;
-//           onFocus?: ((...args: any[]) => any) | undefined;
-//           onBlur?: ((...args: any[]) => any) | undefined;
-//           onClear?: ((...args: any[]) => any) | undefined;
-//           onVisibleChange?: ((...args: any[]) => any) | undefined;
-//           onRemoveTag?: ((...args: any[]) => any) | undefined;
-//         };
-//       }
-//     | {
-//         component: 'TreeSelect';
-//         componentProps?: (
-//           | ComponentProps
-//           | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
-//         ) & {
-//           data: any;
-//         };
-//       }
-//     | {
-//         component: 'RangePicker';
-//       }
-//     | {
-//         component: 'DatePicker';
-//       }
-//     | {
-//         component: 'Render';
-//       }
-//     | {
-//         component: 'Checkbox';
-//         componentProps?: (
-//           | ComponentProps<CheckboxProps>
-//           | Partial<CheckboxProps>
-//         ) & {
-//           onChange?: ((...args: any[]) => any) | undefined;
-//         };
-//       }
-//     | {
-//         component: 'Switch';
-//         componentProps?: (ComponentProps | Partial<SwitchProps>) & {
-//           onChange?: ((...args: any[]) => any) | undefined;
-//         };
-//       }
-//     | {
-//         component: 'Divider';
-//         componentProps?: ComponentProps | Partial<DividerProps>;
-//       }
-//     | {
-//         component: 'InputNumber';
-//         componentProps?: ComponentProps | Partial<InputNumberProps>;
-//       }
-//     | {
-//         component: 'Upload';
-//         componentProps?: ComponentProps<UploadProps> | UploadProps;
-//       }
-//     | {
-//         component: 'RadioGroup';
-//         componentProps?: (ComponentProps | Partial<RadioGroupProps>) & {
-//           onChange?: (value: string | number | boolean) => void;
-//           options: Partial<
-//             RadioProps &
-//               RadioEmits & {
-//                 slot: null | VNode | VNode[] | (() => VNode | VNode[]);
-//                 content: Slot | string;
-//               }
-//           >[];
-//         };
-//       }
-//   )
-// >;
+//     >;
+// }
 
-export interface BaseFormSchema {
+// export interface TreeSelectComponentSchema {
+//   component: 'TreeSelect';
+//   componentProps?: (
+//     | ComponentProps
+//     | Partial<InstanceType<typeof ElSelect> & InstanceType<typeof ElTree>>
+//   ) & {
+//     data: any;
+//   };
+// }
+
+// export interface RangePickerComponentSchema {
+//   component: 'RangePicker';
+//   componentProps?: ComponentProps;
+// }
+//
+// export interface DatePickerComponentSchema {
+//   component: 'DatePicker';
+//   componentProps?: ComponentProps<DatePickerProps> | Partial<DatePickerProps>;
+// }
+
+// export interface TimePickerComponentSchema {
+//   component: 'TimePicker';
+//   componentProps?:
+//     | ComponentProps<TimePickerDefaultProps>
+//     | Partial<TimePickerDefaultProps>;
+// }
+
+// export interface RenderComponentSchema {
+//   component: 'Render';
+//   componentProps?: ComponentProps;
+// }
+
+// export interface CascaderComponentSchema {
+//   component: 'Cascader';
+//   componentProps?:
+//     | ComponentProps<CascaderInstance['$props']>
+//     | Partial<CascaderInstance['$props']>;
+// }
+
+// export interface UploadComponentSchema {
+//   component: 'Upload';
+//   componentProps?: ComponentProps<UploadProps> | UploadProps;
+// }
+// export type RadioGroupOverlap = Partial<RadioGroupProps> & {
+//   onChange?: (value: string | number | boolean) => void;
+//   options: Partial<
+//     RadioProps &
+//       RadioButtonProps &
+//       RadioEmits & {
+//         slot: null | VNode | VNode[] | (() => VNode | VNode[]);
+//         content: Slot | string;
+//       }
+//   >[];
+// };
+
+// export interface RadioGroupComponentSchema {
+//   component: 'RadioGroup';
+//   componentProps?: ComponentProps<RadioGroupOverlap> | RadioGroupOverlap;
+// }
+
+// type RadioButtonGroupCommon = RadioGroupOverlap & { radioType: 'button' };
+
+// export interface RadioButtonGroupComponentSchema {
+//   component: 'RadioButtonGroup';
+//   componentProps?:
+//     | ComponentProps<RadioButtonGroupCommon>
+//     | RadioButtonGroupCommon;
+// }
+
+export interface BaseFormSchema<T extends ComponentType = any> {
   // Field name
   field: string;
   // 通过连字符查找对象或数组下的值
@@ -453,7 +296,14 @@ export interface BaseFormSchema {
   // and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
   // 对应组件的属性传值  类型暂时不管 可以直接去看element-plus相对应的组件的props
-  componentProps?: ComponentProps;
+  componentProps?:
+    | ((opt: {
+        schema: FormSchema;
+        tableAction: TableActionType;
+        formActionType: FormActionType;
+        formModel: Recordable;
+      }) => ComponentProps[T])
+    | ComponentProps[T];
   // Required
   required?:
     | boolean
@@ -522,21 +372,21 @@ export interface BaseFormSchema {
   dynamicRules?: (renderCallbackParams: RenderCallbackParams) => Rule[];
 }
 
-export interface ComponentFormSchemaExpand extends BaseFormSchema {
+export interface ComponentFormSchema<T extends ComponentType = any>
+  extends BaseFormSchema<T> {
   // render component
-  component: ComponentType;
-  componentProps?: {
-    style?: CSSProperties;
-  };
+  component: T;
 }
-
-export type ComponentFormSchema = ComponentFormSchemaExpand & FormSchemaExpand;
 
 export interface SlotFormSchema extends BaseFormSchema {
   // Custom slot, in from-item
   slot: string;
 }
-export type FormSchema = ComponentFormSchema | SlotFormSchema;
+
+type ComponentFormSchemaType<T extends ComponentType = ComponentType> =
+  T extends any ? ComponentFormSchema<T> : never;
+
+export type FormSchema = ComponentFormSchemaType | SlotFormSchema;
 
 export type FormSchemaInner = Partial<ComponentFormSchema> &
   Partial<SlotFormSchema> &

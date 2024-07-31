@@ -41,7 +41,7 @@
 
     <UploadPreviewModal
       :value="fileList"
-      v-bind="$attrs.previewProps"
+      v-bind="previewProps"
       @register="registerPreviewModal"
       @list-change="handlePreviewChange"
       @delete="handlePreviewDelete"
@@ -82,6 +82,8 @@
           ? fileList.value.length > 0
           : false;
       });
+
+      const previewProps = computed(() => attrs.previewProps || {});
 
       const bindValue = computed(() => {
         const value = { ...attrs, ...props };
@@ -135,17 +137,13 @@
         fileList,
         isShowPreview,
         bindValue,
+        previewProps,
         handleDelete,
         handlePreviewDelete,
         View,
         Upload,
         onOpenUploadModal,
       };
-    },
-    computed: {
-      previewProps() {
-        return previewProps;
-      },
     },
   });
 </script>

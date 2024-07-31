@@ -409,10 +409,7 @@
           component,
           slot,
         } = props.schema;
-        if (
-          !component ||
-          (!componentMap.has(component) && component !== 'Render' && !slot)
-        ) {
+        if (!((component && componentMap.has(component)) || slot)) {
           return null;
         }
 

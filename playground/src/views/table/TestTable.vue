@@ -749,7 +749,7 @@
       //   },
       // ],
       taskCode: [
-        { required: true, message: '不允许为空' },
+        { required: true, message: '不允许为空1' },
         {
           required: true,
           pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
@@ -781,7 +781,7 @@
       {
         field: 'dst',
         label: '数字',
-        component: 'Render',
+        component: 'Input',
         render: () => {
           return '数字';
         },
@@ -801,6 +801,9 @@
             };
           },
           showPreview: true,
+          onChange: (...args) => {
+            console.log('args >--->', args);
+          },
         },
       },
       {
@@ -814,11 +817,11 @@
             options: [
               {
                 value: '444',
-                content: '选项1',
+                label: '选项1',
               },
               {
                 value: '123',
-                content: '选项2',
+                label: '选项2',
               },
             ],
 
@@ -828,6 +831,21 @@
           };
         },
         suffix: '333',
+      },
+      {
+        field: 'ssdd',
+        label: '测试-FormRadioGroup',
+        component: 'RadioButtonGroup',
+        componentProps: {
+          options: [
+            { label: '选项1', value: 1 },
+            { label: '选项2', value: 2 },
+          ],
+          // disabled: !!obj.formModel.asd,
+          onChange: (value) => {
+            console.log('RadioButtonGroup value >--->', value);
+          },
+        },
       },
       {
         field: 'bb',
@@ -916,13 +934,13 @@
 
   const onOpen = () => {
     openModal(true).then(() => {
-      setFieldsValue({
-        taskCode: '1',
-      }).then(() => {
-        // clearValidate();
-
-        setTimeout(() => {});
-      });
+      // setFieldsValue({
+      //   taskCode: '',
+      // }).then(() => {
+      //   // clearValidate();
+      //
+      //   setTimeout(() => {});
+      // });
     });
   };
 </script>

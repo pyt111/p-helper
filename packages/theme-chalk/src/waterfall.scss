@@ -73,9 +73,11 @@
       left: 0;
     }
 
-    position: absolute;
-    padding: var(--gap);
-    width: var(--itemWidth, $itemWidth);
+    & {
+      position: absolute;
+      padding: var(--gap);
+      width: var(--itemWidth, $itemWidth);
+    }
 
     &.opacity__0 {
       opacity: 0;

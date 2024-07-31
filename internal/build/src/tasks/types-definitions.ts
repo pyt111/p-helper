@@ -6,6 +6,7 @@ import * as vueCompiler from 'vue/compiler-sfc';
 import glob from 'fast-glob';
 import chalk from 'chalk';
 import { Project } from 'ts-morph';
+// import s from 'vue-tsc'
 import {
   buildOutput,
   excludeFiles,

@@ -1,7 +1,27 @@
-import type { FileBasicColumn, FileItem } from './typing';
+import type { FileBasicColumn, FileItem, BaseFileItem } from './typing';
 import type { PromiseFn } from '@p-helper/types/utils';
+import type { BasicColumn } from '@p-helper/components';
 import type { ExtractPropTypes, PropType } from 'vue';
 
+export type handleFnKey = 'record' | 'valueKey' | 'uidKey';
+export type previewColumnsFnType = {
+  handleRemove: (record: Record<handleFnKey, any>) => any;
+  handleAdd: (record: Record<handleFnKey, any>) => any;
+};
+
+export const previewType = {
+  previewColumns: {
+    type: [Array, Function] as PropType<
+      BasicColumn[] | ((arg: previewColumnsFnType) => BasicColumn[])
+    >,
+    required: false,
+  },
+  beforePreviewData: {
+    type: Function as PropType<(arg: BaseFileItem[] | any) => Recordable<any>>,
+    default: null,
+    required: false,
+  },
+};
 export const basicProps = {
   helpText: {
     type: String as PropType<string>,
@@ -75,6 +95,7 @@ export const uploadContainerProps = {
     type: Boolean as PropType<boolean>,
     default: false,
   },
+  ...previewType,
 };
 
 export const previewProps = {
@@ -86,6 +107,7 @@ export const previewProps = {
     type: Array as PropType<string[]>,
     default: () => [],
   },
+  ...previewType,
 };
 
 export const fileListProps = {

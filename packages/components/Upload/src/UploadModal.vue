@@ -259,7 +259,6 @@
           throw e;
         }
       }
-      const s = async () => {};
 
       const handleStartUpload = async (file) => {
         if (props.beforeUpload) {
@@ -287,6 +286,7 @@
         }
         const fileList: string[] = [];
 
+        console.log('fileListRef >--->', fileListRef.value);
         for (const item of fileListRef.value) {
           const { status, responseData } = item;
           if (status === UploadResultStatus.SUCCESS && responseData) {
