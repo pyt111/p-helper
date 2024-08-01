@@ -734,11 +734,13 @@
   });
 
   const [registerModal, { openModal, closeModal }] = useModal();
+  const modelData = ref({})
   const [
     registerForm,
     { submit, getFieldsValue, setFieldsValue, clearValidate },
   ] = useForm({
     // isCol: false,
+    // model: modelData,
     rules: {
       asd: [{ message: '请输入11', required: true, trigger: 'blur' }],
       // bb: [
@@ -842,9 +844,9 @@
             { label: '选项2', value: 2 },
           ],
           // disabled: !!obj.formModel.asd,
-          onChange: (value) => {
-            console.log('RadioButtonGroup value >--->', value);
-          },
+          // onChange: (value) => {
+          //   console.log('RadioButtonGroup value >--->', value);
+          // },
         },
       },
       {
@@ -941,6 +943,10 @@
       //
       //   setTimeout(() => {});
       // });
+      // setTimeout(() => {
+      // });
+      setFieldsValue({taskName: '222111'})
+      // modelData.value = {taskName: '222111'}
     });
   };
 </script>
