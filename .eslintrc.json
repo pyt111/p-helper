@@ -1,0 +1,4 @@
+{
+  "root": true,
+  "extends": ["@p-helper/eslint-config"]
+}

@@ -8,6 +8,9 @@
   "scripts": {
     "test": "echo \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Error: no ari specified\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" && exit 1"
   },
+  "peerDependencies": {
+    "vue": "^3.3.4"
+  },
   "keywords": [],
   "author": "",
   "sideEffects": false,

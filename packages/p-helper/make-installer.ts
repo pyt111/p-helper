@@ -1,16 +1,25 @@
-import { INSTALLED_KEY } from '@p-helper/constants'
+import { INSTALLED_KEY } from '@p-helper/constants';
 
-import type { App, Plugin } from '@vue/runtime-core'
+import { provideGlobalConfig, useGlobalConfig } from 'element-plus';
+import type { App, Plugin } from '@vue/runtime-core';
 
 export const makeInstaller = (components: Plugin[] = []) => {
-  const install = (app: App) => {
-    if (app[INSTALLED_KEY]) return
+  const install = (app: App, options?) => {
+    if (app[INSTALLED_KEY]) return;
+    const globalConfig = useGlobalConfig();
 
-    app[INSTALLED_KEY] = true
-    components.forEach((c) => app.use(c))
-  }
+    if (globalConfig) {
+      provideGlobalConfig(options, app, true);
+    }
+    if (options) {
+      // @ts-ignore
+      provideGlobalConfig(options, app, true);
+    }
+    app[INSTALLED_KEY] = true;
+    components.forEach((c) => app.use(c));
+  };
 
   return {
     install,
-  }
-}
+  };
+};

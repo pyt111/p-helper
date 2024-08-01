@@ -1,0 +1,27 @@
+@use 'sass:math';
+@use 'mixins/mixins' as *;
+@use 'common/transition' as *;
+@use 'common/var' as *;
+@use 'mixins/config' as *;
+@use 'mixins/var' as *;
+@use 'mixins/function' as *;
+
+@include b(split-pane) {
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  @include when(vertical) {
+    flex-direction: column;
+  }
+}
+
+@include b(split-pane-item) {
+  @include e(splitter) {
+    min-width: 1px;
+    width: 7px;
+    cursor: col-resize;
+    border: getCssVar('border');
+    flex-shrink: 0;
+  }
+}

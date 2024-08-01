@@ -9,7 +9,6 @@
   "include": [
     "internal/**/*",
     "internal/**/*.json",
-    "src/**/*.ts",
     "scripts/**/*",
     "packages/theme-chalk/*",
     "packages/p-helper/version.ts",

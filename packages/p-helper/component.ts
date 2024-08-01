@@ -1,6 +1,20 @@
-import { TestComponent } from '@p-helper/components'
-import type { Plugin } from 'vue'
+import {
+  BasicDrawer,
+  BasicForm,
+  BasicModal,
+  BasicTable,
+  BasicUpload,
+  PWaterfall,
+  TestComponent,
+} from '@p-helper/components';
+import type { Plugin } from 'vue';
 
 export default [
   TestComponent,
-] as Plugin[]
+  PWaterfall,
+  BasicTable,
+  BasicForm,
+  BasicModal,
+  BasicUpload,
+  BasicDrawer,
+] as Plugin[];

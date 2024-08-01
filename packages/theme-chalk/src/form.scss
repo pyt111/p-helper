@@ -1,0 +1,42 @@
+.basic-form {
+  &:not(.is-col-layout) {
+    .el-form-item {
+      margin-right: 0;
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  .form-action .el-form-item {
+    .el-button {
+      margin-left: 8px;
+    }
+    .el-form-item__content {
+      flex-wrap: nowrap;
+    }
+  }
+  .el-form-item {
+    &.suffix-item {
+      .el-form-item__content {
+        display: flex;
+        & > :nth-child(1) {
+          flex: 1;
+        }
+      }
+      .suffix {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 1px;
+        padding-left: 6px;
+        line-height: 1;
+      }
+    }
+  }
+}
+
+.el-dialog {
+  .el-card.form-card {
+    border: none;
+  }
+}

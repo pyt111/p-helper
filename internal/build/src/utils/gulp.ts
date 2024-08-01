@@ -1,12 +1,11 @@
-import type { TaskFunction } from 'gulp';
-import { buildRoot } from '@p-helper/build-utils'
+import { buildRoot } from '@p-helper/build-utils';
 import { run } from './process';
+import type { TaskFunction } from 'gulp';
 
 export const withTaskName = <T = TaskFunction>(name: string, fn: T) =>
-    Object.assign(fn, { displayName: name });
+  Object.assign(fn, { displayName: name });
 
 export const runTask = (name: string) =>
-    withTaskName(`shellTask:${name}`, () =>
-        run(`pnpm run start ${name}`, buildRoot)
-    )
-
+  withTaskName(`shellTask:${name}`, () =>
+    run(`pnpm run start ${name}`, buildRoot)
+  );

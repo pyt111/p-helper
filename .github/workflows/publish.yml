@@ -7,7 +7,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "dev-publish" ]
+    branches: ['dev']
+#  release:
+#    types: [created]
 
 #  # Allows you to run this workflow manually from the Actions tab
 #  workflow_dispatch:
@@ -39,13 +41,24 @@ jobs:
       - name: Gen npmrc
         run: echo "//registry.npmjs.com/:_authToken=${{ secrets.P_HELPER_PUBLISH }}" >> ./.npmrc
 
-      - name: Build&publish
-        run: sh ./scripts/publish.sh
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.P_HELPER_PUBLISH}}
-          TAG_VERSION: ${{env.TAG_VERSION}}
-          GIT_HEAD: ${{env.GIT_HEAD}}
-          REGISTRY: https://registry.npmjs.com/
-          FORCE_COLOR: 2
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_OPTIONS: --max-old-space-size=4096
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
+
+      - name: Get GIT_OWNER
+        run: echo "GIT_OWNER=${{github.repository_owner}}" >> $GITHUB_ENV
+
+      - name: Get GIT_REPOSITORY
+        run: echo "GIT_REPOSITORY=${{github.repository_owner}}"
+
+#      - name: Build&publish
+#        run: sh ./scripts/publish.sh
+#        env:
+#          NODE_AUTH_TOKEN: ${{secrets.P_HELPER_PUBLISH}}
+#          TAG_VERSION: 0.0.${{ steps.date.outputs.date }}
+#          GIT_HEAD: ${{env.GIT_HEAD}}
+#          REGISTRY: https://registry.npmjs.com/
+#          FORCE_COLOR: 2
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          NODE_OPTIONS: --max-old-space-size=4096
+#          OWNER: ${{env.GIT_OWNER}}

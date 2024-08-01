@@ -10,8 +10,8 @@
     "typings/env.d.ts",
 
     // playground
-    "playground/main.ts",
+    "playground/src/main.ts",
     "playground/env.d.ts",
-    "playground/src/**/*"
+    "playground/src/**/*",
   ]
 }

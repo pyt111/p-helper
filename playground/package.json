@@ -11,12 +11,20 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.0.1",
+    "@vitejs/plugin-vue": "^4.3.3",
+    "typescript": "^4.7.4",
     "unplugin-vue-components": "^0.22.4",
-    "vite": "^3.0.5",
-    "vite-plugin-components": "^0.13.3"
+    "vite": "^4.4.9",
+    "vite-plugin-components": "^0.13.3",
+    "vite-plugin-svg-icons": "^2.0.1"
   },
   "dependencies": {
-    "p-helper": "workspace:*"
+    "@element-plus/icons-vue": "^2.1.0",
+    "@vitejs/plugin-legacy": "^4.1.1",
+    "axios": "^0.27.2",
+    "pinia": "^2.0.18",
+    "unplugin-vue-define-options": "^0.10.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.1.3"
   }
 }

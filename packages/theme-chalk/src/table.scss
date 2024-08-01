@@ -1,0 +1,212 @@
+.basic-table {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .basic-form {
+    display: flex;
+    justify-content: space-between;
+
+    .el-row {
+      width: 100%;
+    }
+  }
+
+  .table-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    .el-table {
+      &__inner-wrapper {}
+    }
+
+    &.table-full-height {
+      .el-card__body {
+        flex: 1;
+        height: 0;
+      }
+    }
+
+    .el-card__body {
+      padding: 0;
+      max-height: 100%;
+    }
+
+    .basic-table-action {
+      .el-button {
+        & + .el-dropdown {
+          margin-left: 12px;
+        }
+      }
+    }
+
+    .card-bottom {
+      margin-top: 10px;
+    }
+    .pagination-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  $prefix-cls: #fff;
+  .basic-table-action {
+    color: $prefix-cls;
+    display: flex;
+    align-items: center;
+
+    .action-divider {
+      display: table;
+    }
+
+    &.left {
+      justify-content: flex-start;
+    }
+
+    &.center {
+      justify-content: center;
+    }
+
+    &.right {
+      justify-content: flex-end;
+    }
+
+    .button-more {
+      padding: 0;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+
+      span {
+        margin-left: 0 !important;
+      }
+    }
+  }
+
+  .editable-cell {
+    position: relative;
+
+    &__wrapper {
+      display: flex;
+      align-items: center;
+
+      &.is-error {
+        color: var(--el-color-danger);
+        [class*=__wrapper] {
+          box-shadow: 0 0 0 1px var(--el-color-danger) inset;
+        }
+      }
+    }
+    &__icon {
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.2);
+
+        svg {
+          color: #222;
+        }
+      }
+    }
+
+    &__normal {
+      &-icon {
+        position: absolute;
+        top: 4px;
+        right: 0;
+        display: none;
+        width: 20px;
+        cursor: pointer;
+
+        &.always-show-icon {
+          display: inline-block;
+        }
+      }
+    }
+
+    &:hover {
+      .editable-cell {
+        &__normal-icon {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .is-center {
+    .editable-cell {
+      &__wrapper {
+        justify-content: center;
+      }
+    }
+  }
+  .trigger-item {
+    width: 100%;
+  }
+
+  .table-form-card {
+    .el-card__body {
+      padding-bottom: 0;
+    }
+    .form-content-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      flex-wrap: wrap-reverse;
+
+      .form-left {
+        margin-right: auto;
+        margin-bottom: 18px;
+      }
+    }
+  }
+
+  .p-table-header-tooltip {
+    &__wrapper {
+      display: inline-flex;
+      align-items: center;
+    }
+    &__icon {
+      margin-left: 5px;
+    }
+  }
+
+  // 树形结构样式修复
+  .el-table__expand-icon + .editable-cell {
+    display: inline-flex;
+  }
+
+  .el-table__row {
+    .el-table__indent ~ .editable-cell {
+      display: inline-block;
+    }
+  }
+}
+.basic-table-action-pop-confirm {
+ .trigger-item {
+   display: flex;
+   align-items: center;
+ }
+}
+.basic-table,
+.el-dropdown-menu {
+  .el-icon,
+  .button-icon--pre {
+    margin-right: 4px;
+  }
+  .button-icon--suffix {
+    margin-left: 4px;
+  }
+}
+.basic-table-action-pop-confirm,
+.basic-table {
+  .el-badge{
+    margin-left: 5px;
+    transform: scale(0.9) translateY(-5px);
+  }
+}
+

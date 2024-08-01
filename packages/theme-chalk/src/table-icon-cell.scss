@@ -1,0 +1,17 @@
+@use 'sass:math';
+@use 'mixins/mixins' as *;
+@use 'common/transition' as *;
+@use 'common/var' as *;
+@use 'mixins/config' as *;
+@use 'mixins/var' as *;
+@use 'mixins/function' as *;
+
+@include b(icon-cell) {
+  @include e(wrapper) {
+    display: inline-flex;
+    align-items: center;
+    @include m(text) {
+      padding: 0 8px;
+    }
+  }
+}

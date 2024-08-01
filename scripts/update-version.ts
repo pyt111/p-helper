@@ -1,29 +1,29 @@
-import consola from 'consola'
-import chalk from 'chalk'
-import { errorAndExit, getWorkspacePackages } from '@p-helper/build-utils'
-import type { Project } from '@pnpm/find-workspace-packages'
+import consola from 'consola';
+import chalk from 'chalk';
+import { errorAndExit, getWorkspacePackages } from '@p-helper/build-utils';
+import type { Project } from '@pnpm/find-workspace-packages';
 
 async function main() {
-  const tagVersion = process.env.TAG_VERSION
-  const gitHead = process.env.GIT_HEAD
+  const tagVersion = process.env.TAG_VERSION;
+  const gitHead = process.env.GIT_HEAD;
   if (!tagVersion || !gitHead) {
     errorAndExit(
       new Error(
         'No tag version or git head were found, make sure that you set the environment variable $TAG_VERSION \n'
       )
-    )
+    );
   }
 
-  consola.log(chalk.cyan('Start updating version'))
-  consola.log(chalk.cyan(`$TAG_VERSION: ${tagVersion}`))
-  consola.log(chalk.cyan(`$GIT_HEAD: ${gitHead}`))
+  consola.log(chalk.cyan('Start updating version'));
+  consola.log(chalk.cyan(`$TAG_VERSION: ${tagVersion}`));
+  consola.log(chalk.cyan(`$GIT_HEAD: ${gitHead}`));
 
-  consola.debug(chalk.yellow(`Updating package.json for element-plus`))
+  consola.debug(chalk.yellow(`Updating package.json for element-plus`));
 
   const pkgs = Object.fromEntries(
     (await getWorkspacePackages()).map((pkg) => [pkg.manifest.name!, pkg])
-  )
-  const pHelper = pkgs['p-helper']
+  );
+  const pHelper = pkgs['p-helper'];
   // const eslintConfig = pkgs['@element-plus/eslint-config']
   // const metadata = pkgs['@element-plus/metadata']
 
@@ -32,19 +32,19 @@ async function main() {
       ...project.manifest,
       version: tagVersion,
       gitHead,
-    } as any)
-  }
+    } as any);
+  };
 
   try {
-    await writeVersion(pHelper)
+    await writeVersion(pHelper);
     // await writeVersion(eslintConfig)
     // await writeVersion(metadata)
   } catch (err: any) {
-    errorAndExit(err)
+    errorAndExit(err);
   }
 
-  consola.debug(chalk.green(`$GIT_HEAD: ${gitHead}`))
-  consola.success(chalk.green(`Git head updated to ${gitHead}`))
+  consola.debug(chalk.green(`$GIT_HEAD: ${gitHead}`));
+  consola.success(chalk.green(`Git head updated to ${gitHead}`));
 }
 
-main()
+main();
