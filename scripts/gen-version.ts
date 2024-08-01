@@ -12,7 +12,6 @@ function getVersion() {
     return pkg.version;
   }
 }
-
 const version = getVersion();
 
 async function main() {
